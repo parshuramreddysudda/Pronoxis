@@ -17,7 +17,7 @@ $TotalLines=0;
 $countTemp=0;  ///For Calculating Recurssion
 $TotalVulnlines=0;
 $TotalVarInPage=0; 
-$typeChkLines = file($conFile[20]);
+$typeChkLines = file($conFile[19]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -43,7 +43,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 
 function multiexplode($data)
 {
-    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";");
+    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
     $quotedata=str_replace('"',"", $data);
 	$MakeReady = str_replace($delimiters, $delimiters[0], $quotedata);
@@ -87,12 +87,18 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
     $vulnVar=array("0");
     $varPresnt=0;  //To check if line has sinks :D
     $substr1=count($chkVulnLineSource);
+
+//    print_r($chkVulnLineSource);
     
+    if(count($chkVulnLineSource)>1)
+    {
     for($i=0;$i<$substr1;$i++)
     {
          $subVar=substr($chkVulnLineSource[$i],0,1);
+    
          if($subVar=='$')
          {
+             
              if(in_array($chkVulnLineSource[$i],$vulnVar))
                 {
                     //Discard Repeated values Since echo may have two pr more recursiion is continued untill are are captured
@@ -149,6 +155,7 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
          }
     }
 }
+}
 
 
 
@@ -157,6 +164,7 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
 function checkVarLineVuln($vulnVar,$allLines)
 {
  
+    
    
     foreach ($allLines as $chkprtDecLine_num => $chkprtDecLine) //Compare every line first letter to find the vulnerable var declartion
     {   
@@ -165,15 +173,21 @@ function checkVarLineVuln($vulnVar,$allLines)
         $trimmed_DecprtSendline=array_map('trim',$trimDecprtSendline);
         
         
-        
+//        print_r($trimmed_DecprtSendline);
         $filteredArray=array_filter($trimmed_DecprtSendline);
+        
+//        print_r($filteredArray);
         $firstEle=array_shift($filteredArray);  //To get the First element of array
       
         $subVar=substr($firstEle,0,1);
-        
+//       
+//        if($chkprtDecLine_num==8)
+//        {
+//            echo "val is ".$firstEle;
+//        }
            if($subVar=='$')
             { 
-               
+           
               if(strcmp($firstEle,$vulnVar)==0)
               {
 //                  echo "<br>Vuln line is".$chkprtDecLine_num;
@@ -188,7 +202,7 @@ function checkVarLineVuln($vulnVar,$allLines)
                      }
                       else
                       {
-                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions";//InSecure function after checking for sources and sinks and not having secure functions
+                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
                            $GLOBALS['TotalVulnlines']++;
                       }
                   }
@@ -223,22 +237,39 @@ function checkforsinks($sinkChkLine)
       $listNo=count($userInputValues);
       $varNo=count($sinkChkLine);
       $vuln=0;
+   
+    
+//    print_r($sinkChkLine);
+    
     for($i=0;$i<$varNo;$i++)
     {
+//          print_r($sinkChkLine);
         for($j=0;$j<$listNo;$j++)
         {
+           
+            
+            if(strlen($sinkChkLine[$i])>1)
+            {
+        
             $tempcount=strlen($sinkChkLine[$i]);  //To count no of letter
-            $tempCut=substr($sinkChkLine[$i],0,$tempcount)  ;    //To cut last letter i.e $_GET[  => $GET  
-            if(strcmp($sinkChkLine[$i],$userInputValues[$j])==0)
-               {
+            $tempCut=substr($sinkChkLine[$i],0,$tempcount-1)  ;    //To cut last letter i.e $_GET[  => $GET  
+//            echo $tempCut;
+              if(strcmp($tempCut,$userInputValues[$j])==0)
+              {
                  
                   return true;
                   $vuln=1;                 //Too count 
-                break;
-               }
+                  break;
+              }
+            }
+            else
+            {
+               break; 
+            }
         }
-        if($vuln=1)
+        if($vuln==1)
         {
+            echo "vuln is 1";
             break;
         }
     }
@@ -255,12 +286,18 @@ function checkSecure($vulnChkLine)
     {
         for($j=0;$j<$listCount;$j++)
         {
+            
+            
+            if(strlen($vulnChkLine[$i])>1)
+            {
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
+                 echo "val is ".$vulnChkLine[$i];
                   return true;
     
                }
-               
+            }
+                
         }
     }
 }
