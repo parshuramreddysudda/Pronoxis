@@ -22,7 +22,7 @@ echo "<br>";
 $sqlLines=0; //For Storing no of Sql lines
 $sqlVulnLines=0; //For Storing no of Sql lines
 
-$typeChkLines = file($conFile[20]);
+$typeChkLines = file($conFile[22]);
 
 // Loop through our array, show HTML source as HTML source; and line numbers too.
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
@@ -44,7 +44,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 
 function multiexplode($data)
 {
-    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";");
+    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
     $quotedata=str_replace('"',"", $data);
 	$MakeReady = str_replace($delimiters, $delimiters[0], $quotedata);
@@ -245,7 +245,7 @@ function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines)
         echo "No of Vulnerable".$GLOBALS['sessionVulnVar'];
         if($GLOBALS['sessionVar']-1==$GLOBALS['sessionVulnVar']&&$GLOBALS['sessionVulnVar']!=0) //To say that if no variables are there then it is protected
         {
-            $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection";
+            $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection Risk Level is High";
               fwrite($GLOBALS['fh'],$vulninfofile);
               $GLOBALS['sqlVulnLines']++;
              echo $vulninfofile;
@@ -253,6 +253,13 @@ function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines)
         else if($GLOBALS['sessionVar']-1||$GLOBALS['sessionVulnVar']==0)
         {
             echo "<br>This Line is Protected";
+        }
+        else if($GLOBALS['sessionVar']-1>=$GLOBALS['sessionVulnVar'])
+        {
+            $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection .Risk Level is Less";
+              fwrite($GLOBALS['fh'],$vulninfofile);
+              $GLOBALS['sqlVulnLines']++;
+             echo $vulninfofile;
         }
         else
         {
