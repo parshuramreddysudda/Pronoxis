@@ -16,7 +16,7 @@ $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[19]);
+$typeChkLines = file($conFile[20]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -43,7 +43,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 
 function multiexplode($data)
 {
-    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
+    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot","&bsol;");
     $data=str_replace('"', ',', $data);
     $data=stripslashes($data);
     $quotedata=str_replace('"',"", $data);
@@ -58,7 +58,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
     
     include'warmHole.php';
     $varLenth=count($chkLine);
-    $listLen=count($HTTPWarmhole);
+    $listLen=count($CodeExecutionWarmhole);
     
     for($i=0;$i<$varLenth;$i++)
     {
@@ -67,7 +67,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
         {
             if(strlen($chkLine[$i])>1)
             {
-                if(strcmp($chkLine[$i],$HTTPWarmhole[$j])==0)
+                if(strcmp($chkLine[$i],$CodeExecutionWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks 
                  
@@ -75,11 +75,16 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
                   $GLOBALS['noLines']++; 
                 }
             }
-            
+             
         }
     }
     
 }
+
+
+
+
+
 
 //This function checks for sinks in the source lines
 function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
@@ -96,6 +101,8 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
     for($i=0;$i<$varNo;$i++)
     {
 //          print_r($sinkChkLine);
+        
+        
         for($j=0;$j<$listNo;$j++)
         {
            
@@ -163,7 +170,7 @@ function checkSecure($vulnChkLine)
     }
     if($vuln==0)
     {
-        echo "<br>This is Not secured with Input Values";
+        echo "<br>This is Not secured ";
         $GLOBALS['noVulLines']++;
     }
     

