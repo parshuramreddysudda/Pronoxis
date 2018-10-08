@@ -58,7 +58,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
     
     include'warmHole.php';
     $varLenth=count($chkLine);
-    $listLen=count($HTTPWarmhole);
+    $listLen=count($checkSessionFixation);
     
     for($i=0;$i<$varLenth;$i++)
     {
@@ -67,7 +67,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
         {
             if(strlen($chkLine[$i])>1)
             {
-                if(strcmp($chkLine[$i],$HTTPWarmhole[$j])==0)
+                if(strcmp($chkLine[$i],$checkSessionFixation[$j])==0)
                 {
 //                    This if conditions confirms for sinks 
                  
@@ -80,6 +80,11 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
     }
     
 }
+
+
+
+
+
 
 //This function checks for sinks in the source lines
 function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)

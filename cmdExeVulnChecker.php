@@ -55,6 +55,7 @@ function multiexplode($data)
 {
     $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
+    $data=stripslashes($data);
     $quotedata=str_replace('"',"", $data);
 	$MakeReady = str_replace($delimiters, $delimiters[0], $quotedata);
 	$Return    = explode($delimiters[0], $MakeReady);
