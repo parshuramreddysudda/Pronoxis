@@ -26,24 +26,27 @@ $cmdLineVar=0;       //To calcuate no of var in Vuln line
 $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare after testing it
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
-$typeChkLines = file($conFile[19]);
+$typeChkLines = file($conFile[25]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
 
 // Loop through our array, show HTML source as HTML source; and line numbers too.
+
+
+$cmdExe_array=array();
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines);
+        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine);
         
-    echo "<br>";
+//    echo "<br>";
     $GLOBALS['cmdTotalLines']++;
     
 
@@ -64,7 +67,7 @@ function multiexplode($data)
 
 
 
-function checkSources($chkLine,$chkLineNo,$typeChkLines)
+function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
 {
     include'warmHole.php';
     $varCount=count($chkLine);
@@ -76,27 +79,44 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
        {
           if(strcmp($chkLine[$i],$cmdWarmhole[$j])==0)
           {
+//              echo "Line No ".$chkLineNo." May vulnerable to cmdExecution";
+              $string= "Line No ".$chkLineNo." May vulnerable to cmdExecution";
+              
+                  push($string);
+              push($typeChkLine);
+               
               checkifVaribles($chkLine,$chkLineNo,$typeChkLines);
               CheckVarVuln($chkLine);
-              echo "<br>Variables are ".$GLOBALS['cmdLineVar'];
-              echo "<br>Vuln var are ". $GLOBALS['cmdVulnLineVar'];
+//              echo "<br>Variables are ".$GLOBALS['cmdLineVar'];
+              
+//              echo "<br>Vuln var are ". $GLOBALS['cmdVulnLineVar'];
              
               
               if($GLOBALS['cmdLineVar']>=$GLOBALS['cmdVulnLineVar'])
               {
-                  echo "Line Number ".$chkLineNo." is Vulnerable ";
+//                  echo "Line Number ".$chkLineNo." is Vulnerable ";
+                  
+                   
+                      $string= "Line Number ".$chkLineNo." is Vulnerable ";
+                       push($string);
                   
                   if(is_array ($GLOBALS['inputValues'])&&count($GLOBALS['inputValues'])>0)
                   {
                      $var=count($GLOBALS['inputValues']);
-                     echo "<br>User Input Values are found. <br> Values are ";
+//                     echo "<br>User Input Values are found. <br> Values are ";
                     
+                      $string= "User Input Values are found. <br> Values are ";
+                       push($string);
                   
-                       print_r(array_reduce($GLOBALS['inputValues'],"myfunction"));
-                      
+                       array_reduce($GLOBALS['inputValues'],"myfunction");
+                         
                        if(!checkSecure($chkLine))
                         {
-                           echo "<br>Needed Input Sanitization"; 
+//                           echo "<br>Needed Input Sanitization"; 
+                           
+                           
+                          $string= "Needed Input Sanitization";
+                          push($string);
                         } 
                       
                        unset($GLOBALS['inputValues']);
@@ -106,17 +126,30 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
               }
               else
               {
-                  echo "Line Number ".$chkLineNo." is Protected";
+//                  echo "Line Number ".$chkLineNo." is Protected";
+                  
+                   $string= "Line Number ".$chkLineNo." is Protected";
+                          push($string);
+                  
                     if(is_array ($GLOBALS['inputValues'])&&count($GLOBALS['inputValues'])>0)
                   {
                      $var=count($GLOBALS['inputValues']);
-                     echo "<br>User Input Values are found. <br> Values are ";
-                    
+//                     echo "<br>User Input Values are found. <br> Values are ";
+                        
+                      $string=  "User Input Values are found. <br> Values are ";
+                      push($string);
                    
-                       print_r(array_reduce($GLOBALS['inputValues'],"myfunction"));
+                       array_reduce($GLOBALS['inputValues'],"myfunction");
+                        
                         if(!checkSecure($chkLine))
                         {
-                            echo "<br>Needed Input Sanitization"; 
+//                            echo "<br>Needed Input Sanitization"; 
+
+                                
+                      $string=  "Needed Input Sanitization"; 
+                      push($string);
+                            
+                            
                         }
                        
                        unset($GLOBALS['inputValues']);
@@ -129,6 +162,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
     }
     $GLOBALS['cmdLineVar']=0; 
     $GLOBALS['cmdVulnLineVar']=0;
+    push('new');
 } 
 
 
@@ -215,8 +249,9 @@ function printDeclaration($prtDecVar,$prtDecLine_num,$prtDecLines)   //Dec==Decl
             }
             else
             {
-                 echo $chkprtDecLine;
+//                 echo $chkprtDecLine;
 //                print_r($prtDecLine_num);
+                push($chkprtDecLine);
                  CheckVarVuln($trimmed_DecprtSendline); 
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
@@ -251,7 +286,8 @@ function  CheckVarVuln($chkvulnLine)
             {
                 
                 $tempVulnChk=0;
-                echo $chkvulnLine[$i];
+//                echo $chkvulnLine[$i];
+                push($chkvulnLine[$i]);
                 break;
             }
             else
@@ -337,11 +373,58 @@ function checkSecure($vulnChkLine)
 
   function myfunction($v1,$v2)
                      {
+                           push($v1);
+      push($v2);
                         return $v1 . "<br>" . $v2;
                      }
                       
 
 
+
+function push($string)
+{
+         array_push($GLOBALS['cmdExe_array'],htmlspecialchars($string));
+}
+
+
+//echo "<br>".$xPath_array[0];
+$length=count($cmdExe_array);
+
+
+
+//for($i=1;$i<$length-1;$i++)
+//{
+//    
+//    
+//    echo "<br>".htmlspecialchars($xPath_array[$i])." ".htmlspecialchars($xPath_array[++$i]);
+//    if($length==$i)
+//    {
+//        break;
+//    }
+//   $i=$i++;
+//    
+//    if(strcmp($xPath_array[$i],'new')==0)
+//    {
+//        echo "<br>Line is <br>".htmlspecialchars($xPath_array[$i]);
+//        $i=$i++;
+//    
+//    }
+//}
+//
+//
+//
+
+for($i=0;$i<$length;$i++)
+{
+    if($cmdExe_array[$i]=='new')
+    {
+//        echo "<br>occured";
+    }
+    else
+    {
+        echo "<br>".$cmdExe_array[$i];
+    }
+}
 
 
 

@@ -17,7 +17,11 @@ $TotalLines=0;
 $countTemp=0;  ///For Calculating Recurssion
 $TotalVulnlines=0;
 $TotalVarInPage=0; 
-$typeChkLines = file($conFile[19]);
+$typeChkLines = file($conFile[2]);
+
+
+
+$xssArray=array();
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -32,7 +36,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        Sources($trimmed_Sendline,$typeChkLines);
+        Sources($trimmed_Sendline,$typeChkLines,$typeChkLine,$typeChkLine_num);
         
     echo "<br>";
     $GLOBALS['TotalLines']++;
@@ -53,7 +57,7 @@ function multiexplode($data)
 }
 
 //This functiond print echo and other sources
-function Sources($chkLineSource,$typeChkLines)
+function Sources($chkLineSource,$typeChkLines,$typeChkLine,$typeChkLine_num)
 {
     include'warmHole.php';
     
@@ -68,12 +72,27 @@ function Sources($chkLineSource,$typeChkLines)
         {
             if($chkLineSource[$i]==$XSSWarmhole[$j])
             {
+                 $string="Line Number ".$typeChkLine_num."May be Vulnerable to XSS Attack";
+                
+                 xssPush($string);
+                 $length=count($GLOBALS['xssArray']);
+             
+                 getPhpVar($chkLineSource,$typeChkLines,$typeChkLine);
+                 $length2=count($GLOBALS['xssArray']);
+                
                
-                 getPhpVar($chkLineSource,$typeChkLines);
+                if($length==$length2)
+                 {
+                     xssPush($typeChkLine);
+                    xssPush(" ");
+                 }
+                  xssPush('Apple');
+               
             }
             else
             {
                 //To do write functions for var =var declarations lines
+                break;
             }
         }
    }
@@ -81,7 +100,7 @@ function Sources($chkLineSource,$typeChkLines)
 }
 
 //To print the lines having insecure XSS strings like Echo and etc
-function getPhpVar($chkVulnLineSource,$typeChkLines)
+function getPhpVar($chkVulnLineSource,$typeChkLines,$typeChkLine)
 {
     include'checkWordlists.php';
     global $vulnVar;
@@ -120,11 +139,27 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
 //                       echo "Sinks are ".$preVar;
                          if(checkSecure($chkVulnLineSource)==true) //To check source line with sinks are secure
                            {
+                            
+                           
+                             xssPush($typeChkLine);
+                             
                               echo "<br>Echo Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
+                             $string="This Line is with sinks, sources and is Secure ";
+                             
+                             xssPush($string);
+                             
                             }
                        else
                             {
+                             xssPush($typeChkLine);
+                           
                               echo "<br>Echo Line is Not secure Due to Sink ".$preVar." Doesnot have any Secure Functions";//InSecure function after checking for sources and sinks and not having secure functions
+                           
+                           $string="This Line is Not secure Due to Sink  Doesnot have any Secure Functions";
+                           
+                             xssPush($string);
+                           
+                           
                             $GLOBALS['TotalVulnlines']++;
                             }
                          
@@ -137,14 +172,20 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
                         
                         if(checkSecure($chkVulnLineSource)==true) //To check source line with are secure
                            {
+                             xssPush($typeChkLine);
+                            
                               echo "<br>Echo Line with sources is  Secure";  //Secure function after checking for sources and sinks and having secure functions
+                            $string="This  Line with sources and is  Secure";
+                              xssPush($string);
                             }
                        else
                             {
                            
 //                             echo "vuln var are ".$chkVulnLineSource[$i];
-                               checkVarLineVuln($chkVulnLineSource[$i],$typeChkLines);  //Check this varbile declaration line for Vuln . this prints the insecure XSS lines
-                           
+                                
+                           xssPush($typeChkLine);
+                          checkVarLineVuln($chkVulnLineSource[$i],$typeChkLines);  //Check this varbile declaration line for Vuln . this prints the insecure XSS lines
+                           break;
                             }
                         
 //                     echo "<br>Variables are ".$chkVulnLineSource[$i];
@@ -200,10 +241,19 @@ function checkVarLineVuln($vulnVar,$allLines)
                      if(checkSecure($trimmed_DecprtSendline)==true) //To check secure
                      {
                          echo "<br>Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
+                         
+                         
+                         $string="This Line with sinks and sources is Secure "; 
+                         xssPush($string);
                      }
                       else
                       {
-                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
+                          echo "<br>Line no  is Not secure since Line <b></b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
+                          
+                          
+                          $string="This Line is Not secure since it   does not have any securing functions and has Sinks";
+                          
+                          xssPush($string);
                            $GLOBALS['TotalVulnlines']++;
                       }
                   }
@@ -212,11 +262,20 @@ function checkVarLineVuln($vulnVar,$allLines)
 //                     These Lines dont have sinks like GET or POST so line is sent for securing strings 
                          if(checkSecure($trimmed_DecprtSendline)==true) //to check secure
                      {
+                             
                          echo "<br>Line with sources is Secure";  //Secure function after checking for sources and having secure functions
+                             
+                            $string= "This Line with sources is Secure";
+                       xssPush($string);
+                             
                      }
                       else
                       {
                           echo "<br>Line is Not secure Since it has sources and not have secure functions";//InSecure function after checking for sources and not having secure functions
+                          
+                           $string= "This Line is Not secure Since it has sources and not have secure functions";
+                       xssPush($string);
+                          
                            $GLOBALS['TotalVulnlines']++;
                       }
                   }
@@ -357,8 +416,47 @@ function checkSecure($vulnChkLine)
 //}
 
 
+print_r($xssArray);
 
-echo "Total Number of Vulnerable lines are " .$TotalVulnlines;
+
+
+function xssPush($string)
+{
+         array_push($GLOBALS['xssArray'],  htmlspecialchars($string));
+}
+
+
+echo "<br>".$xssArray[0];
+$length=count($xssArray);
+
+$xssTemp=array();
+for($i=1;$i<$length-1;$i++)
+{
+    
+    if(strcmp($xssArray[$i],'Apple')==0)
+    {
+    $i=++$i;
+    echo "<br> ".htmlspecialchars($xssArray[$i]);
+  
+
+    }
+    else
+    {
+        
+        
+    echo "<br> ".htmlspecialchars($xssArray[$i])." ".htmlspecialchars($xssArray[++$i]);
+        
+      
+    }
+    
+echo "<br>";
+}
+
+
+
+
+
+echo "<br>Total Number of Vulnerable lines are " .$TotalVulnlines;
 echo "<br>Total Number of Lines are " .$TotalLines;
 
 
