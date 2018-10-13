@@ -1,17 +1,8 @@
 <?php
 
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-$workDir=getcwd();
-$conFile = scandir($workDir);
-print_r($conFile);
-echo "<br>";
-
+function sessionFixation($typeChkLines)
+{
 $session_array=array();
 
 
@@ -84,7 +75,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
                     
                      push($string);
                     
-                   echo "<br>Line is ".$typeChkLine;
+//                   echo "<br>Line is ".$typeChkLine;
                  $string="Line is ".$typeChkLine."";
                    push($string);
                   checkforSinks($chkLine,$typeChkLines,$chkLineNo);
@@ -315,7 +306,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
         { 
            
  
-            echo "<br>";
+//            echo "<br>";
             
 //            echo $prtDecVar;
 //            echo $trimmed_DecprtSendline[0];
@@ -330,7 +321,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
             }
             else
             {
-                 echo $chkprtDecLine;
+//                 echo $chkprtDecLine;
                 
                 
                 
@@ -351,7 +342,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
             { 
 //                echo "<br>Lines  Compared ".$prtDecVar." are ".$trimmed_DecprtSendline[0];
 //                echo " <br>Same Declared Element Called ".$prtDecVar;
-                  echo "<br>";
+//                  echo "<br>";
 //                echo $prtDecVar;
 //                echo $chkprtDecLine_num.", ";
 //                echo $prtDecLine_num;
@@ -364,7 +355,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
                 }
                 else
                 {
-                    echo $chkprtDecLine;
+//                    echo $chkprtDecLine;
                     
                     push($chkprtDecLine);
                     
@@ -442,7 +433,7 @@ for($i=0;$i<$length;$i++)
 
 
 
-
+}
 
 
 

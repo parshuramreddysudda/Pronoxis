@@ -1,17 +1,11 @@
 <?php
 
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-$workDir=getcwd();
-$conFile = scandir($workDir);
-print_r($conFile);
-echo "<br>";
 
+function fileDisclosure($typeChkLines)
+{
+    
+    
 $fileDisclosure_array=array();
 
 
@@ -444,7 +438,7 @@ for($i=0;$i<$length;$i++)
 
 
 
-
+}
 
 
 

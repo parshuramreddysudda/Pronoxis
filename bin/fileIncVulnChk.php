@@ -1,16 +1,8 @@
 <?php
 
-
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-$workDir=getcwd();
-$conFile = scandir($workDir);
-print_r($conFile);
-echo "<br>";
+function fileInclusion($typeChkLines)
+    
+{
 
 $fileInclusion_array=array();
 
@@ -88,7 +80,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
                     
                      push($string);
                     
-                   echo "<br>Line is ".$typeChkLine;
+//                   echo "<br>Line is ".$typeChkLine;
                  $string="Line is ".$typeChkLine."";
                    push($string);
                   checkforSinks($chkLine,$typeChkLines,$chkLineNo);
@@ -334,7 +326,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
             }
             else
             {
-                 echo $chkprtDecLine;
+//                 echo $chkprtDecLine;
                 
                 
                 
@@ -368,7 +360,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
                 }
                 else
                 {
-                    echo $chkprtDecLine;
+//                    echo $chkprtDecLine;
                     
                     push($chkprtDecLine);
                     
@@ -407,7 +399,6 @@ function push($string)
 
 //echo "<br>".$fileInclusion_array[0];
 $length=count($fileInclusion_array);
-echo $length;
 
 
 
@@ -448,7 +439,7 @@ for($i=0;$i<$length;$i++)
 
 
 
-
+}
 
 
 ?>

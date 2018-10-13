@@ -84,7 +84,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
                     
                      push($string);
                     
-                   echo "<br>Line is ".$typeChkLine;
+//                   echo "<br>Line is ".$typeChkLine;
                  $string="Line is ".$typeChkLine."";
                    push($string);
                   checkforSinks($chkLine,$typeChkLines,$chkLineNo);
@@ -315,7 +315,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
         { 
            
  
-            echo "<br>";
+            
             
 //            echo $prtDecVar;
 //            echo $trimmed_DecprtSendline[0];
@@ -330,7 +330,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
             }
             else
             {
-                 echo $chkprtDecLine;
+//                 echo $chkprtDecLine;
                 
                 
                 
@@ -364,7 +364,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
                 }
                 else
                 {
-                    echo $chkprtDecLine;
+//                    echo $chkprtDecLine;
                     
                     push($chkprtDecLine);
                     

@@ -22,18 +22,20 @@ echo "<br>";
 $sqlLines=0; //For Storing no of Sql lines
 $sqlVulnLines=0; //For Storing no of Sql lines
 
-$typeChkLines = file($conFile[22]);
+$typeChkLines = file($conFile[2]);
 
+$sql_array=array();
+$sqlrepeat=array();
 // Loop through our array, show HTML source as HTML source; and line numbers too.
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 {
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        checkline($trimmed_Sendline,$typeChkLine_num,$typeChkLines); //Send This line detect which type of line is this
+        checkline($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine); //Send This line detect which type of line is this
 //      echo htmlspecialchars($typeChkLine)
 
 
@@ -53,7 +55,7 @@ function multiexplode($data)
 	return  $Return;
 }
 
-function checkline($sendLine,$lineno,$typeChkLines)
+function checkline($sendLine,$lineno,$typeChkLines,$typeChkLine)
 {
 
     include'checkWordlists.php';
@@ -76,11 +78,17 @@ function checkline($sendLine,$lineno,$typeChkLines)
 
         if(strcmp($sendLine[$i],$sqlDatabaseInput[$j])==0) //Compare line array with Input sql array list
           {
-             echo "Sql Lines are <b> ".$sendLine[$i]." ";
+//             echo "Sql Lines are <b> ".$sendLine[$i]." ";
+            
+          
+            
+            
+            
+            
              echo $sqlDatabaseInput[$j];
-             echo " <br>  </b><br>";
+//             echo " <br>  </b><br>";
             $GLOBALS['sqlLines']++;
-            checkSqlForVuln($sendLine,$lineno,$typeChkLines);// Send the Sql line for Testing 
+            checkSqlForVuln($sendLine,$lineno,$typeChkLines,$typeChkLine);// Send the Sql line for Testing 
             $foundSqlVuln=1;
             break;
           }
@@ -95,11 +103,11 @@ function checkline($sendLine,$lineno,$typeChkLines)
                
              if(strcmp($temptrim,$sqlDatabaseInput[$j])==0||strcmp($temptrim2,$sqlDatabaseInput[$j])==0)
                {
-               echo "Sql Lines are <b> ".$sendLine[$i]." ";
-               echo $sqlDatabaseInput[$j];
-               echo " <br> " .$lineno." </b><br>";
+//               echo "Sql Lines are <b> ".$sendLine[$i]." ";
+//               echo $sqlDatabaseInput[$j];
+//               echo " <br> " .$lineno." </b><br>";
                $GLOBALS['sqlLines']++; 
-               checkSqlForVuln($sendLine,$lineno,$typeChkLines); // Send the Sql line for Testing 
+               checkSqlForVuln($sendLine,$lineno,$typeChkLines,$typeChkLine); // Send the Sql line for Testing 
                $foundSqlVuln=1;
                break;
                 }
@@ -131,11 +139,11 @@ function checkline($sendLine,$lineno,$typeChkLines)
 
          if(strcmp($sendLine[$i],$sqlWarmhole[$j])==0) //Compare line array with possible  sqlInjection array list
            {
-              echo "Sql Lines are <b> ".$sendLine[$i]." ";
-              echo $sqlWarmhole[$j];
-              echo " <br> " .$lineno." </b><br>";
+//              echo "Sql Lines are <b> ".$sendLine[$i]." ";
+//              echo $sqlWarmhole[$j];
+//              echo " <br> " .$lineno." </b><br>";
              $GLOBALS['sqlLines']++;
-             checkSqlForVuln($sendLine,$lineno,$typeChkLines);     // Send the Sql line for Testing  
+             checkSqlForVuln($sendLine,$lineno,$typeChkLines,$typeChkLine);     // Send the Sql line for Testing  
                $foundSqlVuln=1;
                break;
            }
@@ -148,11 +156,11 @@ function checkline($sendLine,$lineno,$typeChkLines)
                 $temptrim2 = substr("$sendLine[$i]", 6, $tempLen);//To Separate " mark from sql string. I got this at "sql_fetch_array :P
                if(strcmp($temptrim,$sqlWarmhole[$j])==0)
                 {
-                echo "Sql Lines are <b> ".$sendLine[$i]." ";
-                echo $sqlWarmhole[$j];
-                echo " <br> HEller " .$lineno." </b><br>";
+//                echo "Sql Lines are <b> ".$sendLine[$i]." ";
+//                echo $sqlWarmhole[$j];
+//                echo " <br> HEller " .$lineno." </b><br>";
                 $GLOBALS['sqlLines']++;
-                checkSqlForVuln($sendLine,$lineno,$typeChkLines);   // Send the Sql line for Testing 
+                checkSqlForVuln($sendLine,$lineno,$typeChkLines,$typeChkLine);   // Send the Sql line for Testing 
                 $foundSqlVuln=1;
                 break;
 
@@ -173,11 +181,12 @@ function checkline($sendLine,$lineno,$typeChkLines)
     }
 
     }
+    push('new');
 
     echo "<br>";
 }
 
-function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines)
+function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines,$typeChkLine)
 {
     include'vulnWordlist.php';
     
@@ -204,7 +213,7 @@ function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines)
 
                 
                 $tempLen=strlen($sqlVulnLine[$i]);
-                $temptrim = substr("$sqlVulnLine[$i]", 4, $tempLen);   //To Separate > mark from sql string. I got this at >sql_fetch_array :P
+                $temptrim = substr($sqlVulnLine[$i], 4, $tempLen);   //To Separate > mark from sql string. I got this at >sql_fetch_array :P
                 if(strcmp($temptrim,$sqlDatabaseSecureVuln[$j])==0)
                 {
                 $tempcheckSqlForVuln=0;
@@ -234,44 +243,63 @@ function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines)
 //    echo $noofsqlVulnLine;
     if($tempVulnCkh==$noofsqlVulnLine) 
     {
-        echo "Line Number ".$sqlVulnLineNo."May be Vulnerable to SQL Injection";
+//        echo "Line Number ".$sqlVulnLineNo."May be Vulnerable to SQL Injection";
+        
+        
+        $string="Line Number ".$sqlVulnLineNo."May be Vulnerable to SQL Injection";
+        push($string);
+        
+        push($typeChkLine);
+        
 //        include'Tokenizer.php';
 //Used to print the php varibales Declaration in the injection line
         $GLOBALS['sessionLineNo']=$noofsqlVulnLine;
         $sessionLineNo=$sqlVulnLineNo;
         checkifVaribles($sqlVulnLine,$typeChkLines,$sqlVulnLineNo,$sessionLineNo);
         
-        echo "No of Variables are "; 
-        echo $GLOBALS['sessionVar']-1;
-        echo "No of Vulnerable".$GLOBALS['sessionVulnVar'];
+//        echo "No of Variables are "; 
+//        echo $GLOBALS['sessionVar']-1;
+//        echo "No of Vulnerable".$GLOBALS['sessionVulnVar'];
         if($GLOBALS['sessionVar']-1==$GLOBALS['sessionVulnVar']&&$GLOBALS['sessionVulnVar']!=0) //To say that if no variables are there then it is protected
         {
             $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection Risk Level is High";
+            
+            $string="This Line is Vulnerable to SQL Injection Risk Level is High";
+            push($string);
+            
               fwrite($GLOBALS['fh'],$vulninfofile);
               $GLOBALS['sqlVulnLines']++;
-             echo $vulninfofile;
+//             echo $vulninfofile;
         }
         else if($GLOBALS['sessionVar']-1||$GLOBALS['sessionVulnVar']==0)
         {
-            echo "<br>This Line is Protected";
+//            echo "<br>This Line is Protected";
+            
+            $string= "<br>This Line is Protected";
+            push($string);
         }
         else if($GLOBALS['sessionVar']-1>=$GLOBALS['sessionVulnVar'])
         {
             $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection .Risk Level is Less";
-              fwrite($GLOBALS['fh'],$vulninfofile);
-              $GLOBALS['sqlVulnLines']++;
-             echo $vulninfofile;
+            $string="Line Number is Vulnerable to SQL Injection .Risk Level is Less";;
+            
+            
+            fwrite($GLOBALS['fh'],$vulninfofile);
+            $GLOBALS['sqlVulnLines']++;
+//             echo $vulninfofile;
         }
         else
         {
-            echo "This Var is Protected";
+//            echo "This Var is Protected";
+            $string="This line Variables are protected";
+            push($string);
         }
       $GLOBALS['sessionVulnVar']=0;
       $GLOBALS['sessionVar']=0;
     }
     else
     {
-        echo "This SQl string is Protected";
+//        echo "This SQl string is Protected";
     }
 }
 function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sessionLineNo)
@@ -335,6 +363,11 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$sessionLineNo
         
         $filteredArray=array_filter($trimmed_DecprtSendline);
         $firstEle=array_shift($filteredArray);
+        
+        if(in_array($chkprtDecLine,$GLOBALS['sqlrepeat']))
+        {
+            continue;
+        }
         if(strcmp($prtDecVar,$firstEle)==0)
         { 
            
@@ -354,7 +387,9 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$sessionLineNo
             }
             else
             {
-                 echo $chkprtDecLine;
+//                 echo $chkprtDecLine;
+                array_push($GLOBALS['sqlrepeat'],$chkprtDecLine);
+                 push($chkprtDecLine);
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
@@ -371,7 +406,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$sessionLineNo
             { 
 //                echo "<br>Lines  Compared ".$prtDecVar." are ".$trimmed_DecprtSendline[0];
 //                echo " <br>Same Declared Element Called ".$prtDecVar;
-                  echo "<br>";
+//                  echo "<br>";
 //                echo $prtDecVar;
 //                echo $chkprtDecLine_num.", ";
 //                echo $prtDecLine_num;
@@ -384,7 +419,9 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$sessionLineNo
                 }
                 else
                 {
-                    echo $chkprtDecLine;
+//                    echo $chkprtDecLine;
+                    array_push($GLOBALS['sqlrepeat'],$chkprtDecLine);
+                    push($chkprtDecLine);
                     $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                     $chkprtDecLine = multiexplode($chkprtDecLine);
                     $chkprtDecLine=array_map('trim',$chkprtDecLine);
@@ -421,7 +458,8 @@ function checkVarVuln($varVulnLine)
            if(strcmp($varVulnLine[$i],$sqlDatabaseSecureVuln[$j])==0) //Compare line array with protected var array list
            {
               $tempcheckvarForVuln=0;
-              echo "Protected";
+//              echo "Protected";
+               push('Protected');
               break;
 
            }
@@ -434,7 +472,8 @@ function checkVarVuln($varVulnLine)
                 if(strcmp($temptrim,$sqlDatabaseSecureVuln[$j])==0)
                 {
                 $tempcheckvarForVuln=0;
-                echo "Protected";
+//                echo "Protected";
+                    push('Protected');
                 break;
                 }
                 else
@@ -486,14 +525,70 @@ echo 'Execution time : '.$time.' seconds';
 
 
 // Change directory
-chdir('G:\xammp\htdocs\test');
+//chdir('G:\xammp\htdocs\test');
 // Get current directory
 echo getcwd();
 
 
 // Get array of all source files
-$files = scandir('G:\xammp\htdocs\test');
+//$files = scandir('G:\xammp\htdocs\test');
 // Identify directories
 echo $countTemp;
+
+
+
+
+
+
+function push($string)
+{
+         array_push($GLOBALS['sql_array'],htmlspecialchars($string));
+}
+
+
+//echo "<br>".$xPath_array[0];
+$length=count($sql_array);
+
+
+
+//for($i=1;$i<$length-1;$i++)
+//{
+//    
+//    
+//    echo "<br>".htmlspecialchars($xPath_array[$i])." ".htmlspecialchars($xPath_array[++$i]);
+//    if($length==$i)
+//    {
+//        break;
+//    }
+//   $i=$i++;
+//    
+//    if(strcmp($xPath_array[$i],'new')==0)
+//    {
+//        echo "<br>Line is <br>".htmlspecialchars($xPath_array[$i]);
+//        $i=$i++;
+//    
+//    }
+//}
+//
+//
+//
+
+for($i=0;$i<$length;$i++)
+{
+    if($sql_array[$i]=='new')
+    {
+//        echo "<br>occured";
+    }
+    else
+    {
+        echo "<br>".$sql_array[$i];
+    }
+}
+
+
+
+
+
+
 
 ?>

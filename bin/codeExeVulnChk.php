@@ -1,22 +1,22 @@
 <?php
 
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-$workDir=getcwd();
-$conFile = scandir($workDir);
-print_r($conFile);
-echo "<br>";
+function codeExecution($typeChkLines)
+    
+{
+    
+$codeExe_array=array();
+
+
+//print_r($codeExe_array);
+
+
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[20]);
+$typeChkLines = file($conFile[25]); 
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -25,15 +25,15 @@ $superArray=array(); //For Storing all lines
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
-
+        
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines);
-        
-    echo "<br>";
+    checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine);
+
+    
     $GLOBALS['httpTotalLines']++;
     
 
@@ -43,7 +43,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 
 function multiexplode($data)
 {
-    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot","&bsol;");
+    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
     $data=stripslashes($data);
     $quotedata=str_replace('"',"", $data);
@@ -53,12 +53,12 @@ function multiexplode($data)
 }
 
 
-function checkSources($chkLine,$chkLineNo,$typeChkLines)
+function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
 {
     
-    include'warmHole.php';
+    include'warmHole.php'; 
     $varLenth=count($chkLine);
-    $listLen=count($CodeExecutionWarmhole);
+    $listLen=count($CodeExecutionWarmhole); 
     
     for($i=0;$i<$varLenth;$i++)
     {
@@ -70,14 +70,25 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
                 if(strcmp($chkLine[$i],$CodeExecutionWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks 
-                 
+//                 echo "<br>This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
+                    
+                    
+                $string="This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
+                    
+                     push($string);
+                    
+//                   echo "<br>Line is ".$typeChkLine;
+                 $string="Line is ".$typeChkLine."";
+                   push($string);
                   checkforSinks($chkLine,$typeChkLines,$chkLineNo);
                   $GLOBALS['noLines']++; 
+                    push('new');
+                    break;
                 }
             }
-             
+            
         }
-    }
+    }  
     
 }
 
@@ -101,8 +112,6 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
     for($i=0;$i<$varNo;$i++)
     {
 //          print_r($sinkChkLine);
-        
-        
         for($j=0;$j<$listNo;$j++)
         {
            
@@ -117,7 +126,11 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
               {
                  
                   $vuln=1;                 //Too count 
-                  echo "<br>Input Values found Checking for its Secure<br>";
+//                  echo "<br>Input Values found Checking for its Secure<br>";
+                    
+                    $string="Input Values found Checking for its Secure";
+                    
+                 push($string);
                   checkSecure($sinkChkLine);
                   break;
               }
@@ -134,7 +147,12 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
     }
     if($vuln==0)
     {
-        echo "<br>Input Values not found Seraching Variables  ";
+//        echo "<br>Input Values not found This may be Secure Search Vars  ";
+           
+       $string="<br>Input Values not found This may be Secure Search Vars ";
+        
+      push($string);
+        
         checkifVaribles($sinkChkLine,$typeChkLines,$chkLineNo);
     }
     
@@ -145,9 +163,12 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
 function checkSecure($vulnChkLine)
 {
     $vuln=0;
+    $vuln1=0;
     include'vulnWordlist.php';
+    include 'checkWordlists.php';
         $listCount=count($xssSecureVuln);
         $varCount=count($vulnChkLine);
+        $fileList=count($fileInputValues);
     
     for($i=0;$i<$varCount;$i++)
     {
@@ -160,7 +181,13 @@ function checkSecure($vulnChkLine)
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
                
-                 echo "<br>This Line is Secure with  ".$vulnChkLine[$i];
+//                 echo "<br>This Line is Secure with  ".$vulnChkLine[$i];
+                
+                $string=" This Line is Secure with  ".$vulnChkLine[$i];
+                
+        
+                push($string);
+                
                  $vuln=1;
                   break;
                }
@@ -170,9 +197,43 @@ function checkSecure($vulnChkLine)
     }
     if($vuln==0)
     {
-        echo "<br>This is Not secured ";
+//        echo "<br>This is Not secured with Input Values";
+        
+         $string=" This is Not secured with Input Values";
+         push($string);
+        
         $GLOBALS['noVulLines']++;
     }
+    
+    //Checking the File input Strings  (sinks)
+    
+
+//     
+//    for($i=0;$i<$varCount;$i++)
+//    {
+//        for($j=0;$j<$fileList;$j++)
+//        {
+//            
+//            if(strlen($vulnChkLine[$i])>1)
+//            {
+//                
+//            if(strcmp($vulnChkLine[$i],$fileInputValues[$j])==0)
+//               {
+//               
+//                 echo "<br>Sinks found  ".$vulnChkLine[$i];
+//                 $vuln1=1; 
+//                  break;
+//               }
+//            }
+//               
+//        }
+//    }
+//    if($vuln1==0)
+//    {
+//        echo "<br>No Sinks Found";
+//        $GLOBALS['noVulLines']++;
+//    }
+//    
     
 }
 
@@ -222,7 +283,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
     
 //     $GLOBALS['sessionVar']++;
       
-    echo "<br>";   
+//    echo "<br>";   
 }
 
 
@@ -262,7 +323,11 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
             }
             else
             {
-                 echo $chkprtDecLine;
+//                 echo $chkprtDecLine;
+                
+                
+                
+                  push($chkprtDecLine);
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
@@ -293,6 +358,9 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
                 else
                 {
                     echo $chkprtDecLine;
+                    
+                    push($chkprtDecLine);
+                    
                     $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                     $chkprtDecLine = multiexplode($chkprtDecLine);
                     $chkprtDecLine=array_map('trim',$chkprtDecLine);
@@ -313,7 +381,6 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
 }
 
 
-
 echo "<br>No fo Lines are ".$GLOBALS['noLines'];
 
 echo "<br>No of Vulnerable Lines are ".$GLOBALS['noVulLines'];
@@ -321,17 +388,55 @@ echo "<br>No of Vulnerable Lines are ".$GLOBALS['noVulLines'];
 
 
 
+function push($string)
+{
+         array_push($GLOBALS['codeExe_array'],htmlspecialchars($string));
+}
+
+
+//echo "<br>".$codeExe_array[0];
+$length=count($codeExe_array);
+
+
+
+//for($i=1;$i<$length-1;$i++)
+//{
+//    
+//    
+//    echo "<br>".htmlspecialchars($codeExe_array[$i])." ".htmlspecialchars($codeExe_array[++$i]);
+//    if($length==$i)
+//    {
+//        break;
+//    }
+//   $i=$i++;
+//    
+//    if(strcmp($codeExe_array[$i],'new')==0)
+//    {
+//        echo "<br>Line is <br>".htmlspecialchars($codeExe_array[$i]);
+//        $i=$i++;
+//    
+//    }
+//}
+//
+//
+//
+
+for($i=0;$i<$length;$i++)
+{
+    if($codeExe_array[$i]=='new')
+    {
+//        echo "<br>occured";
+    }
+    else
+    {
+        echo "<br>".$codeExe_array[$i];
+    }
+}
 
 
 
 
-
-
-
-
-
-
-
+}
 
 
 ?>

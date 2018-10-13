@@ -6,17 +6,9 @@ Input values checker
 
 
  */
+function cmdExecution($typeChkLines)
+{
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-$workDir=getcwd();
-$conFile = scandir($workDir);
-print_r($conFile);
-echo "<br>";
 $cmdTotalLines=0;
 $countTemp=0;       //For Calculating Recurssion
 $sessionVar=0;      //To calculate no of var  
@@ -26,7 +18,7 @@ $cmdLineVar=0;       //To calcuate no of var in Vuln line
 $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare after testing it
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
-$typeChkLines = file($conFile[25]);
+
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -287,7 +279,7 @@ function  CheckVarVuln($chkvulnLine)
                 
                 $tempVulnChk=0;
 //                echo $chkvulnLine[$i];
-                push($chkvulnLine[$i]);
+//                push($chkvulnLine[$i]);
                 break;
             }
             else
@@ -430,7 +422,7 @@ for($i=0;$i<$length;$i++)
 
 
 
-
+}
 
 
 
