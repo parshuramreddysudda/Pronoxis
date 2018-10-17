@@ -1,7 +1,7 @@
 <?php
 
 session_start();
- $_SESSION['$php'] = 0;
+$_SESSION['$php'] = 0;
 $php   =0;
 $html  =0;
 $images=0;
@@ -9,6 +9,22 @@ $css   =0;
 $js    =0;
 $font  =0;
 $totalNoFiles=0;
+
+if(isset($_POST['search']))
+{
+    
+    
+$search=$_POST['search'];
+$i=0;
+if($i==0)
+{
+    
+$_SESSION['search']=$search;
+$i++;
+    
+}
+
+
 function FileExtensionlist($dir)
 {
     $ffs = scandir($dir);
@@ -89,13 +105,12 @@ function getFileExtension($fileEx)
          $GLOBALS['html']++;
     }
 }
-FileExtensionlist('G:\xammp\htdocs\dept');
+FileExtensionlist($_SESSION['search']);
 
-function noofFile($php,$html,$images,$css,$js,$font)
-{
+
+    
     
 }
-
 
 ?>
 

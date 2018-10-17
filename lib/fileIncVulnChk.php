@@ -16,7 +16,7 @@ $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[21]); 
+$typeChkLines = file($conFile[22]); 
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -181,7 +181,7 @@ function checkSecure($vulnChkLine)
 
 function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
 {
-   
+   $temp=0;
 //    print_r($chkVarSendline);
    
     $noofelelments=count($chkVarSendline);
@@ -197,6 +197,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
 //            $Token = new Tokenizer();
 //            $Token->
                 printDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num);
+                $temp=1;
         }
         
          else
@@ -209,6 +210,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
 //                 echo $tempCutQuot1;
                
             printDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
+           $temp1=1;
              }
              
             
@@ -217,6 +219,13 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
         
 //        $GLOBALS['countTemp']++;
     }
+    
+    
+    if(vuln==0)
+    {
+        echo "No Variables";
+    }
+    
     
 //     $GLOBALS['sessionVar']++;
       

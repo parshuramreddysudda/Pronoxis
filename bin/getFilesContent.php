@@ -1,14 +1,17 @@
 <?php
 
-$workDir=getcwd();
-echo "<h5>Printing &quot".$workDir." &quot Files </h5><br>";
+$workDir='/Applications/MAMP/htdocs/dept';
+
+
+fopen()
+//echo "<h5>Printing &quot".$workDir." &quot Files </h5><br>";
 
 //Arranging Directory Structure in ordered way 
 
 $currentDirFiles = scandir($workDir);
 
 $nofLines=count($currentDirFiles);
-echo "<h5>Number of Files and Folders are  &quot".$nofLines." &quot  </h5><br>";
+//echo "<h5>Number of Files and Folders are  &quot".$nofLines." &quot  </h5><br>";
 
 function FileContentslist($dir)
 {
@@ -22,27 +25,27 @@ function FileContentslist($dir)
     if (count($Present) < 1)
         return;
 
-    echo '<ol>';
+//    echo '<ol>';
 
     foreach($Present as $Sub)
     {
-        echo '<li>'.$Sub;
+//        echo '<li>'.$Sub;
         getFileContents($Sub);
         
         if(is_dir($dir.'/'.$Sub)) 
         {
             FileContentslist($dir.'/'.$Sub);
         }
-        echo '</li>';
+//        echo '</li>';
     }
-    echo '</ol>';
+//    echo '</ol>';
 }
 
-echo "<br>";
-echo "<h1>Printing  Files </h1><br>";
-print_r($currentDirFiles);
+//echo "<br>";
+//echo "<h1>Printing  Files </h1><br>";
+//print_r($currentDirFiles);
 
-echo "<br>";
+//echo "<br>";
 
 
 FileContentslist($workDir);
@@ -66,10 +69,7 @@ function getFileContents($contDir)
     
     echo "<h1>Printing ".$contDir." Files </h1><br>";
 // Loop through our array, show HTML source as HTML source; and line numbers too.
-    foreach ($gFClines as $gFCline_num => $gFCline) 
-    {
-    echo "Line #<b>{$gFCline_num}</b> : " . htmlspecialchars($gFCline) . "<br />\n";
-    } 
+   
     
 }
 
