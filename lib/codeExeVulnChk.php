@@ -8,6 +8,7 @@ $date = $date->format("y:m:d h:i:s");
 //chdir('G:\xammp\htdocs\test');
 fwrite($fh, $date);
 $workDir=getcwd();
+echo $workDir; 
 $conFile = scandir($workDir);
 print_r($conFile);
 echo "<br>";
@@ -16,7 +17,7 @@ $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[20]);
+$typeChkLines = file($conFile[18]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 

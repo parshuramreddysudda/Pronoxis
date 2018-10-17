@@ -1,0 +1,5 @@
+In PHP, the problem exists when accessing data via $_REQUEST instead of the more specific $_POST and $_GET variables.
+
+The solution is to simply use the specific $_GET and $_POST variables to access the data.
+
+If the used framework only supplies one generic method to access POST as well as GET, the $_SERVER['REQUEST_METHOD'] should be checked for each request manually. Alternatively, the framework may supply a routing functionality, which may make it possible to define exactly which requests are allowed and which are not.

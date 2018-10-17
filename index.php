@@ -1,9 +1,16 @@
 <?php
 //php file including strated
 
-
+//session_start();
 
 include 'config.php';
+if(isset($_POST['projectName']))
+{
+    
+$projectName=$_POST['projectName'];
+    $_SESSION['projectName']=$projectName;
+}
+
 
 ?>
 
@@ -64,23 +71,66 @@ include 'config.php';
       <div class="content">
         <div class="container-fluid">
           <div class="container">
-              <h3 style="font-family: 'Product Sans', sans-serif;">Report of {{Project name}}</h3>
+              <h3 style="font-family: 'Product Sans', sans-serif;">Report of <?php  if(isset($projectName)){echo $projectName;} else {echo "Pronoxis";}?></h3>
     </div>
-    <div class="float-none">
-        <div class="container">
-            <div class="row">
+            <div class="container">
+            
+             <div class="row">
+                <div class="col-md-6">
                 
+            
+            <form class="form-inline ml-auto " action="index.php" method="post" id="search">
+                
+                
+                
+                
+                
+                <div class="col-sm-4">
+	<div class="form-group label-floating">
+		<label class="control-label">Paste Address here</label>
+		<input required name="search" type="name" class="form-control">
+	</div>
+</div><div class="col-sm-4">
+	<div class="form-group label-floating">
+		<label class="control-label">Enter Project name</label>
+		<input type="name" required name="projectName" class="form-control">
+	</div>
+</div>
                 <div class="col-md-4">
+                
+                 <button class="btn btn-secondary" type="submit" value="submit" form="search">Submit</button>
+                </div>
+                
+            </form>
                     
-                    <div class="row">
-                    
-                    
-                    
-                    </div>
-<div class="card">
+            
+                </div>
+            
+                <div class="col-md-6">
+              
+                
+                </div>
+            
+            
+            
+            </div>
+            
+            
+            </div>
+            
+           
+           
+    <div class="float-none">
+        
+        <div class="container">
+        <div class="row">
+    <div class="col-md-4">
+        <div class="row">
+        
+        <div class="card">
      <div class="card-header card-header-icon  card-header-rose" style="font-family: 'Product Sans', sans-serif;" ><div class="card-icon">
             
-           Description of Files </div>
+           Total no of Files </div>
     </div>
       <div class="card-body">
         <div class="row">
@@ -92,20 +142,44 @@ include 'config.php';
               <p>No of Css Files are</p>
               <p>No of Js Files are</p>
               <p>No of Font Files are</p>
+            </div>
+          
+          <div class="col-md-4">
+             <p style="color:darkslategrey">:  
+                 <?php if(isset($totalNoFiles)){ echo $totalNoFiles;}?></p>
+             <p style="color:darkslategrey">: <?php if(isset($totalNoFiles)){ echo $php;}?></p>
+             <p style="color:darkslategrey">: <?php if(isset($html)){ echo $html;}?></p>
+             <p style="color:darkslategrey">: <?php if(isset($images)){ echo $images;}?></p>
+             <p style="color:darkslategrey">: <?php if(isset($css)){ echo $css;}?></p>
+             <p style="color:darkslategrey">: <?php if(isset($js)){ echo $js;}?></p>
+             <p style="color:darkslategrey">: <?php if(isset($font)){ echo $font;}?></p>
+            
+             
+            
+            </div>
+          </div>
+      </div>
+    </div>
+        
+        </div>
+        <div class="row">
+        
+        <div class="card">
+     <div class="card-header card-header-icon  card-header-rose" style="font-family: 'Product Sans', sans-serif;" ><div class="card-icon">
+            
+           Description of Files </div>
+    </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
               <p>No of File Scanned</p>
               <p>No of Files Vulnerable </p>
               <p>No of File Secured</p>
               <p>No of Files ignored</p>
             </div>
           
-          <div class="col-md-6">
-             <p style="color:darkslategrey">: 342</p>
-             <p style="color:darkslategrey">: <?php if(isset($totalNoFiles)){ echo $totalNoFiles;}?></p>
-             <p style="color:darkslategrey">: <?php if(isset($html)){ echo $html;}?></p>
-             <p style="color:darkslategrey">: <?php if(isset($images)){ echo $images;}?></p>
-             <p style="color:darkslategrey">: <?php if(isset($css)){ echo $css;}?></p>
-             <p style="color:darkslategrey">: <?php if(isset($js)){ echo $js;}?></p>
-             <p style="color:darkslategrey">: <?php if(isset($font)){ echo $font;}?></p>
+          <div class="col-md-8">
+              <p style="color:darkslategrey">: 342</p>
              <p style="color:darkslategrey">: <?php if(isset($php)){ echo $php;}?></p>
              <p style="color:darkslategrey">: <?php if(isset($php)){ echo $php;}?></p>
              <p style="color:darkslategrey">: <?php if(isset($php)){ echo $php;}?></p>
@@ -117,11 +191,14 @@ include 'config.php';
           </div>
       </div>
     </div>
-                
-                
-                </div>
+        
+        
+        
+        </div>
+    </div>
     <div class="col-md-8">
-    <div class="card text-center" data-bs-hover-animate="pulse">
+            
+             <div class="card text-center" data-bs-hover-animate="pulse">
         <div class="card-header card-header-icon  card-header-rose" >
             <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
             
@@ -129,96 +206,84 @@ include 'config.php';
     </div>
                         <div class="card-body">
                             
-  <div id="chartdiv" style="width: 100%; height: 400px; background-color: #282828;" ></div>
+  <div id="chartdiv" style="width:100%; height:400px; background-color: #282828;" ></div>
                     </div>
                 </div>
-            </div>  
+            
+            
+            
+            </div>
+</div>
         </div>
-           
-            
-            
-            
-            
-            
-    </div>
+        
+        
+        
+        
+        
+        
+    
         
     </div>
-    <div class="card">
+    <div class=" container card">
 <div class="card-body">
-    <h3 style="font-family: 'Product Sans', sans-serif;">{{Page name}} Vulnerabilties</h3>
+    <h3 style="font-family: 'Product Sans', sans-serif;">Pages to be Scanned</h3>
     <a class="btn btn-primary float-right" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" role="button" href="#collapse-1" style="background-color: #DE2968;">&lt; Show/hide &gt;</a>
     <div class="collapse" id="collapse-1">
        
-    
 
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="card text-left" data-bs-hover-animate="pulse">
-                      <div class="card-header card-header-icon  card-header-rose" >
-                          <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
-            
-           Sql Injection </div>
-                  
-                               
-                          <div class="dropdown  float-right">
-                              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
-    <div class="dropdown-menu" role="menu">
-        <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
-        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
         
-        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
-        <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
-                              
-</div>
-                              
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Popover on top" data-content="Here will be some very useful information about his popover." style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
-                          
-                          </button>
-                               
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Popover on top" data-content="Here will be some very useful information about his popover." style="background-color: #E12E6D"><i class="material-icons">security</i>
-                          
-                          </button>
-                               
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Popover on top" data-content="Here will be some very useful information about his popover." style="background-color: #E12E6D"><i class="material-icons">code</i>
-                          
-                          </button>
-                               
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Popover on top" data-content="Here will be some very useful information about his popover." style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
-                          
-                              </button>
-                             
-                          
-                     
-                          
-                
-                     
-                          
-    </div>
-                        
-                        
-                        
-                        
-                        <h3>&nbsp  Education Information</h3>
-                        <div class="card-body">
-                           
-                            <p style="color: #e83c3c"> No Details</p>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                
+        
+        <?php
+        
+        $lengthofFilearray=count($filesArray);
+        for($i=0;$i<$lengthofFilearray;$i++)
+        {
+            
+            
+           echo "
+        <div class='card'>
+        
+        <div class='row card-body'>
+      
+      <div class='col-md-4'>
+            
+        <h4 style='font-family: 'Product Sans', sans-serif;' >".$filesArray[$i]."</h4>
             </div>
+      <div class='col-md-8'>
+                      <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank'>
+               <input type='hidden'  name='page' value=".$filesArray[$i].">
+          
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."'  style='background-color: #DE2968;'>Submit</button>
+            </form>
+          
+            </div>
+      
+      </div>
         </div>
-    </div>
+        
+        ";
+          $i=++$i;
+            
+        }
+        
+//       for($i=0;$i<$lengthofFilearray;$i++)
+//       {
+//           echo $filesArray[$i];
+//           
+//       }
+        
+        
+        ?>
+        
+
+   
         </div>
     </div>
             
         </div>
       </div>
     
-      <footer class="footer">
+      <footer class="footer" >
         <div class="container-fluid">
           <nav class="float-left">
             <ul>

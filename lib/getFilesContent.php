@@ -1,15 +1,19 @@
 <?php
 
-$workDir=getcwd();
-echo "<h5>Printing &quot".$workDir." &quot Files </h5><br>";
 
-//Arranging Directory Structure in ordered way 
+$phpFiles=0;
 
-$currentDirFiles = scandir($workDir);
+$filesArray=array();
 
-$nofLines=count($currentDirFiles);
-echo "<h5>Number of Files and Folders are  &quot".$nofLines." &quot  </h5><br>";
 
+
+
+
+if(isset($_SESSION['search']))
+{
+    
+   $currentDirFiles = scandir($_SESSION['search']); 
+$nofLines=count($_SESSION['search']);
 function FileContentslist($dir)
 {
 
@@ -38,39 +42,39 @@ function FileContentslist($dir)
     echo '</ol>';
 }
 
-echo "<br>";
-echo "<h1>Printing  Files </h1><br>";
-print_r($currentDirFiles);
+//echo "<br>";
+//print_r($currentDirFiles[2]);
 
-echo "<br>";
+//echo "<br>";
 
+//echo "Php Files and address are ";
 
-FileContentslist($workDir);
+$lengthofDir=count($currentDirFiles);
 
-
-
-echo count($currentDirFiles); //To get  The nof of files in the Folder 
-//echo file_get_contents($a[4]);
-$data = htmlentities(file_get_contents($currentDirFiles[3]));
-
-
-
-function getFileContents($contDir)
+for($i=0;$i<$lengthofDir;$i++)
 {
-    if(is_dir ($contDir))
-    {
-        echo "<h1>Printing ".$contDir." Files </h1><br>";
-        return;
-    }
-    $gFClines = file($contDir);
     
-    echo "<h1>Printing ".$contDir." Files </h1><br>";
-// Loop through our array, show HTML source as HTML source; and line numbers too.
-    foreach ($gFClines as $gFCline_num => $gFCline) 
-    {
-    echo "Line #<b>{$gFCline_num}</b> : " . htmlspecialchars($gFCline) . "<br />\n";
-    } 
+ $name = $currentDirFiles[$i];
+$ext = end((explode(".", $name))); # extra () to prevent notice
+
+if($ext=='php')
+{
+    
+    $fileName=$currentDirFiles[$i];
+    $lineNo=array_search($fileName,$currentDirFiles);
+    
+ array_push($filesArray,$fileName,$lineNo);
+    
+    
     
 }
+    
+    
+    
+}
+    
+    
+}
+
 
 ?>

@@ -17,7 +17,7 @@ $TotalLines=0;
 $countTemp=0;  ///For Calculating Recurssion
 $TotalVulnlines=0;
 $TotalVarInPage=0; 
-$typeChkLines = file($conFile[19]);
+$typeChkLines = file($conFile[18]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 

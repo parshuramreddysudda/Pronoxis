@@ -8,15 +8,35 @@ $date = $date->format("y:m:d h:i:s");
 //chdir('G:\xammp\htdocs\test');
 fwrite($fh, $date);
 $workDir=getcwd();
+
+echo $workDir;
+
+chdir('/Applications/MAMP/htdocs/dept');
+
+
+
+ 
+    $workDir=getcwd();
+
+echo $workDir;
+    
+    
 $conFile = scandir($workDir);
 print_r($conFile);
 echo "<br>";
+
+$fileManipulation_array=array();
+
+
+//print_r($fileManipulation_array);
+
+
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[23]); 
+$typeChkLines = file($conFile[11]); 
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -31,9 +51,13 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine);
+    checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine);
 
-        
+      
+       
+    
+    
+    
     $GLOBALS['httpTotalLines']++;
     
 
@@ -70,15 +94,25 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
                 if(strcmp($chkLine[$i],$fileManipWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks 
-                 echo "<br>This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
-                    echo "<br>Line is ".$typeChkLine;
+//                 echo "<br>This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
+                    
+                    
+                $string="This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
+                    
+                     push($string);
+                    
+//                   echo "<br>Line is ".$typeChkLine;
+                 $string="Line is ".$typeChkLine."";
+                   push($string);
                   checkforSinks($chkLine,$typeChkLines,$chkLineNo);
                   $GLOBALS['noLines']++; 
+                    push('new');
+                    break;
                 }
             }
             
         }
-    } 
+    }  
     
 }
 
@@ -116,7 +150,11 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
               {
                  
                   $vuln=1;                 //Too count 
-                  echo "<br>Input Values found Checking for its Secure<br>";
+//                  echo "<br>Input Values found Checking for its Secure<br>";
+                    
+                    $string="Input Values found Checking for its Secure";
+                    
+                 push($string);
                   checkSecure($sinkChkLine);
                   break;
               }
@@ -133,7 +171,12 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
     }
     if($vuln==0)
     {
-        echo "<br>Input Values not found Seraching Variables  ";
+//        echo "<br>Input Values not found Seraching Variables  ";
+           
+       $string="<br>Input Values not found Seraching Variables  ";
+        
+      push($string);
+        
         checkifVaribles($sinkChkLine,$typeChkLines,$chkLineNo);
     }
     
@@ -162,7 +205,13 @@ function checkSecure($vulnChkLine)
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
                
-                 echo "<br>This Line is Secure with  ".$vulnChkLine[$i];
+//                 echo "<br>This Line is Secure with  ".$vulnChkLine[$i];
+                
+                $string=" This Line is Secure with  ".$vulnChkLine[$i];
+                
+        
+                push($string);
+                
                  $vuln=1;
                   break;
                }
@@ -172,7 +221,11 @@ function checkSecure($vulnChkLine)
     }
     if($vuln==0)
     {
-        echo "<br>This is Not secured with Input Values";
+//        echo "<br>This is Not secured with Input Values";
+        
+         $string=" This is Not secured with Input Values";
+         push($string);
+        
         $GLOBALS['noVulLines']++;
     }
     
@@ -254,7 +307,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
     
 //     $GLOBALS['sessionVar']++;
       
-    echo "<br>";   
+//    echo "<br>";   
 }
 
 
@@ -295,6 +348,10 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
             else
             {
                  echo $chkprtDecLine;
+                
+                
+                
+                  push($chkprtDecLine);
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
@@ -325,6 +382,9 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
                 else
                 {
                     echo $chkprtDecLine;
+                    
+                    push($chkprtDecLine);
+                    
                     $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                     $chkprtDecLine = multiexplode($chkprtDecLine);
                     $chkprtDecLine=array_map('trim',$chkprtDecLine);
@@ -345,7 +405,6 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
 }
 
 
-
 echo "<br>No fo Lines are ".$GLOBALS['noLines'];
 
 echo "<br>No of Vulnerable Lines are ".$GLOBALS['noVulLines'];
@@ -353,9 +412,34 @@ echo "<br>No of Vulnerable Lines are ".$GLOBALS['noVulLines'];
 
 
 
+function push($string)
+{
+         array_push($GLOBALS['fileManipulation_array'],htmlspecialchars($string));
+}
 
 
+echo "<br>".$fileManipulation_array[0];
+$length=count($fileManipulation_array);
+echo $length;
 
+for($i=1;$i<$length-1;$i++)
+{
+    
+    
+    echo "<br>".htmlspecialchars($fileManipulation_array[$i])." ".htmlspecialchars($fileManipulation_array[++$i]);
+    if($length==$i)
+    {
+        break;
+    }
+   $i=$i++;
+    
+    if(strcmp($fileManipulation_array[$i],'new')==0)
+    {
+        echo "<br>Line is <br>".htmlspecialchars($fileManipulation_array[$i]);
+        $i=$i++;
+    
+    }
+}
 
 
 

@@ -44,6 +44,7 @@ function getFileContents($contDir)
     foreach ($gFClines as $gFCline_num => $gFCline) 
     {
     echo "Line #<b>{$gFCline_num}</b> : " . htmlspecialchars($gFCline) . "<br />\n";
+        print_r($gFCline);
     } 
     
 }
