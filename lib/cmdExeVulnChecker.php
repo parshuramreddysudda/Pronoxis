@@ -4,14 +4,14 @@
 To-do
 Input values checker
 
-
  */
 
 $time_start = microtime(true); //Create a variable for start time
 $fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
+chdir('/Applications/MAMP/htdocs/dept');
+//echo getcwd();
 fwrite($fh, $date);
 $workDir=getcwd();
 $conFile = scandir($workDir);
@@ -26,26 +26,28 @@ $cmdLineVar=0;       //To calcuate no of var in Vuln line
 $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare after testing it
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
-$typeChkLines = file($conFile[19]);
+$typeChkLines = file($conFile[23]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
 
 // Loop through our array, show HTML source as HTML source; and line numbers too.
+$json;
+$json->default='Null';
+$myfile = fopen("newfile.json", "w") or die("Unable to open file!");
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
     echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
-
+       $json=$GLOBALS['json'];
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines);
+        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$json);
         
     echo "<br>";
     $GLOBALS['cmdTotalLines']++;
-    
 
 }
 
@@ -64,7 +66,7 @@ function multiexplode($data)
 
 
 
-function checkSources($chkLine,$chkLineNo,$typeChkLines)
+function checkSources($chkLine,$chkLineNo,$typeChkLines,$json)
 {
     include'warmHole.php';
     $varCount=count($chkLine);
@@ -76,20 +78,25 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
        {
           if(strcmp($chkLine[$i],$cmdWarmhole[$j])==0)
           {
-              checkifVaribles($chkLine,$chkLineNo,$typeChkLines);
+              checkifVaribles($chkLine,$chkLineNo,$typeChkLines,$json);
               CheckVarVuln($chkLine);
-              echo "<br>Variables are ".$GLOBALS['cmdLineVar'];
-              echo "<br>Vuln var are ". $GLOBALS['cmdVulnLineVar'];
-             
+              echo "<br>No of Variables are ".$GLOBALS['cmdLineVar'];
+
+              
+              $json->NoVar="<br>No of Variables are ".$GLOBALS['cmdLineVar'];
+              
+              echo "<br>No of Vuln var are". $GLOBALS['cmdVulnLineVar'];
+               $json->NofVulnVar="<br>No of Vuln var are". $GLOBALS['cmdVulnLineVar'];
               
               if($GLOBALS['cmdLineVar']>=$GLOBALS['cmdVulnLineVar'])
               {
                   echo "Line Number ".$chkLineNo." is Vulnerable ";
-                  
+                   $json->VulnLineNo="Line Number ".$chkLineNo." is Vulnerable ";
                   if(is_array ($GLOBALS['inputValues'])&&count($GLOBALS['inputValues'])>0)
                   {
                      $var=count($GLOBALS['inputValues']);
                      echo "<br>User Input Values are found. <br> Values are ";
+                      $json->InputValues="User Input Values are found. <br> Values are ";
                     
                   
                        print_r(array_reduce($GLOBALS['inputValues'],"myfunction"));
@@ -97,6 +104,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
                        if(!checkSecure($chkLine))
                         {
                            echo "<br>Needed Input Sanitization"; 
+                           $json->remark1= "Needed Input Sanitization"; 
                         } 
                       
                        unset($GLOBALS['inputValues']);
@@ -107,16 +115,18 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
               else
               {
                   echo "Line Number ".$chkLineNo." is Protected";
+                  $json->secure="Line Number ".$chkLineNo." is Protected";
                     if(is_array ($GLOBALS['inputValues'])&&count($GLOBALS['inputValues'])>0)
                   {
                      $var=count($GLOBALS['inputValues']);
                      echo "<br>User Input Values are found. <br> Values are ";
-                    
+                    $json->InputValues="User Input Values are found. <br> Values are ";
                    
                        print_r(array_reduce($GLOBALS['inputValues'],"myfunction"));
                         if(!checkSecure($chkLine))
                         {
                             echo "<br>Needed Input Sanitization"; 
+                            $json->remark1= "Needed Input Sanitization"; 
                         }
                        
                        unset($GLOBALS['inputValues']);
@@ -124,6 +134,9 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
                   }
                  
               }
+                  
+
+              
           } 
        }
     }
@@ -132,10 +145,11 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines)
 } 
 
 
-function  checkifVaribles($chkVarSendline,$chkLineNo,$typeChkLines)
+function  checkifVaribles($chkVarSendline,$chkLineNo,$typeChkLines,$json)
 {
    
 //    print_r($chkVarSendline);
+    static $var=array();
    
     $noofelelments=count($chkVarSendline);
    
@@ -216,6 +230,7 @@ function printDeclaration($prtDecVar,$prtDecLine_num,$prtDecLines)   //Dec==Decl
             else
             {
                  echo $chkprtDecLine;
+                return $chkprtDecLine;
 //                print_r($prtDecLine_num);
                  CheckVarVuln($trimmed_DecprtSendline); 
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
@@ -325,6 +340,7 @@ function checkSecure($vulnChkLine)
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
                  echo "val is ".$vulnChkLine[$i];
+                $json->Values="val is ".$vulnChkLine[$i];
                   return true;
     
                }
@@ -339,9 +355,11 @@ function checkSecure($vulnChkLine)
                      {
                         return $v1 . "<br>" . $v2;
                      }
-                      
 
 
+$myJSON = json_encode($json);
+
+echo $myJSON;
 
 
 

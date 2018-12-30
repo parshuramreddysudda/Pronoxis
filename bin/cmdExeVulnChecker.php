@@ -85,7 +85,7 @@ function checkcmdSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
 //              echo "Line No ".$chkLineNo." May vulnerable to cmdExecution";
               $string= "Line No ".$chkLineNo." May vulnerable to cmdExecution";
               
-                  pushcmdExe($string);
+            pushcmdExe($string);
               pushcmdExe($typeChkLine);
                
               checkifcmdExeVaribles($chkLine,$chkLineNo,$typeChkLines);

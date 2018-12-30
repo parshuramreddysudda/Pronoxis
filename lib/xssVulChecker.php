@@ -1,44 +1,56 @@
 <?php
 
-
+include 'configuration.php';
 //// For Only PHP Pages
 
 $time_start = microtime(true); //Create a variable for start time
 $fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-$workDir=getcwd();
-$conFile = scandir($workDir);
-print_r($conFile);
+
 echo "<br>";
 $TotalLines=0;
 $countTemp=0;  ///For Calculating Recurssion
 $TotalVulnlines=0;
 $TotalVarInPage=0; 
-$typeChkLines = file($conFile[18]);
+$typeChkLines = $SERVER['checkFileName'];
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
 
+$json;
+$json->default='Null';
+$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+$sno=1;
+?>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Xss Vulnerability Details</h4>
+            
+<?php
+
 // Loop through our array, show HTML source as HTML source; and line numbers too.
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 {
+    
+ $json=$GLOBALS['json'];
     $superArray=$typeChkLines;
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        Sources($trimmed_Sendline,$typeChkLines);
+        Sources($typeChkLine,$trimSendline,$typeChkLines,$typeChkLine_num,$json);
         
     echo "<br>";
     $GLOBALS['TotalLines']++;
     
 
 }
+
+
 
 
 function multiexplode($data)
@@ -53,7 +65,7 @@ function multiexplode($data)
 }
 
 //This functiond print echo and other sources
-function Sources($chkLineSource,$typeChkLines)
+function Sources($Line,$chkLineSource,$typeChkLines,$typeChkLine_num,$json)
 {
     include'warmHole.php';
     
@@ -68,8 +80,14 @@ function Sources($chkLineSource,$typeChkLines)
         {
             if($chkLineSource[$i]==$XSSWarmhole[$j])
             {
+//                echo "Line Number".$typeChkLine_num;
+                echo "<div>   <h6 class='text-muted card-subtitle mb-2'>Line Number is Vulnerable ".$typeChkLine_num."</h6>";
                
-                 getPhpVar($chkLineSource,$typeChkLines);
+                 echo "Vulnerable Line is ".htmlspecialchars($Line);
+                
+                echo "<p class='card-text'>Vulnerable Line is ".htmlspecialchars($Line)."</p>";
+                $json->Line=$Line;
+                 getPhpVar($chkLineSource,$typeChkLines,$json);
             }
             else
             {
@@ -81,7 +99,7 @@ function Sources($chkLineSource,$typeChkLines)
 }
 
 //To print the lines having insecure XSS strings like Echo and etc
-function getPhpVar($chkVulnLineSource,$typeChkLines)
+function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
 {
     include'checkWordlists.php';
     global $vulnVar;
@@ -115,16 +133,25 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
                  {
                
                      if($preVar==$userInputValues[$j])
-                     {
-//                     echo "It is Vuln";
-//                       echo "Sinks are ".$preVar;
+                     { 
+                     echo "It is Vuln Sinks are ".$preVar;
+                     echo "<p class='card-text'>It is Vuln Sinks are ".$preVar."</p>";    
+                    
+                         $json->SinksInfo="It is Vuln Sinks are ".$preVar;
                          if(checkSecure($chkVulnLineSource)==true) //To check source line with sinks are secure
                            {
                               echo "<br>Echo Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
+                             $json->SinSecure="<br>Echo Line with sinks and sources is Secure ";
+                               echo "<p class='card-text'>Echo Line with sinks and sources is Secure </p>";  
                             }
                        else
                             {
                               echo "<br>Echo Line is Not secure Due to Sink ".$preVar." Doesnot have any Secure Functions";//InSecure function after checking for sources and sinks and not having secure functions
+                           
+                            echo "<p class='card-text'>Echo Line is Not secure Due to Sink ".$preVar." Doesnot have any Secure Functions</p>"; 
+                           
+                           
+                           $json->SinSecure="<br>Echo Line is Not secure Due to Sink ".$preVar." Doesnot have any Secure Functions";
                             $GLOBALS['TotalVulnlines']++;
                             }
                          
@@ -138,11 +165,17 @@ function getPhpVar($chkVulnLineSource,$typeChkLines)
                         if(checkSecure($chkVulnLineSource)==true) //To check source line with are secure
                            {
                               echo "<br>Echo Line with sources is  Secure";  //Secure function after checking for sources and sinks and having secure functions
+                            echo "<p class='card-text'>Echo Line with sources is  Secure </p>";  
                             }
                        else
                             {
                            
-//                             echo "vuln var are ".$chkVulnLineSource[$i];
+                             echo "vuln var are ".$chkVulnLineSource[$i];
+                           
+                           echo "<p class='card-text'>Vulnerable Variables  are ".$chkVulnLineSource[$i]."</p>";  
+                           
+                           
+                           
                                checkVarLineVuln($chkVulnLineSource[$i],$typeChkLines);  //Check this varbile declaration line for Vuln . this prints the insecure XSS lines
                            
                             }
@@ -191,8 +224,12 @@ function checkVarLineVuln($vulnVar,$allLines)
            
               if(strcmp($firstEle,$vulnVar)==0)
               {
-//                  echo "<br>Vuln line is".$chkprtDecLine_num;
-//                  echo "<br> Effeted Line is ".$chkprtDecLine;
+                  echo "<br>Source line is".$chkprtDecLine_num;
+                  echo "<br> Source Line is ".$chkprtDecLine;
+                  
+                    echo "<p class='card-text'>Source line is".$chkprtDecLine_num."</p>";  
+                  echo " <code> Source Line is ".$chkprtDecLine."</code> ";
+                  
 //                  echo $firstEle;
                   if(checkforsinks($trimmed_DecprtSendline)==true)  //to check Sinks for 
                   {
@@ -200,11 +237,15 @@ function checkVarLineVuln($vulnVar,$allLines)
                      if(checkSecure($trimmed_DecprtSendline)==true) //To check secure
                      {
                          echo "<br>Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
+                              echo "<p class='card-text'>Line with sinks and sources is Secure </p>";  
+                         
                      }
                       else
                       {
                           echo "<br>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
                            $GLOBALS['TotalVulnlines']++;
+                          
+                           echo "<p class='card-text'>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks</p>";  
                       }
                   }
                   else
@@ -212,12 +253,17 @@ function checkVarLineVuln($vulnVar,$allLines)
 //                     These Lines dont have sinks like GET or POST so line is sent for securing strings 
                          if(checkSecure($trimmed_DecprtSendline)==true) //to check secure
                      {
-                         echo "<br>Line with sources is Secure";  //Secure function after checking for sources and having secure functions
+                         echo "<br>Line no ".$chkprtDecLine_num." with sources is Secure";  //Secure function after checking for sources and having secure functions
+                             
+                            echo "<p class='card-text'>Line no ".$chkprtDecLine_num." with sources is Secure</p>";     
+                             
                      }
                       else
                       {
-                          echo "<br>Line is Not secure Since it has sources and not have secure functions";//InSecure function after checking for sources and not having secure functions
+                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure Since it has sources and not have secure functions";//InSecure function after checking for sources and not having secure functions
                            $GLOBALS['TotalVulnlines']++;
+                           echo "<p class='card-text'>Line no ".$chkprtDecLine_num." is Not secure Since it has sources and not have secure functions</p>";  
+                          
                       }
                   }
                   
@@ -294,6 +340,8 @@ function checkSecure($vulnChkLine)
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
                  echo "val is ".$vulnChkLine[$i];
+                 echo "<p class='card-text'>Val is ".$vulnChkLine[$i]."</p>";  
+                
                   return true;
     
                }
@@ -303,97 +351,72 @@ function checkSecure($vulnChkLine)
     }
 }
 
-//function checkForVulnLines($vulnVar)
-//{
-//    $workDir=getcwd();
-//$conFile = scandir($workDir);
-//    
-//    $superSinkLines=file($conFile[17]); 
-//$VulnLinesTempVar=count($superSinkLines);
-//    for($i=0;$i<$VulnLinesTempVar;$i++)
-//    {
-//        
-////        echo "Line No".$i." has ".htmlspecialchars($superSinkLines[$i])."<br>";
-//        $varSendLine=htmlspecialchars($superSinkLines[$i]);
-//        $vulntrimSendline = multiexplode($varSendLine);  //Gets the line by removing Delimiters 
-//        $varTrimmed_Sendline=array_map('trim',$vulntrimSendline);//To remove White Spaces from Array
-//        checkXSS($varTrimmed_Sendline,$varSendLine,$i,$vulnVar); //this send each line for verification 
-//    }
-//}
-//    
-//    
-//function checkXSS($Line,$printLine,$LineNo,$vulnVar)
-//{
-//    include'warmHole.php';
-//    
-//    $substr1=count($Line);
-//    $substr2=count($XSSWarmhole);
-//      
-//    
-//    
-//   for($i=0;$i<$substr1;$i++)
-//    {
-//        for($j=0;$j<$substr2;$j++)
-//        {
-//            if($Line[$i]==$XSSWarmhole[$j])
-//            {
-//                for($k=0;$k<$substr1;$k++)
-//                {
-//                    if(strcmp($Line[$i],$vulnVar==0))
-//                       {
-//                           echo "<br>Line Number ".$LineNo." is Vulnerable <br> Code is  ".$printLine."<br>"; 
-//                        break;
-//                       }
-//                }
-//            }
-//        }
-//    }
-//    
-//}
-////
-//function checkForSecureString()
-//{
-//    
-//}
+function checkForVulnLines($vulnVar)
+{
+    $workDir=getcwd();
+$conFile = scandir($workDir);
+    
+    $superSinkLines=file($conFile[17]); 
+$VulnLinesTempVar=count($superSinkLines);
+    for($i=0;$i<$VulnLinesTempVar;$i++)
+    {
+        
+//        echo "Line No".$i." has ".htmlspecialchars($superSinkLines[$i])."<br>";
+        $varSendLine=htmlspecialchars($superSinkLines[$i]);
+        $vulntrimSendline = multiexplode($varSendLine);  //Gets the line by removing Delimiters 
+        $varTrimmed_Sendline=array_map('trim',$vulntrimSendline);//To remove White Spaces from Array
+        checkXSS($varTrimmed_Sendline,$varSendLine,$i,$vulnVar); //this send each line for verification 
+    }
+}
+    
+    
+function checkXSS($Line,$printLine,$LineNo,$vulnVar)
+{
+    include'warmHole.php';
+    
+    $substr1=count($Line);
+    $substr2=count($XSSWarmhole);
+      
+    
+    
+   for($i=0;$i<$substr1;$i++)
+    {
+        for($j=0;$j<$substr2;$j++)
+        {
+            if($Line[$i]==$XSSWarmhole[$j])
+            {
+                for($k=0;$k<$substr1;$k++)
+                {
+                    if(strcmp($Line[$i],$vulnVar==0))
+                       {
+                           echo "<br>Line Number ".$LineNo." is Vulnerable <br> Code is  ".$printLine."<br>"; 
+                            
+                        echo "<p class='card-text'>Line Number ".$LineNo." is Vulnerable <br><code> Code is  ".$printLine."</code></p>";  
+                        
+                        
+                        break;
+                       }
+                }
+            }
+        }
+    }
+    
+}
+//
+function checkForSecureString()
+{
+    
+}
 
 
 
 echo "Total Number of Vulnerable lines are " .$TotalVulnlines;
 echo "<br>Total Number of Lines are " .$TotalLines;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>
 
-
-
+            
+            <p class="card-text">Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
+        </div>
+    </div>
+</div>

@@ -13,10 +13,7 @@ echo $workDir;
 
 chdir('/Applications/MAMP/htdocs/dept');
 
-
-
- 
-    $workDir=getcwd();
+$workDir=getcwd();
 
 echo $workDir;
     
@@ -45,7 +42,7 @@ $superArray=array(); //For Storing all lines
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
-//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
         
         $sendLine=htmlspecialchars($typeChkLine);
@@ -94,14 +91,14 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine)
                 if(strcmp($chkLine[$i],$fileManipWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks 
-//                 echo "<br>This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
+                 echo "<br>This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
                     
                     
                 $string="This Line No <b> ".$chkLineNo." </b>may be Vulnerable to File Inclusion";
                     
                      push($string);
                     
-//                   echo "<br>Line is ".$typeChkLine;
+                   echo "<br>Line is ".$typeChkLine;
                  $string="Line is ".$typeChkLine."";
                    push($string);
                   checkforSinks($chkLine,$typeChkLines,$chkLineNo);
@@ -150,7 +147,7 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
               {
                  
                   $vuln=1;                 //Too count 
-//                  echo "<br>Input Values found Checking for its Secure<br>";
+                  echo "<br>Input Values found Checking for its Secure<br>";
                     
                     $string="Input Values found Checking for its Secure";
                     
@@ -171,7 +168,7 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo)
     }
     if($vuln==0)
     {
-//        echo "<br>Input Values not found Seraching Variables  ";
+        echo "<br>Input Values not found Seraching Variables  ";
            
        $string="<br>Input Values not found Seraching Variables  ";
         
@@ -205,7 +202,7 @@ function checkSecure($vulnChkLine)
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
                
-//                 echo "<br>This Line is Secure with  ".$vulnChkLine[$i];
+                 echo "<br>This Line is Secure with  ".$vulnChkLine[$i];
                 
                 $string=" This Line is Secure with  ".$vulnChkLine[$i];
                 
@@ -221,7 +218,7 @@ function checkSecure($vulnChkLine)
     }
     if($vuln==0)
     {
-//        echo "<br>This is Not secured with Input Values";
+        echo "<br>This is Not secured with Input Values";
         
          $string=" This is Not secured with Input Values";
          push($string);
@@ -232,32 +229,32 @@ function checkSecure($vulnChkLine)
     //Checking the File input Strings  (sinks)
     
 
-//     
-//    for($i=0;$i<$varCount;$i++)
-//    {
-//        for($j=0;$j<$fileList;$j++)
-//        {
-//            
-//            if(strlen($vulnChkLine[$i])>1)
-//            {
-//                
-//            if(strcmp($vulnChkLine[$i],$fileInputValues[$j])==0)
-//               {
-//               
-//                 echo "<br>Sinks found  ".$vulnChkLine[$i];
-//                 $vuln1=1; 
-//                  break;
-//               }
-//            }
-//               
-//        }
-//    }
-//    if($vuln1==0)
-//    {
-//        echo "<br>No Sinks Found";
-//        $GLOBALS['noVulLines']++;
-//    }
-//    
+     
+    for($i=0;$i<$varCount;$i++)
+    {
+        for($j=0;$j<$fileList;$j++)
+        {
+            
+            if(strlen($vulnChkLine[$i])>1)
+            {
+                
+            if(strcmp($vulnChkLine[$i],$fileInputValues[$j])==0)
+               {
+               
+                 echo "<br>Sinks found  ".$vulnChkLine[$i];
+                 $vuln1=1; 
+                  break;
+               }
+            }
+               
+        }
+    }
+    if($vuln1==0)
+    {
+        echo "<br>No Sinks Found";
+        $GLOBALS['noVulLines']++;
+    }
+    
     
 }
 
@@ -297,6 +294,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
                
             printDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
              }
+             
              
             
            }

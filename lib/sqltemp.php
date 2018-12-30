@@ -1,50 +1,567 @@
-<?php
+ <?php
 
-if ($conn->connect_error)
+ 
+$time_start = microtime(true); //Create a variable for start time
+$fh = fopen('Vulnerability.log', 'w');
+$date = new DateTime();
+$date = $date->format("y:m:d h:i:s");
+chdir('/Applications/MAMP/htdocs/dept');
+//chdir('G:\xammp\htdocs\test');
+fwrite($fh, $date);
+$countTemp=0;  ///For Calculating Recurssion
+$sqlDatabaseInput;
+$sessionVar=0;        //To Calculate total no of var 
+$sessionVulnVar=0;    //to Calculate total Vuln var
+$sessionLineNo=0;       //To send the line number to detect vuln in the line variables
+$tempVarVulnCkh=0; //To check if Var line is vulnerable to sql injetcion 
+$workDir=getcwd();
+
+$conFile = scandir($workDir);
+print_r($conFile);
+echo "<br>";
+
+$sqlLines=0; //For Storing no of Sql lines
+$sqlVulnLines=0; //For Storing no of Sql lines
+
+$typeChkLines = file($conFile[24]);
+$json;
+$json->default='Null';
+$myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+
+$arrayTemp=3;
+// Loop through our array, show HTML source as HTML source; and line numbers too.
+foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 {
-    die("Connection failed: " . $conn->connect_error);
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+
+ $json=$GLOBALS['json'];
+        $sendLine=htmlspecialchars($typeChkLine);
+        $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
+        $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
+        checkline($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$json); //Send This line detect which type of line is this
+//      echo htmlspecialchars($typeChkLine)
+    
+    $GLOBALS['arrayTemp']==1;
+
+
 }
 
-$sql = "SELECT id, firstname, lastname FROM MyGuests";
-$result = $conn->sqlite_fetch_array($sql);
-                                                        $conn->sqlite_fetch_array;
 
- 	$query_upload=" UPDATE `student` SET `imgpath` = '".$target_path."' WHERE `student`.`id` = '$roll'";
 
-mysqli_query(mysql_escape_string($conn),mysql_escape_string($query_upload));
-$user=heller;
-mysqli_query($conn)
-$link-"Linkde";
-if ($res = mysqli_query($link, $sql)) {
-    if (mysqli_num_rows($res) > 0) {
-        echo "<table>";
-        echo "<tr>";
-        echo "<th>Firstname</th>";
-        echo "<th>Lastname</th>";
-        echo "<th>age</th>";
-        echo "</tr>";
-        while ($row = mysqli_fetch_array($res)) {
-            echo "<tr>";
-            echo "<td>".$row['Firstname']."</td>";
-            echo "<td>".$row['Lastname']."</td>";
-            echo "<td>".$row['Age']."</td>";
-            echo "</tr>";
+
+function multiexplode($data)
+{
+    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
+    $data=str_replace('"', ',', $data);
+    $data=stripslashes($data);
+    $quotedata=str_replace('"',"", $data);
+	$MakeReady = str_replace($delimiters, $delimiters[0], $quotedata);
+	$Return    = explode($delimiters[0], $MakeReady);
+	return  $Return;
+}
+
+function checkline($sendLine,$lineno,$typeChkLines,$json)
+{
+
+    include'checkWordlists.php';
+    include'warmHole.php';
+
+    $variables=array();
+    $noofsendLine=count($sendLine);
+    $noofsqlWarmhole=count($sqlWarmhole);
+    $noofsqlDatabaseInput=count($sqlDatabaseInput);
+    $foundSqlVuln=0;
+//   echo "<br>Count for".$lineno."is".count($sendLine);
+      
+   for($i=0;$i<$noofsendLine;$i++)
+   {
+      
+      if(strlen($sendLine[$i])>4)
+       {   
+        for($j=0;$j<$noofsqlDatabaseInput;$j++)
+       {
+
+        if(strcmp($sendLine[$i],$sqlDatabaseInput[$j])==0) //Compare line array with Input sql array list
+          {
+            
+             echo "Sql Lines 1 are <b> ".$sendLine[$i]." ";
+            $json->SqlStrings="Sql Lines are <b> ".$sendLine[$i]." ";
+             echo $sqlDatabaseInput[$j];
+             echo " <br>  </b><br>";
+            $GLOBALS['sqlLines']++;
+            $variables=checkSqlForVuln($sendLine,$lineno,$typeChkLines,$variables,$json);// Send the Sql line for Testing 
+            $foundSqlVuln=1;
+            $myJSON = json_encode($json);
+            $variablesJson=json_encode($variables);
+            $myfile=$GLOBALS['myfile'];
+            file_put_contents('myfile.json', $myJSON,FILE_APPEND);
+            file_put_contents('myfile.json', $variablesJson,FILE_APPEND);
+            break;
+          }
+         else if(strcmp($sendLine[$i],$sqlDatabaseInput[$j])==-1)
+         {
+               
+               $temp =$sendLine[$i];
+               $tempLen=strlen($sendLine[$i]);
+               $temptrim = substr("$sendLine[$i]", 4, $tempLen);   //To Separate > mark from sql string. I got this at >sql_fetch_array :P
+             
+               $temptrim2 = substr("$sendLine[$i]", 6, $tempLen);  //To Separate " mark from sql string. I got this at >sql_fetch_array :P
+               
+             if(strcmp($temptrim,$sqlDatabaseInput[$j])==0||strcmp($temptrim2,$sqlDatabaseInput[$j])==0)
+               {
+               echo "Sql Lines 2 are <b> ".$sendLine[$i]." ";
+                $json->SqlStrings="Sql Lines are <b> ".$sendLine[$i]." ";
+               echo $sqlDatabaseInput[$j];
+               echo " <br> " .$lineno." </b><br>";
+               $GLOBALS['sqlLines']++; 
+               $variables=checkSqlForVuln($sendLine,$lineno,$typeChkLines,$variables,$json); // Send the Sql line for Testing 
+               $foundSqlVuln=1;
+            $myJSON = json_encode($json);
+            $variablesJson=json_encode($variables);
+            $myfile=$GLOBALS['myfile'];
+            file_put_contents('myfile.json', $myJSON,FILE_APPEND);
+            file_put_contents('myfile.json', $variablesJson,FILE_APPEND);
+                                break;
+                }
+             
+         }
+
+         else
+         {
+           $foundSqlVuln=0;
+         }
+         $GLOBALS['countTemp']++;
+
+
+
+     }
+     if($foundSqlVuln==1)
+     {
+       break;
+     }
+   }
+
+   }
+
+    for($i=0;$i<$noofsendLine;$i++)
+    {
+    if(strlen($sendLine[$i])>4)
+    {
+      for($j=0;$j<$noofsqlWarmhole;$j++)
+      {
+
+         if(strcmp($sendLine[$i],$sqlWarmhole[$j])==0) //Compare line array with possible  sqlInjection array list
+           {
+              echo "Sql Lines 3 are <b> ".$sendLine[$i]." ";
+              $json->SqlStrings="Sql Lines are <b> ".$sendLine[$i]." ";
+              echo $sqlWarmhole[$j];
+              echo " <br> " .$lineno." </b><br>";
+             $GLOBALS['sqlLines']++;
+             $variables=checkSqlForVuln($sendLine,$lineno,$typeChkLines,$variables,$json);     // Send the Sql line for Testing  
+               $foundSqlVuln=1;
+               
+             $myJSON = json_encode($json);
+            $variablesJson=json_encode($variables);
+            $myfile=$GLOBALS['myfile'];
+            file_put_contents('myfile.json', $myJSON,FILE_APPEND);
+            file_put_contents('myfile.json', $variablesJson,FILE_APPEND);
+             break;
+           }
+          else if(strcmp($sendLine[$i],$sqlWarmhole[$j])==-1)    //This is Optional 
+          { 
+
+                $temp =$sendLine[$i];
+                $tempLen=strlen($sendLine[$i]);
+                $temptrim = substr("$sendLine[$i]", 4, $tempLen);   //To Separate '>' mark from sql string. I got this at >sql_fetch_array :P
+                $temptrim2 = substr("$sendLine[$i]", 6, $tempLen);//To Separate " mark from sql string. I got this at "sql_fetch_array :P
+               if(strcmp($temptrim,$sqlWarmhole[$j])==0)
+                {
+                echo "Sql Lines 4 are <b> ".$sendLine[$i]." ";
+                $json->SqlStrings="Sql Lines are <b> ".$sendLine[$i]." ";
+                echo $sqlWarmhole[$j];
+                echo " <br> HEller " .$lineno." </b><br>";
+                $GLOBALS['sqlLines']++;
+               $variables= checkSqlForVuln($sendLine,$lineno,$typeChkLines,$variables,$json);   // Send the Sql line for Testing 
+                $foundSqlVuln=1;
+             $myJSON = json_encode($json);
+            $variablesJson=json_encode($variables);
+            $myfile=$GLOBALS['myfile'];
+            file_put_contents('myfile.json', $myJSON,FILE_APPEND);
+            file_put_contents('myfile.json', $variablesJson,FILE_APPEND);
+                      break;
+                 }
+             
+          }
+
+          else
+          {
+            $foundSqlVuln=0;
+          }
+          $GLOBALS['countTemp']++;
+
+      }
+      if($foundSqlVuln==1)
+      {
+        break;
+      }
+    }
+
+    }
+
+    echo "<br>";
+}
+
+function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines,$variables,$json)
+{
+    include'vulnWordlist.php';
+    
+    $noofsqlVulnLine=count($sqlVulnLine);
+    $noofsqlDatabaseSecureVuln=count($sqlDatabaseSecureVuln);
+    $tempVulnCkh=0;
+    $tempcheckSqlForVuln=0;
+
+    for($i=0;$i<$noofsqlVulnLine;$i++)
+    {
+      
+          
+      for($j=0;$j<$noofsqlDatabaseSecureVuln;$j++)
+      {
+           if(strcmp($sqlVulnLine[$i],$sqlDatabaseSecureVuln[$j])==0) //Compare line array with protected sql array list
+           {
+              $tempcheckSqlForVuln=0;
+            
+              break;
+
+           }
+          else if(strcmp($sqlVulnLine[$i],$sqlDatabaseSecureVuln[$j])==-1)
+          {
+
+                
+                $tempLen=strlen($sqlVulnLine[$i]);
+                $temptrim = substr("$sqlVulnLine[$i]", 4, $tempLen);   //To Separate > mark from sql string. I got this at >sql_fetch_array :P
+                if(strcmp($temptrim,$sqlDatabaseSecureVuln[$j])==0)
+                {
+                $tempcheckSqlForVuln=0;
+                break;
+                }
+                else
+                {
+                     $tempcheckSqlForVuln=1;
+                     break;
+                }
+           }
+          else
+          {
+             $tempcheckSqlForVuln=1;
+          }
+          $GLOBALS['countTemp']++;
+      }
+        if($tempcheckSqlForVuln==1)
+        {
+            $tempVulnCkh++;
         }
-        echo "</table>";
-        mysqli_free_res($res);
+    
     }
-    else {
-        echo "No matching records are found.";
+
+//    echo $tempVulnCkh;
+//    echo "<br>";
+//    echo $noofsqlVulnLine;
+    if($tempVulnCkh==$noofsqlVulnLine) 
+    {
+        echo "Line Number ".$sqlVulnLineNo."May be Vulnerable to SQL Injection";
+        
+        $json->info="Line Number ".$sqlVulnLineNo."May be Vulnerable to SQL Injection";
+        
+        
+//        include'Tokenizer.php';
+//Used to print the php varibales Declaration in the injection line
+        $GLOBALS['sessionLineNo']=$noofsqlVulnLine;
+        $sessionLineNo=$sqlVulnLineNo;
+       $variables= checkifVaribles($sqlVulnLine,$typeChkLines,$sqlVulnLineNo,$sessionLineNo,$variables);
+    
+        
+        echo "No of Variables are "; 
+        echo $GLOBALS['sessionVar']-1;
+        echo "No of Vulnerable".$GLOBALS['sessionVulnVar'];
+        $json->NoofVar="No of Vulnerable".$GLOBALS['sessionVulnVar'];
+        if($GLOBALS['sessionVar']-1==$GLOBALS['sessionVulnVar']&&$GLOBALS['sessionVulnVar']!=0) //To say that if no variables are there then it is protected
+        {
+            $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection Risk Level is High";
+            
+            $json->Secure="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection Risk Level is High";
+            
+              fwrite($GLOBALS['fh'],$vulninfofile);
+              $GLOBALS['sqlVulnLines']++;
+             echo $vulninfofile;
+        }
+        else if($GLOBALS['sessionVar']-1||$GLOBALS['sessionVulnVar']==0)
+        {
+            echo "<br>This Line is Protected";
+             $json->Secure="<br>This Line is Protected";
+        }
+        else if($GLOBALS['sessionVar']-1>=$GLOBALS['sessionVulnVar'])
+        {
+            $vulninfofile="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection .Risk Level is Less";
+            
+             $json->Secure="Line Number ".$sqlVulnLineNo."is Vulnerable to SQL Injection .Risk Level is Less";
+            
+              fwrite($GLOBALS['fh'],$vulninfofile);
+              $GLOBALS['sqlVulnLines']++;
+             echo $vulninfofile;
+        }
+        else
+        {
+            echo "This Var is Protected";
+            $json->VarInfo="This Var is Protected";
+        }
+      $GLOBALS['sessionVulnVar']=0;
+      $GLOBALS['sessionVar']=0;
+    }
+    else
+    {
+        echo "This SQl string is Protected";
+         $json->Secure= "This SQl string is Protected";
+    }
+    return $variables;
+}
+function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sessionLineNo,$variables)
+{
+   
+//    print_r($chkVarSendline);
+   
+    $noofelelments=count($chkVarSendline);
+   
+    
+    for($i=1;$i<$noofelelments;$i++)
+    {
+        $tempCut=substr($chkVarSendline[$i],0,1);
+        
+        if(strcmp($tempCut,'$')==0)
+        {
+//            echo "<br>Trimmed Var ".$chkVarSendline[$i];
+//            $Token = new Tokenizer();
+//            $Token->
+               $variableschk= printDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$sessionLineNo,$variables);
+            echo    $GLOBALS['arrayTemp'];
+            if($GLOBALS['arrayTemp']==3||$GLOBALS['arrayTemp']==2)
+            {
+                $GLOBALS['arrayTemp']--;
+                echo    $GLOBALS['arrayTemp'];
+                print_r($variableschk);
+            }
+    
+       
+        }
+        
+         else
+           {
+            $tempCutQuot1=substr($chkVarSendline[$i],7,-7);  //Substr for getting values in db ".$value." => to $value trimming both sides symbols
+             $tempCut=substr($tempCutQuot1,0,1);
+             
+             if($tempCut=='$')
+             {
+//                 echo $tempCutQuot1;
+               
+            $variableschk=printDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$sessionLineNo,$variables);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
+//                 print_r($variables);
+                   echo    $GLOBALS['arrayTemp'];
+            if($GLOBALS['arrayTemp']==3||$GLOBALS['arrayTemp']==2)
+            {
+                $GLOBALS['arrayTemp']--;
+                echo    $GLOBALS['arrayTemp'];
+                print_r($variableschk);
+            }
+             }
+             
+            
+           }
+        
+        
+        $GLOBALS['countTemp']++;
+    }
+    
+     $GLOBALS['sessionVar']++;
+      
+  return $variableschk;
+}
+
+
+function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$sessionLineNo,$variables)   //Dec==Declaration
+{
+    
+   
+    foreach ($prtDecLines as $chkprtDecLine_num => $chkprtDecLine)
+    {   
+        $sendprtDecLine=htmlspecialchars($chkprtDecLine);
+        $trimDecprtSendline = multiexplode($sendprtDecLine); 
+        $trimmed_DecprtSendline=array_map('trim',$trimDecprtSendline);
+      
+//        echo $chkprtDecLine_num."<br>";
+//        print_r($trimmed_DecprtSendline);
+//        echo "<br>";
+        
+        $filteredArray=array_filter($trimmed_DecprtSendline);
+        $firstEle=array_shift($filteredArray);
+        if(strcmp($prtDecVar,$firstEle)==0)
+        { 
+           
+ 
+            echo "<br>";
+            
+//            echo $prtDecVar;
+//            echo $trimmed_DecprtSendline[0];
+//            echo $chkprtDecLine_num.", ";
+//            echo $prtDecLine_num;
+           
+            if($chkprtDecLine_num==$prtDecLine_num)
+            {
+//                echo "Same Elements Called ".$chkprtDecLine_num;
+                break;
+               
+            }
+            else
+            {
+                 echo $chkprtDecLine;
+                 array_push($variables,$chkprtDecLine);
+                 $chkprtDecLine=htmlspecialchars($chkprtDecLine);
+                 $chkprtDecLine = multiexplode($chkprtDecLine);
+                 $chkprtDecLine=array_map('trim',$chkprtDecLine);
+                 CheckVarVuln($chkprtDecLine,$variables); checkifVaribles($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$sessionLineNo,$variables);
+            }
+        }
+        else if(count($trimmed_DecprtSendline)>1)     //To check the Variable declared after a space or in the a[1] from starting .
+        {
+            
+            $tempCutDec=substr($prtDecVar,0,1);   //To print only php variables in the analyzer
+           
+//               echo $prtDecVar;
+            if(strcmp($prtDecVar,$trimmed_DecprtSendline[1])==0&&($trimmed_DecprtSendline[2]==" "||$trimmed_DecprtSendline[1]="NULL"||$trimmed_DecprtSendline[2]==" "||$trimmed_DecprtSendline[2]="NULL"||$trimmed_DecprtSendline[3]==" "||$trimmed_DecprtSendline[3]="NULL")) //To print variables declared after two spaces or three
+            { 
+//                echo "<br>Lines  Compared ".$prtDecVar." are ".$trimmed_DecprtSendline[0];
+//                echo " <br>Same Declared Element Called ".$prtDecVar;
+                  echo "<br>";
+//                echo $prtDecVar;
+//                echo $chkprtDecLine_num.", ";
+//                echo $prtDecLine_num;
+           
+                if($chkprtDecLine_num==$prtDecLine_num)
+                {
+//                    echo "Same Elements of same Line".$chkprtDecLine_num;
+                    break;
+               
+                }
+                else
+                {
+                    echo $chkprtDecLine;
+                    array_push($variables,$chkprtDecLine);
+                    $chkprtDecLine=htmlspecialchars($chkprtDecLine);
+                    $chkprtDecLine = multiexplode($chkprtDecLine);
+                    $chkprtDecLine=array_map('trim',$chkprtDecLine);
+//                    print_r($chkprtDecLine);
+//                  $Token = new Tokenizer();
+//            $Token->
+                CheckVarVuln($chkprtDecLine,$variables); 
+                checkifVaribles($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$sessionLineNo,$variables);
+                }
+            }
+       
+            
+        
+       } 
+        $GLOBALS['countTemp']++;
+    }
+return $variables;
+}
+
+
+function checkVarVuln($varVulnLine,$json)
+{
+    include'vulnWordlist.php';
+    
+    $noofvarVulnLine=count($varVulnLine);
+    $noofvarDatabaseSecureVuln=count($sqlDatabaseSecureVuln);
+    $tempVarVulnCkh=0;
+    $tempcheckvarForVuln=0;
+
+    for($i=0;$i<$noofvarVulnLine;$i++)
+    {
+      for($j=0;$j<$noofvarDatabaseSecureVuln;$j++)
+      {
+           if(strcmp($varVulnLine[$i],$sqlDatabaseSecureVuln[$j])==0) //Compare line array with protected var array list
+           {
+              $tempcheckvarForVuln=0;
+              echo "Protected";
+              break;
+
+           }
+          else if(strcmp($varVulnLine[$i],$sqlDatabaseSecureVuln[$j])==-1)
+          {
+
+                
+                $tempLen=strlen($varVulnLine[$i]);
+                $temptrim = substr("$varVulnLine[$i]", 4, $tempLen);   //To Separate > mark from var string. I got this at >var_fetch_array :P
+                if(strcmp($temptrim,$sqlDatabaseSecureVuln[$j])==0)
+                {
+                $tempcheckvarForVuln=0;
+                echo "Protected";
+                break;
+                }
+                else
+                {
+                     $tempcheckvarForVuln=1;
+                     break;
+                }
+           }
+          else
+          {
+             $tempcheckvarForVuln=1;
+          }
+      }
+        if($tempcheckvarForVuln==1)
+        {
+            $tempVarVulnCkh++;
+        }
+    
+    }
+
+//    echo $tempVulnCkh;
+//    echo "<br>";
+//    echo $noofvarVulnLine;
+    if($tempVarVulnCkh==$noofvarVulnLine)
+    {
+        $GLOBALS['sessionVulnVar']++;
     }
 }
 
-'pg_fetch_assoc',
-		'pg_fetch_object'
-		'pg_fetch_result'
-		'pg_fetch_row'
-		'sqlite_fetch_all'
-e
+//Create a variable for end time
+$time_end = microtime(true);
+//Subtract the two times to get seconds
 
-$query = mysql_query("SELECT * FROM users WHERE user='%s' AND password='%s'",mysql_real_escape_string($user),mysql_real_escape_string($password));
+
+
+$infoSqlLines="No of SQL line are <b>".$sqlLines."</b> in this File";
+$infoVulnSqlLines= "<br>No of Vulnerable SQL line are <b>".$sqlVulnLines."</b> in this File";
+
+fwrite($fh,$infoSqlLines);
+fwrite($fh,$infoVulnSqlLines);
+echo $infoSqlLines;
+echo $infoVulnSqlLines;
+$time = $time_end - $time_start;
+
+echo 'Execution time : '.$time.' seconds';
+
+
+
+
+
+
+
+$myJSON = json_encode($json);
+
+echo $myJSON;
+
+
+
+
 
 ?>

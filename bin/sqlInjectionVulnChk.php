@@ -84,7 +84,7 @@ function checkline($sendLine,$lineno,$typeChkLines,$typeChkLine)
 
         if(strcmp($sendLine[$i],$sqlWarmhole[$j])==0) //Compare line array with Input sql array list
           {
-            $string="Line Number".$lineno."May be Vulnerable to Sql Injection";
+            $string="<b>Line Number".$lineno."May be Vulnerable to Sql Injection</b>";
             push($string);
              push($typeChkLine);
 //             echo "This Line May be Vulnerable to Sql Injection<br>";
@@ -455,7 +455,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num)   //Dec==Decl
 
 function push($string)
 {
-         echo htmlspecialchars($string);
+         echo $string;
     
     echo "<br>";
 }
