@@ -1,6 +1,7 @@
 <?php
 
 
+include 'configuration.php';
 $time_start = microtime(true); //Create a variable for start time
 $fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
@@ -17,7 +18,7 @@ $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[18]);
+$typeChkLines = file($conFile[40]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -218,10 +219,10 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num)
            }
         
         
-//        $GLOBALS['countTemp']++;
+        $GLOBALS['countTemp']++;
     }
     
-//     $GLOBALS['sessionVar']++;
+     $GLOBALS['sessionVar']++;
       
     echo "<br>";   
 }

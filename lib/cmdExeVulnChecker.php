@@ -26,7 +26,7 @@ $cmdLineVar=0;       //To calcuate no of var in Vuln line
 $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare after testing it
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
-$typeChkLines = file($conFile[19]);
+$typeChkLines = file($conFile[40]);
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -340,6 +340,14 @@ function checkSecure($vulnChkLine)
                         return $v1 . "<br>" . $v2;
                      }
                       
+
+
+
+echo "<br>No fo Lines are ".$GLOBALS['noLines'];
+
+echo "<br>No of Vulnerable Lines are ".$GLOBALS['noVulLines'];
+
+
 
 
 
