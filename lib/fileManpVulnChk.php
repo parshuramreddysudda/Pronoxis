@@ -3,18 +3,15 @@
 
 include 'configuration.php';
 $time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
+
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-
 $typeChkLines = $SERVER['checkFileName'];
 $LogFileName=$SERVER['LogFileName'];
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-
 
 $json;  
 $myfile = fopen("FileManipulationVuln.json", "w") or die("Unable to open file!");
@@ -49,13 +46,6 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
     checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine,$json,$typeChkLine);
-
-       //Json File for appending output Code 
-                    
-                $myJSON = json_encode($json);
-                file_put_contents("FileDisclosureVuln.json", $myJSON,FILE_APPEND);
-                file_put_contents("FileDisclosureVuln.json",",",FILE_APPEND);
-                
        
     
     $GLOBALS['sno']=1;
@@ -113,6 +103,13 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                     
                checkforSinks($chkLine,$typeChkLines,$chkLineNo,$json);
                   $GLOBALS['noLines']++; 
+                    
+                      //Json File for appending output Code 
+                    
+                $myJSON = json_encode($json);
+                file_put_contents("FileManipulationVuln.json", $myJSON,FILE_APPEND);
+                file_put_contents("FileManipulationVuln.json",",",FILE_APPEND);
+                
                 }
             }
             
@@ -280,7 +277,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 {
    
 //    print_r($chkVarSendline);
-   
+     $temp=0;
     $noofelelments=count($chkVarSendline);
    
     
@@ -294,6 +291,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 //            $Token = new Tokenizer();
 //            $Token->
                 printDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$json);
+              $temp=1;
         }
         
          else
@@ -306,11 +304,18 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 //                 echo $tempCutQuot1;
                
             printDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$json);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
+                   $temp=1;
              }
 
            }
 
     }
+    
+     if($temp==0)
+    {
+        echo "<p class='card-text'>No Variables found </p>";
+    }
+    
 
 
 }
@@ -350,7 +355,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
                 echo "<p class='card-text'>Input Values are found in 
                 <code>".$chkprtDecLine." </code></p>";
                  
-                 $json->InputValChk=" Variables found in their Declaration is ".$chkprtDecLine." ";
+                 $json->InputValChkforVulnVar=" Variables found in their Declaration is ".$chkprtDecLine." ";
                 
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
@@ -383,7 +388,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
                 {
                    echo "<p class='card-text'>Variables are found in Line Number ".$chkprtDecLine_num."</p>";
                     
-                 $json->InputValChk="Variables are found in Line Number ".$chkprtDecLine_num ;
+                 $json->InputValChkforVulnVar="Variables are found in Line Number ".$chkprtDecLine_num ;
                     
                         echo "<p class='card-text'>Code for Line Number   ".$chkprtDecLine_num." is <br><code>".$chkprtDecLine."</code></p>";
                     
@@ -414,25 +419,14 @@ $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
 $jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("FileDisclosureVuln.json", $myJSON,FILE_APPEND);
-file_put_contents("FileDisclosureVuln.json","]",FILE_APPEND);
+file_put_contents("FileManipulationVuln.json", $myJSON,FILE_APPEND);
+file_put_contents("FileManipulationVuln.json","]",FILE_APPEND);
 
 
 
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
-
-
-function push($string)
-{
-         array_push($GLOBALS['fileManipulation_array'],htmlspecialchars($string));
-}
-
-
-echo "<br>".$fileManipulation_array[0];
-$length=count($fileManipulation_array);
-echo $length;
 
 
 ?>
