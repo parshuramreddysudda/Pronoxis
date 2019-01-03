@@ -23,14 +23,11 @@ $LogFileName=$SERVER['LogFileName'];
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
  
-
+//Json Class for storing result in json file
 $json;  
 $myfile = fopen("FileDisclosureVuln.json", "w") or die("Unable to open file!");
 file_put_contents("FileDisclosureVuln.json","[",FILE_APPEND);
 $json->AttackName='FileDisclosureVuln';
-
-
-
 
 
 // Loop through our array, show HTML source as HTML source; and line numbers too.
@@ -186,9 +183,9 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
     }
     if($vuln==0)
     {
-        echo "<p class='card-text'>Input Values <green>Not found </green> Cheking  Variables If </p> ";
+        echo "<p class='card-text'>Input Values <green>Not found </green> Checking  Variables If </p> ";
         
-         $json->InputChk="Input Values <green>Not found </green> Cheking  Variables If  ";
+         $json->InputChk="Input Values <green>Not found </green> Checking  Variables If  ";
         
         checkifVaribles($sinkChkLine,$typeChkLines,$chkLineNo,$json);
     }
@@ -250,7 +247,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 {
    
 //    print_r($chkVarSendline);
-   
+    $temp=0;
     $noofelelments=count($chkVarSendline);
    
     
@@ -264,6 +261,8 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 //            $Token = new Tokenizer();
 //            $Token->
                 printDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$json);
+            
+             $temp=1;
         }
         
          else
@@ -274,7 +273,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
              if($tempCut=='$')
              {
                  echo $tempCutQuot1;
-               
+                $temp=1;
             printDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$json);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
              }
              
@@ -284,6 +283,12 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
         
 //        $GLOBALS['countTemp']++;
     }
+    
+     if($temp==0)
+    {
+        echo "<p class='card-text'>No Variables found </p>";
+    }
+    
      
 }
 
