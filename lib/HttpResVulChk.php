@@ -34,7 +34,7 @@ $superArray=array(); //For Storing all lines
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">FileManipulation Vulnerability Details</h4>
+            <h4 class="card-title">HTTP Responce Vulnerability Details</h4>
             
 <?php
 
@@ -44,7 +44,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
     $superArray=$typeChkLines;
 //    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
-
+        $json=$GLOBALS['json'];
         $sendLine=htmlspecialchars($typeChkLine);
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array

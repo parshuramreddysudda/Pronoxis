@@ -16,16 +16,16 @@ $LogFileName=$SERVER['LogFileName'];
 
 //Json Class for appending result
 $json;  
-$myfile = fopen("XPathInjection.json", "w") or die("Unable to open file!");
-file_put_contents("XPathInjection.json","[",FILE_APPEND);
-$json->AttackName='XPathInjection';
+$myfile = fopen("ReflectionInjection.json", "w") or die("Unable to open file!");
+file_put_contents("ReflectionInjection.json","[",FILE_APPEND);
+$json->AttackName='ReflectionInjection';
 
 $sno=1;
 ?> 
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Xss Vulnerability Details</h4>
+            <h4 class="card-title">ReflectionInjection Vulnerability Details</h4>
             
 <?php
 
@@ -85,7 +85,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
         {
             if(strlen($chkLine[$i])>1)
             {
-                if(strcmp($chkLine[$i],$xpathWarmhole[$j])==0)
+                if(strcmp($chkLine[$i],$reflectionWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks    
                 echo "<hr><br>";
@@ -110,8 +110,8 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
          //Json File for appending output Code 
                     
                 $myJSON = json_encode($json);
-                file_put_contents("XPathInjection.json", $myJSON,FILE_APPEND);
-                file_put_contents("XPathInjection.json",",",FILE_APPEND);
+                file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
+                file_put_contents("ReflectionInjection.json",",",FILE_APPEND);
                 
                     break;
                 }
@@ -479,8 +479,8 @@ $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
 $jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("XPathInjection.json", $myJSON,FILE_APPEND);
-file_put_contents("XPathInjection.json","]",FILE_APPEND);
+file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
+file_put_contents("ReflectionInjection.json","]",FILE_APPEND);
 
 
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";

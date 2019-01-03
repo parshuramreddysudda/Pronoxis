@@ -343,9 +343,7 @@ function chekUserInputValues($sinkChkLine,$json)
         
          $json->InputValues="Input Values <green>Not found </green> Checking  Variables If  ";
     }
-    
-    
-    
+ 
 }
 
 function checkSecure($vulnChkLine,$json)
