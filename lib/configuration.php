@@ -1,16 +1,16 @@
 <?php
 
-
+ini_set('max_execution_time', 3000);
 chdir('C:\xampp\htdocs\dept2\dept');
 $workDir=getcwd();
 $conFile = scandir($workDir);
-print_r($conFile);
+//print_r($conFile);
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[46]); 
+$typeChkLines = file($conFile[57]); 
 
 
 $SERVER['checkFileName']=$typeChkLines;
@@ -23,7 +23,7 @@ $SERVER['LogFileName']="XSS";
 
 <head>
     
-  <title>Bootstrap Example</title>
+  <title>Pronoxis by DECRYPTER</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">
@@ -50,6 +50,9 @@ $SERVER['LogFileName']="XSS";
         }
         green{
             color: #4CAF50;
+        }
+        blue{
+            color: #0074D9;
         }
        @font-face {
 font-family: "Product";

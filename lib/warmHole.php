@@ -320,7 +320,7 @@
 		'sybase_unbuffered_query'		
 	);
 	
-	// xpath injection
+	// Xpath injection
 	$NAME_XPATH = 'XPath Injection';
 	$xpathWarmhole = array(
 		'xpath_eval'					,	
