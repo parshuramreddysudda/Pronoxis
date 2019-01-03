@@ -16,16 +16,16 @@ $LogFileName=$SERVER['LogFileName'];
 
 //Json Class for appending result
 $json;  
-$myfile = fopen("ReflectionInjection.json", "w") or die("Unable to open file!");
-file_put_contents("ReflectionInjection.json","[",FILE_APPEND);
-$json->AttackName='ReflectionInjection';
+$myfile = fopen("ProtocolInjection.json", "w") or die("Unable to open file!");
+file_put_contents("ProtocolInjection.json","[",FILE_APPEND);
+$json->AttackName='ProtocolInjection';
 
 $sno=1;
 ?> 
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Reflection Injection Vulnerability Details</h4>
+            <h4 class="card-title">Protocol Injection Vulnerability Details</h4>
             
 <?php
 
@@ -76,7 +76,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
     
     include'warmHole.php'; 
     $varLenth=count($chkLine);
-    $listLen=count($reflectionWarmhole); 
+    $listLen=count($protocalWarmhole); 
     
     for($i=0;$i<$varLenth;$i++)
     {
@@ -85,7 +85,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
         {
             if(strlen($chkLine[$i])>1)
             {
-                if(strcmp($chkLine[$i],$reflectionWarmhole[$j])==0)
+                if(strcmp($chkLine[$i],$protocalWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks    
                 echo "<hr><br>";
@@ -103,15 +103,15 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                     
                 $json->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
                     
-                  checkforReflecSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                    checkReflecVarSecure($chkLine,$json);
+                  checkforProtocSinks($chkLine,$typeChkLines,$chkLineNo,$json);
+                    checkProtocVarSecure($chkLine,$json);
                   $GLOBALS['noLines']++; 
                     
          //Json File for appending output Code 
                     
                 $myJSON = json_encode($json);
-                file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
-                file_put_contents("ReflectionInjection.json",",",FILE_APPEND);
+                file_put_contents("ProtocolInjection.json", $myJSON,FILE_APPEND);
+                file_put_contents("ProtocolInjection.json",",",FILE_APPEND);
                 
                     break;
                 }
@@ -128,7 +128,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
 
 
 //This function checks for sinks in the source lines
-function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
+function checkforProtocSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
 {
     include'checkWordlists.php';
         
@@ -165,7 +165,7 @@ function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
                   
                     $json->ChkSecure="Checking for Securing Functions";
                   
-                  checkReflecSecure($sinkChkLine,$json);
+                  checkProtocSecure($sinkChkLine,$json);
                   break;
               }
             }
@@ -185,14 +185,14 @@ function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
         
          $json->InputChk="Input Values <green>Not found </green> Checking";
          
-        checkifReflecVariables($sinkChkLine,$typeChkLines,$chkLineNo,$json);
+        checkifProtocVariables($sinkChkLine,$typeChkLines,$chkLineNo,$json);
     }
     
 }
 
 
 //This function checks whether sinks  i.e get and post are protected or not
-function checkReflecSecure($vulnChkLine,$json)
+function checkProtocSecure($vulnChkLine,$json)
 {
     $vuln=0;
     $vuln1=0;
@@ -283,7 +283,7 @@ function checkReflecSecure($vulnChkLine,$json)
             
             //Checking Variables for Vulenrable 
 
-function checkReflecVarSecure($vulnChkLine,$json)
+function checkProtocVarSecure($vulnChkLine,$json)
 {
     $vuln=0;
     $vuln1=0;
@@ -332,7 +332,7 @@ function checkReflecVarSecure($vulnChkLine,$json)
 
 //This functiuons checks for the variables in the vuln lines !
 
-function checkifReflecVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
+function checkifProtocVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 {
    
 //    print_r($chkVarSendline);
@@ -422,7 +422,7 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
-                 checkReflecSecure($chkprtDecLine,$json); checkifReflecVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                 checkProtocSecure($chkprtDecLine,$json); checkifProtocVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
             }
         }
         else if(count($trimmed_DecprtSendline)>1)     //To check the Variable declared after a space or in the a[1] from starting .
@@ -459,8 +459,8 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
 //                    print_r($chkprtDecLine);
 //                  $Token = new Tokenizer();
 //            $Token->
-                checkReflecSecure($chkprtDecLine,$json); 
-                checkifReflecVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                checkProtocSecure($chkprtDecLine,$json); 
+                checkifProtocVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
                 }
             }
        
@@ -479,8 +479,8 @@ $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
 $jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
-file_put_contents("ReflectionInjection.json","]",FILE_APPEND);
+file_put_contents("ProtocolInjection.json", $myJSON,FILE_APPEND);
+file_put_contents("ProtocolInjection.json","]",FILE_APPEND);
 
 
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";

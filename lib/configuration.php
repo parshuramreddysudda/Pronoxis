@@ -1,16 +1,15 @@
 <?php
 
 ini_set('max_execution_time', 3000);
-chdir('C:\xampp\htdocs\dept2\dept');
 $workDir=getcwd();
 $conFile = scandir($workDir);
-//print_r($conFile);
+print_r($conFile);
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[57]); 
+$typeChkLines = file($conFile[36]); 
 
 
 $SERVER['checkFileName']=$typeChkLines;
