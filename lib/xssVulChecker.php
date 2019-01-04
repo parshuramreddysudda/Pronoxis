@@ -482,6 +482,11 @@ echo "<hr>";
 echo "<br>Total Number of Lines are " .$TotalLines;
 echo "<br>Total Number of Vulnerable lines are " .$TotalVulnlines;
             
+            
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalXSSLines']=$TotalLines;
+$_SESSION['TotalXSSVulnLines']=$TotalVulnlines;
 
 ?>
         </div>

@@ -2,7 +2,7 @@
 //php file including strated
 
 //session_start();
-
+echo getcwd();
 include 'config.php';
 if(isset($_POST['projectName']))
 {

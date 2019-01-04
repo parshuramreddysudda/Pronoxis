@@ -55,6 +55,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 //      echo htmlspecialchars($typeChkLine)
     
     $GLOBALS['arrayTemp']=1;
+    $GLOBALS['noLines']++;
 
 
 }
@@ -724,6 +725,12 @@ file_put_contents("SqlVulnerability.json","]",FILE_APPEND);
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+
+
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalSqlLines']=$GLOBALS['noLines'];
+$_SESSION['TotalSqlVulnLines']=$GLOBALS['noVulLines'];
 
 
 

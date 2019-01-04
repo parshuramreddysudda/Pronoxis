@@ -217,6 +217,10 @@ echo "<p class='card-text'>No fo Lines are ".$GLOBALS['UserVulnVar']."</p>";
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['userInputVulnLines']."</p>";
 
 
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalUserLines']=$GLOBALS['noLines'];
+$_SESSION['TotalUserVulnLines']=$GLOBALS['noVulLines'];
 
 
 

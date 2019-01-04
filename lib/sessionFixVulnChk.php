@@ -399,8 +399,17 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
 
 
 
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalSessionLines']=$GLOBALS['noLines'];
+$_SESSION['TotalSessionVulnLines']=$GLOBALS['noVulLines'];
+
+
 
 
 
 
 ?>
+        </div>
+    </div>
+</div>
