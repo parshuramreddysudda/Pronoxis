@@ -16,16 +16,16 @@ $LogFileName=$SERVER['LogFileName'];
 
 //Json Class for appending result
 $json;  
-$myfile = fopen("XPathInjection.json", "w") or die("Unable to open file!");
-file_put_contents("XPathInjection.json","[",FILE_APPEND);
-$json->AttackName='XPathInjection';
+$myfile = fopen("ProtocolInjection.json", "w") or die("Unable to open file!");
+file_put_contents("ProtocolInjection.json","[",FILE_APPEND);
+$json->AttackName='ProtocolInjection';
 
 $sno=1;
 ?> 
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Xss Vulnerability Details</h4>
+            <h4 class="card-title">Protocol Injection Vulnerability Details</h4>
             
 <?php
 
@@ -76,7 +76,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
     
     include'warmHole.php'; 
     $varLenth=count($chkLine);
-    $listLen=count($xpathWarmhole); 
+    $listLen=count($protocalWarmhole); 
     
     for($i=0;$i<$varLenth;$i++)
     {
@@ -85,7 +85,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
         {
             if(strlen($chkLine[$i])>1)
             {
-                if(strcmp($chkLine[$i],$xpathWarmhole[$j])==0)
+                if(strcmp($chkLine[$i],$protocalWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks    
                 echo "<hr><br>";
@@ -103,15 +103,15 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                     
                 $json->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
                     
-                  checkforxPathSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                    checkXpathVarSecure($chkLine,$json);
+                  checkforProtocSinks($chkLine,$typeChkLines,$chkLineNo,$json);
+                    checkProtocVarSecure($chkLine,$json);
                   $GLOBALS['noLines']++; 
                     
          //Json File for appending output Code 
                     
                 $myJSON = json_encode($json);
-                file_put_contents("XPathInjection.json", $myJSON,FILE_APPEND);
-                file_put_contents("XPathInjection.json",",",FILE_APPEND);
+                file_put_contents("ProtocolInjection.json", $myJSON,FILE_APPEND);
+                file_put_contents("ProtocolInjection.json",",",FILE_APPEND);
                 
                     break;
                 }
@@ -128,7 +128,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
 
 
 //This function checks for sinks in the source lines
-function checkforxPathSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
+function checkforProtocSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
 {
     include'checkWordlists.php';
         
@@ -165,7 +165,7 @@ function checkforxPathSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
                   
                     $json->ChkSecure="Checking for Securing Functions";
                   
-                  checkxpathSecure($sinkChkLine,$json);
+                  checkProtocSecure($sinkChkLine,$json);
                   break;
               }
             }
@@ -185,14 +185,14 @@ function checkforxPathSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
         
          $json->InputChk="Input Values <green>Not found </green> Checking";
          
-        checkifxPathVariables($sinkChkLine,$typeChkLines,$chkLineNo,$json);
+        checkifProtocVariables($sinkChkLine,$typeChkLines,$chkLineNo,$json);
     }
     
 }
 
 
 //This function checks whether sinks  i.e get and post are protected or not
-function checkxpathSecure($vulnChkLine,$json)
+function checkProtocSecure($vulnChkLine,$json)
 {
     $vuln=0;
     $vuln1=0;
@@ -226,7 +226,7 @@ function checkxpathSecure($vulnChkLine,$json)
     }
     if($vuln==0)
     {
-        echo "<p class='card-text'>No Securing functions Found</p>";
+        echo "<p class='card-text'>No Securing functions or Variables Found</p>";
         
           $json->Functions=" No Securing functions Found";
         
@@ -266,7 +266,7 @@ function checkxpathSecure($vulnChkLine,$json)
     }
     if($vuln1==0)
     {
-        echo "<p class='card-text'>No Securing functions Found</p>";
+        echo "<p class='card-text'>No Securing functions or Variables Found</p>";
         
           $json->fileFunctions=" No Securing functions Found";
         
@@ -283,13 +283,13 @@ function checkxpathSecure($vulnChkLine,$json)
             
             //Checking Variables for Vulenrable 
 
-function checkXpathVarSecure($vulnChkLine,$json)
+function checkProtocVarSecure($vulnChkLine,$json)
 {
     $vuln=0;
     $vuln1=0;
     include'vulnWordlist.php';
     include 'checkWordlists.php';
-        $listCount=count($xPathSecure);
+        $listCount=count($anySecureVuln);
         $varCount=count($vulnChkLine);
     
     for($i=0;$i<$varCount;$i++)
@@ -300,12 +300,12 @@ function checkXpathVarSecure($vulnChkLine,$json)
             if(strlen($vulnChkLine[$i])>1)
             {
                 
-            if(strcmp($vulnChkLine[$i],$xPathSecure[$j])==0)
+            if(strcmp($vulnChkLine[$i],$anySecureVuln[$j])==0)
                {
                
-                  echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
+                  echo "<p class='card-text'>This Line is <green>Secure</green> with  <code>  ".$vulnChkLine[$i]."</code></p>";
                 
-                   $json->XpathSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
+                   $json->XpathSecure="This Line is  Secure with  ".$anySecureVuln[$i]." ";
                 
                  $vuln=1;
                   break;
@@ -316,7 +316,7 @@ function checkXpathVarSecure($vulnChkLine,$json)
     }
     if($vuln==0)
     {
-        echo "<p class='card-text'>No Securing functions Found</p>";
+        echo "<p class='card-text'>No Securing functions Found For Main Line</p>";
         
           $json->Functions=" No Securing functions Found";
         
@@ -332,7 +332,7 @@ function checkXpathVarSecure($vulnChkLine,$json)
 
 //This functiuons checks for the variables in the vuln lines !
 
-function checkifxPathVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
+function checkifProtocVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 {
    
 //    print_r($chkVarSendline);
@@ -422,7 +422,7 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
                  $chkprtDecLine = multiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
-                 checkxpathSecure($chkprtDecLine,$json); checkifxPathVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                 checkProtocSecure($chkprtDecLine,$json); checkifProtocVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
             }
         }
         else if(count($trimmed_DecprtSendline)>1)     //To check the Variable declared after a space or in the a[1] from starting .
@@ -459,8 +459,8 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
 //                    print_r($chkprtDecLine);
 //                  $Token = new Tokenizer();
 //            $Token->
-                checkxpathSecure($chkprtDecLine,$json); 
-                checkifxPathVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                checkProtocSecure($chkprtDecLine,$json); 
+                checkifProtocVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
                 }
             }
        
@@ -479,8 +479,8 @@ $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
 $jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("XPathInjection.json", $myJSON,FILE_APPEND);
-file_put_contents("XPathInjection.json","]",FILE_APPEND);
+file_put_contents("ProtocolInjection.json", $myJSON,FILE_APPEND);
+file_put_contents("ProtocolInjection.json","]",FILE_APPEND);
 
 
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
@@ -491,8 +491,9 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
             
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalxPathLines']=$GLOBALS['httpTotalLines'];
-$_SESSION['TotalxPathVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalProtocLines']=$GLOBALS['noLines'];
+$_SESSION['TotalProtocVulnLines']=$GLOBALS['noVulLines'];
+
 
 
 ?>

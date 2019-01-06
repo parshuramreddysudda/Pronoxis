@@ -55,6 +55,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 //      echo htmlspecialchars($typeChkLine)
     
     $GLOBALS['arrayTemp']=1;
+    $GLOBALS['noLines']++;
 
 
 }
@@ -357,12 +358,13 @@ function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines,$variables,$j
     
  
      
-        
-         echo "<p class='card-text'>No of Var ".$GLOBALS['sessionVar']-1;
+        $tempSession=$GLOBALS['sessionVar'];
+        $tempSession=$tempSession-1;
+         echo "<p class='card-text'>No of Var ".$tempSession;
          echo "</p>";
         
         
-        $json->NoofVar="No of Var ".$GLOBALS['sessionVar']-1;
+        $json->NoofVar="No of Var ".$tempSession;
         
         
         echo "<p class='card-text'>No of Vulnerable Var ".$GLOBALS['sessionVulnVar']."</p>";
@@ -430,7 +432,7 @@ function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sess
 {
    
 //    print_r($chkVarSendline);
-   
+   $variableschk=0;
     $noofelelments=count($chkVarSendline);
    
     
@@ -469,10 +471,9 @@ function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sess
             if($GLOBALS['arrayTemp']==3||$GLOBALS['arrayTemp']==2)
             {
                 $GLOBALS['arrayTemp']--;
-              
-          
             }
-             }
+                 
+            }
              
             
            }
@@ -492,24 +493,26 @@ function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sess
 function checkSecure($vulnChkLine,$json)
 {
     $vuln=0;
+    $VulnLineArray=explode(" ",$vulnChkLine);
     include'vulnWordlist.php';
         $listCount=count($xssSecureVuln);
-        $varCount=count($vulnChkLine);
+    
+        $varCount=count($VulnLineArray);
     
     for($i=0;$i<$varCount;$i++)
     {
         for($j=0;$j<$listCount;$j++)
         {
             
-            if(strlen($vulnChkLine[$i])>1)
+            if(strlen($VulnLineArray[$i])>1)
             {
                 
-            if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
+            if(strcmp($VulnLineArray[$i],$xssSecureVuln[$j])==0)
                {
             
-                echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$vulnChkLine[$i]."</p>";
+                echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$VulnLineArray[$i]."</p>";
                 
-                   $json->Secure="This Line is  Secure with  input values ".$vulnChkLine[$i]." ";
+                   $json->Secure="This Line is  Secure with  input values ".$VulnLineArray[$i]." ";
                 
                 
                  $vuln=1;
@@ -724,6 +727,12 @@ file_put_contents("SqlVulnerability.json","]",FILE_APPEND);
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+
+
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalSqlLines']=$GLOBALS['noLines'];
+$_SESSION['TotalSqlVulnLines']=$GLOBALS['noVulLines'];
 
 
 
