@@ -1,3 +1,7 @@
+
+<html>
+<body  style="background-color:#FFFFFF;">
+
 <?php
 
 
@@ -7,8 +11,9 @@ $fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
 //chdir('G:\xammp\htdocs\test');
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
@@ -33,10 +38,9 @@ $superArray=array(); //For Storing all lines
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">CodeExecution Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
 <?php
             
@@ -405,6 +409,7 @@ $_SESSION['TotalCodeVulnLines']=$GLOBALS['noVulLines'];
 </div>            
             
                        
-            
+    </body>
+</html>
             
             

@@ -1,16 +1,12 @@
 <?php
-include 'checkTemp.php';
+include 'FullScanConfig.php';
 
 ini_set('max_execution_time', 30000);
-chdir('C:\xampp\htdocs\dept2\dept');
 
-echo  $_SESSION['address'];
+chdir($_SESSION['address']);
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-$SERVER['LogFileName']='tEMP';
-$SERVER['checkFileName']=$_SESSION['AllcheckFileName'];
-echo $_SESSION['AllcheckFileName'];
 ?>
  
 

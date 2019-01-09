@@ -1,4 +1,7 @@
- <?php
+<html>
+<body  style="background-color:#FFFFFF;">
+
+    <?php
 
  include 'configuration.php';
 $time_start = microtime(true); //Create a variable for start time
@@ -16,11 +19,12 @@ $tempVarVulnCkh=0; //To check if Var line is vulnerable to sql injetcion
 $sqlLines=0; //For Storing no of Sql lines
 $sqlVulnLines=0; //For Storing no of Sql lines
 
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
 
 //Json Class for appending result
 $json;  
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$LogFileName='temp';
 
 $myfile = fopen("SqlVulnerability.json", "w") or die("Unable to open file!");
 file_put_contents("SqlVulnerability.json","[",FILE_APPEND);
@@ -33,10 +37,10 @@ $arrayTemp=3;
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">SQL Injection Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
+           
             
 <?php
 
@@ -744,4 +748,5 @@ $_SESSION['TotalSqlVulnLines']=$GLOBALS['noVulLines'];
         </div>
     </div>
 </div>            
-            
+    </body>
+</html>

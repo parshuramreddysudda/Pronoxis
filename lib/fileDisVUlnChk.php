@@ -1,3 +1,8 @@
+<html>
+<body  style="background-color:#FFFFFF;">
+
+
+
 <?php
 
 
@@ -16,9 +21,9 @@ $sno=1;  //For counting vuln var
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -33,10 +38,9 @@ $json->AttackName='FileDisclosureVuln';
 // Loop through our array, show HTML source as HTML source; and line numbers too.
 ?>
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">FileDisclosure Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
             
 <?php
@@ -414,4 +418,5 @@ $_SESSION['TotalFileDisVulnLines']=$GLOBALS['noVulLines'];
 </div>            
             
             
-            
+    </body>
+</html>

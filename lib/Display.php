@@ -1,7 +1,7 @@
 <?php
 
-include'lib/checkExtension.php';
-include 'lib/configuration.php';
+include'checkExtension.php';
+include 'configuration.php';
 include 'getFilesContent.php'; 
 
 if(isset($_POST['projectName']))
@@ -10,9 +10,7 @@ if(isset($_POST['projectName']))
 $projectName=$_POST['projectName'];
 $_SESSION['projectName']=$projectName;
   
-    
-    
-include'lib/getFilesContent.php';
+
 }
 
 
@@ -24,25 +22,26 @@ include'lib/getFilesContent.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pronoxis</title>
-<!--    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"> -->
-   <link rel="stylesheet" href="assets/bootstrap/css/material-kit.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/material-kit.css.map">
-    <link href="assets/fonts/product-sans/Product%20Sans%20Regular.ttf" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="assets/css/loading.css">
+<!--    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css"> -->
+   <link rel="stylesheet" href="../assets/bootstrap/css/material-kit.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/material-kit.css.map">
+    <link href="../assets/fonts/product-sans/Product%20Sans%20Regular.ttf" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="../assets/css/loading.css">
     
-    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css">
    
     
-      <link rel="stylesheet" href="assets/LoadingAssests/loading-bar.css">
-    <script  type="text/javascript" src="assets/LoadingAssests/loading-bar.js"></script>
+      <link rel="stylesheet" href="../assets/LoadingAssests/loading-bar.css">
+    <script  type="text/javascript" src="../assets/LoadingAssests/loading-bar.js"></script>
 <style>
 .counter {
     
    @font-face {
 font-family: "Product";
-src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
+src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
   vertical-align: middle;
 }
+    }
     </style>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -50,7 +49,7 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
 
 <body style="font:Product;">
     <nav class="navbar navbar-light navbar-expand-md">
-        <div class="container-fluid"><a class="navbar-brand" href="#" style="background-image:url(&quot;assets/img/logo.png&quot;);background-position:center;background-size:contain;background-repeat:no-repeat;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</a>
+        <div class="container-fluid"><a class="navbar-brand" href="#" style="background-image:url(&quot;../assets/img/logo.png&quot;);background-position:center;background-size:contain;background-repeat:no-repeat;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</a>
             <button
                 class="navbar-toggler" data-toggle="collapse" data-target="#navcol-2"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-2">
@@ -138,9 +137,9 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
 
 <div id="scanGroup">
     
-   Partial Scan <input type="radio" name="typeScan" checked="checked" value="1"  />
+    Complete Scan <input type="radio" name="typeScan" checked="checked" value="1"  /> 
     
-    Complete Scan<input type="radio" name="typeScan" value="2" />
+  Partial Scan  <input type="radio" name="typeScan" value="2" />
     
     <div id="mainScan" class="desc">
        This is The Main Section
@@ -218,7 +217,6 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
                   <?php
         
         $lengthofFilearray=count($filesArray);
-        echo $lengthofFilearray;
         for($i=0;$i<$lengthofFilearray;$i++)
         {
             echo    "<div class='card-group'>";
@@ -230,7 +228,7 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
         <div class='card-body'>
       
    
-        <h4 class='card-title' style='font-family: 'Product Sans', sans-serif;' >".$filesArray[$i]."</h4>
+        <h4 class='card-title'>".$filesArray[$i]."</h4>
          
   
                       <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
@@ -256,7 +254,7 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
       
    
             
-        <h4 class='card-title' style='font-family: 'Product Sans', sans-serif;' >".$filesArray[$i]."</h4>
+        <h4 class='card-title'  >".$filesArray[$i]."</h4>
      
    
                       <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
@@ -281,7 +279,7 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
       
     
             
-        <h4 class='card-title' style='font-family: 'Product Sans', sans-serif;' >".$filesArray[$i]."</h4>
+        <h4 class='card-title'  >".$filesArray[$i]."</h4>
                       <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
                <input type='hidden'  name='page' value=".$filesArray[$i].">
           
@@ -309,12 +307,12 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
 
     
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/material-dashboard.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/js/material-dashboard.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-    <script  src="assets/js/index.js"></script>
+    <script  src="../assets/js/index.js"></script>
     <script>
 $(document).ready(function() {
     $("input[name$='typeScan']").click(function() {

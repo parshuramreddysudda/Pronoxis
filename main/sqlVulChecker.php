@@ -1,10 +1,7 @@
  <?php
 
  include 'designConfig.php';
-$time_start = microtime(true); //Create a variable for start time
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('/Applications/MAMP/htdocs/dept');
+
 $countTemp=0;  ///For Calculating Recurssion
 $sqlDatabaseInput;
 $sessionVar=0;        //To Calculate total no of var 
@@ -19,8 +16,8 @@ $sqlVulnLines=0; //For Storing no of Sql lines
 
 //Json Class for appending result
 $json;  
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 $myfile = fopen("SqlVulnerability.json", "w") or die("Unable to open file!");
 file_put_contents("SqlVulnerability.json","[",FILE_APPEND);
@@ -55,7 +52,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 //      echo htmlspecialchars($typeChkLine)
     
     $GLOBALS['arrayTemp']=1;
-    $GLOBALS['noLines']++;
+    $GLOBALS['noSqlLines']++;
 
 
 }
@@ -531,7 +528,7 @@ function checkSecure($vulnChkLine,$json)
         echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
         $json->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions with Input values";
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noSqlVulLines']++;
     }
     
 }
@@ -698,21 +695,11 @@ function checkVarVuln($varVulnLine,$json)
     }
 }
 
-//Create a variable for end time
-$time_end = microtime(true);
-//Subtract the two times to get seconds
- 
 
 
 $infoSqlLines="No of SQL line are <b>".$sqlLines."</b> in this File";
 $infoVulnSqlLines= "<br>No of Vulnerable SQL line are <b>".$sqlVulnLines."</b> in this File";
-            
-            
-$time = $time_end - $time_start;
-
-echo 'Execution time : '.$time.' seconds';
-            
-            
+                      
             
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
 $jsonFinal->Total_lines="Total Number of Lines are " .$sqlLines;
@@ -724,18 +711,18 @@ file_put_contents("SqlVulnerability.json","]",FILE_APPEND);
 
 
 
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
+echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noSqlLines']."</p>";
 
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noSqlVulLines']."</p>";
 
 
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalSqlLines']=$GLOBALS['noLines'];
-$_SESSION['TotalSqlVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalSqlLines']=$GLOBALS['noSqlLines']+$_SESSION['TotalSqlLines'];
+$_SESSION['TotalSqlVulnLines']=$GLOBALS['noSqlVulLines']+$_SESSION['TotalSqlVulnLines'];
 
 
-
+$_SESSION['SqlDone']=0;
 ?>
             
                       

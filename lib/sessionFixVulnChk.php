@@ -1,3 +1,6 @@
+<html>
+<body  style="background-color:#FFFFFF;">
+
 <?php
 
 
@@ -7,8 +10,9 @@ $fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
 
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
@@ -29,10 +33,9 @@ $sno=1;
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">SessionFixation Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
 <?php
 
@@ -41,7 +44,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
      $json=$GLOBALS['json'];
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
         $sendLine=htmlspecialchars($typeChkLine);
@@ -303,9 +306,7 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
         $firstEle=array_shift($filteredArray);
         if(strcmp($prtDecVar,$firstEle)==0)
         { 
-           
- 
-            echo "<br>";
+        
             
 //            echo $prtDecVar;
 //            echo $trimmed_DecprtSendline[0];
@@ -413,3 +414,5 @@ $_SESSION['TotalSessionVulnLines']=$GLOBALS['noVulLines'];
         </div>
     </div>
 </div>
+    </body>
+</html>

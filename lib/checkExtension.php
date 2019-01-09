@@ -1,6 +1,6 @@
 <?php
+include 'Sessionfile.php';
 
-session_start();
 $_SESSION['$php'] = 0;
 $php   =0;
 $html  =0;

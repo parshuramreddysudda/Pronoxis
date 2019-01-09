@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+ 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,7 +59,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-     <form class="form-inline " action="Display.php" method="post" id="search">
+     <form class="form-inline " action="lib/Display.php" method="post" id="search">
 <div class="row">
         <div class="col-lg-6">
                                 <div class="form-group label-floating">

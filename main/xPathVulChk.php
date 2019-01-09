@@ -2,16 +2,12 @@
 
 include 'designConfig.php';
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
 //chdir('G:\xammp\htdocs\test');
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
-$noVulLines=0;       //TO count no of Vuln varaibles
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$noxPathVulLines=0;       //TO count no of Vuln varaibles
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 
 //Json Class for appending result
@@ -25,7 +21,7 @@ $sno=1;
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Xss Vulnerability Details</h4>
+            <h4 class="card-title">xPath Vulnerability Details</h4>
             
 <?php
 
@@ -235,7 +231,7 @@ function checkxpathSecure($vulnChkLine,$json)
          $json->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
         
         
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noxPathVulLines']++;
     }
     
     //Checking the File input Strings  (sinks)
@@ -274,7 +270,7 @@ function checkxpathSecure($vulnChkLine,$json)
         
          $json->fileSinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
         
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noxPathVulLines']++;
     }
     
     
@@ -326,7 +322,7 @@ function checkXpathVarSecure($vulnChkLine,$json)
         
          
         
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noxPathVulLines']++;
     }
 }
 
@@ -476,7 +472,7 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
 $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
+$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noxPathVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
 file_put_contents("XPathInjection.json", $myJSON,FILE_APPEND);
@@ -486,14 +482,15 @@ file_put_contents("XPathInjection.json","]",FILE_APPEND);
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['httpTotalLines']."</p>";
 
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noxPathVulLines']."</p>";
 
             
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalxPathLines']=$GLOBALS['httpTotalLines'];
-$_SESSION['TotalxPathVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalxPathLines']=$GLOBALS['httpTotalLines']+$_SESSION['TotalxPathLines'];
+$_SESSION['TotalxPathVulnLines']=$GLOBALS['noxPathVulLines']+$_SESSION['TotalxPathVulnLines'];
 
+$_SESSION['xPathDone']=0;
 
 ?>
  </div>

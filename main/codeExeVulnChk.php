@@ -2,17 +2,12 @@
 
 
 include 'designConfig.php';
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 $httpTotalLines=0;  //to count no of lines
-$noLines=0;         //To count no of lines
-$noVulLines=0;       //TO count no of Vuln varaibles
+$nocodeLines=0;         //To count no of lines
+$nocodeVulLines=0;       //TO count no of Vuln varaibles
 
 
 //Json Class for appending result
@@ -105,7 +100,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                     
                     
                 checkforSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                  $GLOBALS['noLines']++; 
+                  $GLOBALS['nocodeLines']++; 
                     
                    $myJSON = json_encode($json);
                 file_put_contents("CodeExecutionVuln.json", $myJSON,FILE_APPEND);
@@ -228,7 +223,7 @@ function checkSecure($vulnChkLine,$json)
         echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
         $json->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions with Input values";
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['nocodeVulLines']++;
     }
     
 }
@@ -380,8 +375,8 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
 
 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
+$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['nocodeLines'];
+$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['nocodeVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
 file_put_contents("CodeExecutionVuln.json", $myJSON,FILE_APPEND);
@@ -389,15 +384,16 @@ file_put_contents("CodeExecutionVuln.json","]",FILE_APPEND);
 
 
 
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
+echo "<p class='card-text'>No fo Lines are ".$GLOBALS['nocodeLines']."</p>";
 
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['nocodeVulLines']."</p>";
 
 
 //For calculating an reporting no of lines infected 
-$_SESSION['TotalCodeLines']=$GLOBALS['noLines'];
-$_SESSION['TotalCodeVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalCodeLines']=$GLOBALS['nocodeLines']+$_SESSION['TotalCodeLines'];
+$_SESSION['TotalCodeVulnLines']=$GLOBALS['nocodeVulLines']+$_SESSION['TotalCodeVulnLines'];
 
+$_SESSION['codeDone']=0;
 ?>
             
         </div>

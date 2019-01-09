@@ -1,51 +1,84 @@
 <?php
-include 'checkTemp.php';
-//session_destroy();
+include 'FullScanConfig.php';
+include 'resultconfig.php';
+//session_destroy(); 
 ini_set('max_execution_time', 30000);
 chdir('C:\xampp\htdocs\dept2\dept');
 $workDir=getcwd();
-
+$scan=0;
 $conFile = scandir($workDir);
-//print_r($conFile);
+print_r($conFile);
 $countOfAll=count($conFile);
-$typeChkLines=file($conFile);
-$string=$conFile[0];
-
- 
+  
 mkdir("testing");
-chdir('testing');
-echo getcwd();
-for($fullScan=0;$fullScan<$countOfAll;$fullScan++)
+
+//echo getcwd();
+for($fullScan=0;$fullScan<4;$fullScan++)
 {
 $tmp = explode('.', $conFile[$fullScan]);
 $file_extension = end($tmp);
 
-   
-
+    
+     
 if($file_extension=='php')
-{
+{ 
+
+$typeChkLines = file($conFile[$fullScan]); 
+$_SESSION['checkTypeCheckLine']=$typeChkLines;
+chdir('testing');
 mkdir($conFile[$fullScan]);
 chdir($conFile[$fullScan]);
+//    
+
 $_SESSION['address']=getcwd();
-$_SESSION['AllcheckFileName']=$typeChkLines;
-//include 'resultconfig.php';
+startFull();
+//while($scan==0)
+//{ 
+//
+//    if(isset($_SESSION['cmdDone'])&&isset($_SESSION['codeDone'])&&isset($_SESSION['fileDisDone'])&&isset($_SESSION['fileIncDone'])&&isset($_SESSION['fileManDone'])&&isset($_SESSION['httpResDone'])&&isset($_SESSION['ProtDone'])&&isset($_SESSION['RefDone'])&&isset($_SESSION['SqlDone'])&&isset($_SESSION['SessionDone'])&&isset($_SESSION['UserInpDone'])&&isset($_SESSION['xPathDone'])&&isset($_SESSION['XSSDone'])&&isset($_SESSION['SqlDone']))
+//    {
+//        echo "Present";
+//        $scan++;
+//         
+//    } 
+//}
+//sleep(2);
+unset($_SESSION['cmdDone']);
+unset($_SESSION['codeDone']);
+unset($_SESSION['fileDisDone']);
+unset($_SESSION['fileIncDone']);
+unset($_SESSION['fileManDone']);
+unset($_SESSION['httpResDone']);
+unset($_SESSION['ProtDone']);
+unset($_SESSION['RefDone']);
+unset($_SESSION['SqlDone']);
+unset($_SESSION['SessionDone']);
+unset($_SESSION['UserInpDone']);
+unset($_SESSION['xPathDone']);
+unset($_SESSION['XSSDone']);
+unset($_SESSION['SqlDone']);
+chdir('..');
 chdir('..');
 }
     
 }
-$domains=$conFile;
-
-$typeChkLines = file($conFile[55]); 
 
 
+function runUntilComplete()
+{
+    while(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
+$_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
+    {
+        echo "Done";
+    }
+}
 
 
 
 
 
 
-//print_r($typeChkLines);
-$SERVER['LogFileName']="XSS";
+
  
 ?> 
 <html>
@@ -92,9 +125,10 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf);
 
     </style>
 </head>
-    
+     
  
-total no of lines of code is <?php
+Total no of lines of code is 
+    <?php
     
     if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
 $_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
