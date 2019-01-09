@@ -6,12 +6,12 @@ $time_start = microtime(true); //Create a variable for start time
 
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 $httpTotalLines=0;  //to count no of lines
-$noLines=0;         //To count no of lines
-$noVulLines=0;       //TO count no of Vuln varaibles
+$noFileManLines=0;         //To count no of lines
+$noFileManVulLines=0;       //TO count no of Vuln varaibles
 
 $json;  
 $myfile = fopen("FileManipulationVuln.json", "w") or die("Unable to open file!");
@@ -39,7 +39,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
     $superArray=$typeChkLines;
     
      $json=$GLOBALS['json'];
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
         
         $sendLine=htmlspecialchars($typeChkLine);
@@ -102,7 +102,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                 $json->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
                     
                checkforSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                  $GLOBALS['noLines']++; 
+                  $GLOBALS['noFileManLines']++; 
                     
                       //Json File for appending output Code 
                     
@@ -262,7 +262,7 @@ function checkSecure($vulnChkLine,$json)
     {
         echo "<p class='card-text'>No Sinks Found</p>";
         $json->SinkStatus="No Sinks Found";
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noFileManVulLines']++;
     }
     
     
@@ -415,8 +415,8 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
 
 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
+$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noFileManLines'];
+$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noFileManVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
 file_put_contents("FileManipulationVuln.json", $myJSON,FILE_APPEND);
@@ -424,17 +424,18 @@ file_put_contents("FileManipulationVuln.json","]",FILE_APPEND);
 
 
 
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
+echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noFileManLines']."</p>";
 
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noFileManVulLines']."</p>";
 
 
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalFileManLines']=$GLOBALS['noLines'];
-$_SESSION['TotalFileManVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalFileManLines']=$GLOBALS['noFileManLines']+$_SESSION['TotalFileManLines'];
+$_SESSION['TotalFileManVulnLines']=$GLOBALS['noFileManVulLines']+$_SESSION['TotalFileManVulnLines'];
 
 
+$_SESSION['fileManDone']=0;
 ?>
          
 

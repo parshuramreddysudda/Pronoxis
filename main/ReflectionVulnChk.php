@@ -10,8 +10,8 @@ $date = $date->format("y:m:d h:i:s");
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 
 //Json Class for appending result
@@ -494,11 +494,14 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
             
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalReflecLines']=$GLOBALS['noLines'];
-$_SESSION['TotalReflecVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalReflecLines']=$GLOBALS['noLines']+$_SESSION['TotalReflecLines'];
+$_SESSION['TotalReflecVulnLines']=$GLOBALS['noVulLines']+$_SESSION['TotalReflecVulnLines'];
 
+$_SESSION['RefDone']=0;
+      
 
-?>
+?>            
+
  </div>
     </div>
 </div>

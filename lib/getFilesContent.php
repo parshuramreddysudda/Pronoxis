@@ -55,7 +55,12 @@ for($i=0;$i<$lengthofDir;$i++)
 {
     
  $name = $currentDirFiles[$i];
-$ext = end((explode(".", $name))); # extra () to prevent notice
+//$ext = end((explode(".", $name))); # extra () to prevent notice
+    
+$tmp = explode(".", $name);
+$ext = end($tmp);
+
+   
 
 if($ext=='php')
 {

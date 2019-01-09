@@ -3,18 +3,13 @@
 include 'designConfig.php';
 //// For Only PHP Pages
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
 
-echo "<br>";
-$TotalLines=0;
+$TotalXSSLines=0;
 $countTemp=0;  ///For Calculating Recurssion
-$TotalVulnlines=0;
+$TotalXSSVulnlines=0;
 $TotalVarInPage=0; 
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible
 
@@ -56,7 +51,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
         $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
         Sources($typeChkLine,$trimSendline,$typeChkLines,$typeChkLine_num,$json);
-    $GLOBALS['TotalLines']++;
+    $GLOBALS['TotalXSSLines']++;
     $GLOBALS['VarNo']=1;
 }
 
@@ -104,8 +99,8 @@ function Sources($Line,$chkLineSource,$typeChkLines,$typeChkLine_num,$json)
         //Json File for appending output Code 
                 $myJSON = json_encode($json);
                 $LogFileName=$GLOBALS['LogFileName'];
-                file_put_contents("$LogFileName.json", $myJSON,FILE_APPEND);
-                file_put_contents("$LogFileName.json",",",FILE_APPEND);
+                file_put_contents("XSS.json", $myJSON,FILE_APPEND);
+                file_put_contents("XSS.json",",",FILE_APPEND);
                 
                  
                 
@@ -176,7 +171,7 @@ function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
                            
                             //Json object  appending to Class Code
                            $json->SinSecure="Line is  Not Secure  Due to Sink ".$preVar." and it Doesn't have any Secure Functions";
-                            $GLOBALS['TotalVulnlines'];
+                            $GLOBALS['TotalXSSVulnlines'];
                             }
                          
                        $varPresnt=1;
@@ -286,7 +281,7 @@ function checkVarLineVuln($vulnVar,$allLines,$json)
                       else
                       { 
 //                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
-                           $GLOBALS['TotalVulnlines']++;
+                           $GLOBALS['TotalXSSVulnlines']++;
                           
                            echo "<p class='card-text'>Source Line no ".$chkprtDecLine_num." is <red>Not Secure </red> since Line <b> ".$chkprtDecLine."</b>  does not have any Securing functions and has Sinks</p>";  
                           
@@ -310,7 +305,7 @@ function checkVarLineVuln($vulnVar,$allLines,$json)
                       else
                       {
 //                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure Since it has sources and not have secure functions";//InSecure function after checking for sources and not having secure functions
-                           $GLOBALS['TotalVulnlines']++;
+                           $GLOBALS['TotalXSSVulnlines']++;
                            echo "<p class='card-text' style=''>Source Line no ".$chkprtDecLine_num." is <red>Not Secure </red> Since it has sources and not have secure functions</p>";  
                           
                           
@@ -470,24 +465,24 @@ function checkForSecureString()
               
             
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$TotalLines;
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$TotalVulnlines;
+$jsonFinal->Total_lines="Total Number of Lines are " .$TotalXSSLines;
+$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$TotalXSSVulnlines;
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("$LogFileName.json", $myJSON,FILE_APPEND);
-file_put_contents("$LogFileName.json","]",FILE_APPEND);
+file_put_contents("XSS.json", $myJSON,FILE_APPEND);
+file_put_contents("XSS.json","]",FILE_APPEND);
 
             
 echo "<hr>";
-echo "<br>Total Number of Lines are " .$TotalLines;
-echo "<br>Total Number of Vulnerable lines are " .$TotalVulnlines;
+echo "<br>Total Number of Lines are " .$TotalXSSLines;
+echo "<br>Total Number of Vulnerable lines are " .$TotalXSSVulnlines;
             
             
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalXSSLines']=$TotalLines;
-$_SESSION['TotalXSSVulnLines']=$TotalVulnlines;
-
+$_SESSION['TotalXSSLines']=$TotalXSSLines+$_SESSION['TotalXSSLines'];
+$_SESSION['TotalXSSVulnLines']=$TotalXSSVulnlines+$_SESSION['TotalXSSVulnLines'];
+$_SESSION['XSSDone']=0;
 ?>
         </div>
     </div>

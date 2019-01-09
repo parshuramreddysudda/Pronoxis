@@ -1,3 +1,5 @@
+<html>
+<body  style="background-color:#FFFFFF;">
 
 <?php
 
@@ -12,9 +14,9 @@ $date = $date->format("y:m:d h:i:s");
 fwrite($fh, $date);
 
 $serverInputValues;
-
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 
 //Json Class for appending result
@@ -33,11 +35,9 @@ $userInputVulnLines=0; //For Storing no of Sql lines
 
 
  
-
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">FileInclusionVuln Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
 <?php
 // Loop through our array, show HTML source as HTML source; and line numbers too.
@@ -229,5 +229,6 @@ $_SESSION['TotalUserVulnLines']=$GLOBALS['noVulLines'];
                    </div>
     </div>
 </div>            
-            
+    </body>
+</html>
              

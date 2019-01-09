@@ -1,10 +1,7 @@
 <?php
 
 include 'designConfig.php';
-
-$time_start = microtime(true); //Create a variable for start time
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
+chdir($_SESSION['address']);
 
 $cmdTotalLines=0;
 $countTemp=0;       //For Calculating Recurssion
@@ -15,9 +12,9 @@ $cmdLineVar=0;       //To calcuate no of var in Vuln line
 $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare after testing it
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
-$noVulLines=0;//To calculate total Lines
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$noCmdVulLines=0;//To calculate total Lines
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 $sno=1;  //For counting vuln var
 
@@ -35,7 +32,7 @@ $superArray=array(); //For Storing all lines
 <div class="container">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">FileDisclosure Vulnerability Details</h4>
+            <h4 class="card-title">Command Execution Vulnerability Details</h4>
             
             
 <?php
@@ -108,7 +105,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$json,$Line)
                   $json->MainInfo="Line Number ".$chkLineNo." is Vulnerable  .All the variables may Not be secured"; 
                 
                 
-                $GLOBALS['noVulLines']++;
+                $GLOBALS['noCmdVulLines']++;
 
               }
               else
@@ -387,7 +384,7 @@ function checkSecure($vulnChkLine,$json)
 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
 $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
+$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noCmdVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
 file_put_contents("CmdExecution.json", $myJSON,FILE_APPEND);
@@ -396,14 +393,14 @@ file_put_contents("CmdExecution.json","]",FILE_APPEND);
 
 echo "<p class='card-text'>No fo Lines are ".$GLOBALS['cmdTotalLines']."</p>";
 
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noCmdVulLines']."</p>";
 
 //For calculating an reporting no of lines infected 
 
-$_SESSION['TotalCmdLines']=$GLOBALS['noLines'];
-$_SESSION['TotalCmdVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalCmdLines']=$GLOBALS['cmdTotalLines']+$_SESSION['TotalCmdLines'];
+$_SESSION['TotalCmdVulnLines']=$GLOBALS['noCmdVulLines']+$_SESSION['TotalCmdVulnLines'];
 
-
+$_SESSION['cmdDone']=0;
 ?>
             
                 </div>

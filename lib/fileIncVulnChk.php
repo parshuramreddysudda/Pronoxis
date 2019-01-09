@@ -1,4 +1,8 @@
-<?php
+<html>
+<body  style="background-color:#FFFFFF;">
+
+    
+    <?php
 
 include 'configuration.php';
 
@@ -10,8 +14,9 @@ $date = $date->format("y:m:d h:i:s");
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 
 //Json Class for appending result
@@ -35,10 +40,9 @@ $superArray=array(); //For Storing all lines
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">FileInclusionVuln Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">>
             
 <?php
 // Loop through our array, show HTML source as HTML source; and line numbers too.
@@ -412,4 +416,5 @@ $_SESSION['TotalFileIncVulnLines']=$GLOBALS['noVulLines'];
     </div>
 </div>            
             
-             
+    </body>
+</html>

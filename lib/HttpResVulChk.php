@@ -1,3 +1,7 @@
+
+<html>
+<body  style="background-color:#FFFFFF;">
+
 <?php
 
 include 'configuration.php';
@@ -14,8 +18,9 @@ $noVulLines=0;       //TO count no of Vuln varaibles
 
 //Json Class for appending result
 $json;  
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $myfile = fopen("HttpResponce.json", "w") or die("Unable to open file!");
 file_put_contents("HttpResponce.json","[",FILE_APPEND);
@@ -31,10 +36,9 @@ $superArray=array(); //For Storing all lines
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">HTTP Responce Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
 <?php
 
@@ -449,4 +453,5 @@ $_SESSION['TotalHttpResVulnLines']=$GLOBALS['noVulLines'];
     </div>
 </div>            
             
-             
+    </body>
+</html>

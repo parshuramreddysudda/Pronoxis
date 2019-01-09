@@ -1,138 +1,7 @@
 <?php
-session_start();
-include 'Sessionfile.php';
+//php file including strated
 
 
-if(isset( $_SESSION['projectName']))
-{
-$wr=$_SESSION['projectName'];
- 
-
-chdir($_SESSION['search']);
-    
-$workDir=getcwd();
-
-    
-$conFile = scandir($workDir);
-//print_r($conFile);
-
-$page=$_POST['page'];
-
-$val=array_search($page,$conFile);
-    
-    
-    
-    
-$typeChkLines = file($conFile[$val]); 
-         
-//    cmdExecution($typeChkLines,$_SESSION['projectName']);
-    
-$_SERVER['checkFileName']=$typeChkLines;
-    
-    if(mkdir($_SESSION['projectName']." Pronoxis Scanned Files"))
-    {
-        
-//       chdir($_SESSION['projectName']." Pronoxis Scanned Files");
-//        mkdir($page);
-//        chdir($page);
-        
-    }
-    else
-    {
-        echo "Not Created";
-    }
-    
-    chdir($_SESSION['projectName']." Pronoxis Scanned Files");
-    
-    function sqlInjection()
-    {
-       $temp=array();
-        $temp=$GLOBALS['typeChkLines'];
-        echo "<object class='embed-responsive-item' data='lib/sqlVulChecker.php?temp=.$temp'  height='350' type='text/html'>
-    Nothing to Displayed :( May be Wrong with the Url. Try to Cook
-</object>";
-        
-    }
-    
-     function xssExecute()
-    {
-            
-          $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='lib/xssVulChecker.php'></iframe>";
-    }
-    function xPath()
-    {
-           $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='xPathVulChk.php'></iframe>";
-    }
-      function codeExec()
-    {
-           $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='codeExeVulnChk.php'></iframe>";
-    }
-    
-    function HttpResponce()
-    {
-           $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='HttpResVulChk.php'></iframe>";
-    }
-    function LDAPInjec()
-    {
-                   $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='codeExeVulnChk.php'></iframe>";
-    }
-    function sessionFix()
-    {
-             $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='sessionFixVulnChk.php'></iframe>";
-    }
-     function objInjection()
-    {
-             $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='ProtocolInjVulnChk.php'></iframe>";
-    }
-     function fileIncl()
-    {
-             $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='fileIncVulnChk.php'></iframe>";
-    }
-    
-    function fileManip()
-    {
-          $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='fileManpVulnChk.php'></iframe>";
-        
-    }
-      function cmdExeExecute()
-    {
-       $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='cmdExeVulnChecker.php'></iframe>";
-    }
-    
-  
-    function fileDisVuln()
-    {
-            $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='fileDisVUlnChk.php'></iframe>";
-    }  
-    
-    function reflex()
-    {
-            $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='ReflectionVulnChk.php'></iframe>";
-    } 
-    function UserInput()
-    {
-            $typeChkLines=$GLOBALS['typeChkLines'];
-        echo "<iframe class='embed-responsive-item' src='userInputVulnChk.php'></iframe>";
-    }
-    
-
-}
-
-?> 
-
-<?php
 
 include 'config.php';
 
@@ -195,7 +64,7 @@ include 'config.php';
       <div class="content">
         <div class="container-fluid">
           <div class="container">
-              <h3 style="font-family: 'Product Sans', sans-serif;">Report of Pronoxis</h3>
+              <h3 style="font-family: 'Product Sans', sans-serif;">Report of {{Project name}}</h3>
     </div>
     <div class="float-none">
    
@@ -203,9 +72,9 @@ include 'config.php';
     </div>
     <div class="card">
 <div class="card-body">
-    <h3 style="font-family: 'Product Sans', sans-serif;"><?php echo $page; ?>Vulnerabilties</h3>
-    
-    <div >
+    <h3 style="font-family: 'Product Sans', sans-serif;">{{Page name}} Vulnerabilties</h3>
+    <a class="btn btn-primary float-right" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" role="button" href="#collapse-1" style="background-color: #DE2968;">&lt; Show/hide &gt;</a>
+    <div class="collapse" id="collapse-1">
        
     
 
@@ -223,9 +92,9 @@ include 'config.php';
                               <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
     <div class="dropdown-menu" role="menu">
         <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
-        <a class="dropdown-item" role="presentation" href="https://www.owasp.org/index.php/SQL_Injection">More about this Attack </a>
+        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
         
-        <a class="dropdown-item" role="presentation" href="https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet">How to hack this </a>
+        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
         <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
                               
 </div>  
@@ -287,11 +156,10 @@ Integrity: Just as it may be possible to read sensitive information, it is also 
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No sql Details</p>
-                            <?php   sqlInjection(); ?>
                         
                         </div>
                     </div>
@@ -318,9 +186,9 @@ Integrity: Just as it may be possible to read sensitive information, it is also 
                               <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
     <div class="dropdown-menu" role="menu">
         <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
-        <a class="dropdown-item" role="presentation" href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">More about this Attack </a>
+        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
         
-        <a class="dropdown-item" role="presentation" href="https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet">How to hack this </a>
+        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
         <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
                               
 </div>  
@@ -361,12 +229,11 @@ The data is included in dynamic content that is sent to a web user without being
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
-                    
-                        <object class='embed-responsive-item' data="lib/xssVulChecker.php"  height="350" type="text/html">
-    Nothing to Displayed :( May be Wrong with the Url. Try to Cook
-</object>
-                        
+                        <h3>&nbsp  Education Information</h3>
+                        <div class="card-body">
+                           
+                            <p style="color: #e83c3c"> No Details</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -425,11 +292,10 @@ The data is included in dynamic content that is sent to a web user without being
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
-                            <p style="color: #e83c3c"> No xss Details</p>
-                            <p><?php xPath();?></p>
+                            <p style="color: #e83c3c"> No Details</p>
                         </div>
                     </div>
                 </div>
@@ -491,11 +357,10 @@ amount of expected data . " style="background-color: #E12E6D"><i class="material
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No Details</p>
-                            <p><?php codeExec(); ?></p>
                         </div>
                     </div>
                 </div>
@@ -556,11 +421,10 @@ amount of expected data . " style="background-color: #E12E6D"><i class="material
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No Details</p>
-                        <p><?php HttpResponce();?></p>
                         </div>
                     </div>
                 </div>
@@ -622,11 +486,10 @@ amount of expected data . " style="background-color: #E12E6D"><i class="material
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No Details</p>
-                            <p><?php  LDAPInjec();?></p>
                         </div>
                     </div>
                 </div>
@@ -694,11 +557,10 @@ amount of expected data . " style="background-color: #E12E6D"><i class="material
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No Details</p>
-                             <p><?php sessionFix(); ?></p>
                         </div>
                     </div>
                 </div>
@@ -713,7 +575,7 @@ amount of expected data . " style="background-color: #E12E6D"><i class="material
                       <div class="card-header card-header-icon  card-header-rose" >
                           <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
             
-         Protocol Injection </div>
+         PHP object injection </div>
                   
                                
                           <div class="dropdown  float-right">
@@ -761,11 +623,10 @@ All of the classes used during the attack must be declared when the vulnerable u
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
-                            <p style="color: #e83c3c"> No  SEssion Details</p>
-                            <p><?php objInjection(); ?></p>
+                            <p style="color: #e83c3c"> No Details</p>
                         </div>
                     </div>
                 </div>
@@ -826,11 +687,10 @@ All of the classes used during the attack must be declared when the vulnerable u
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No Details</p>
-                            <p><?php fileIncl(); ?></p>
                         </div>
                     </div>
                 </div>
@@ -906,11 +766,10 @@ an application uses user input to fetch a remote file from a site on the Interne
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
-                            <p style="color: #e83c3c"> No Manip</p>
-                          <p>  <?php fileManip(); ?></p>
+                            <p style="color: #e83c3c"> No Details</p>
                         </div>
                     </div>
                 </div>
@@ -982,10 +841,10 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
-                            <p style="color: #e83c3c"> No File Refle</p>
+                            <p style="color: #e83c3c"> No Details</p>
                         </div>
                     </div>
                 </div>
@@ -1040,18 +899,23 @@ File disclosure </div>
                                
                               <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="bottom" title="Occurence" data-content="A sensitive file exposure vulnerability is a situation which occurs when a file that is supposed to be private is accessible to the outside world via web server.  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                           
-                              </button>       
+                              </button>
+                             
+                          
+                     
+                          
+                
+                     
                           
     </div>
                         
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
-                            <p style="color: #e83c3c"> No File Dis Details</p>
-                            <p><?php fileDisVuln();?></p>
+                            <p style="color: #e83c3c"> No Details</p>
                         </div>
                     </div>
                 </div>
@@ -1083,7 +947,14 @@ Command execution </div>
                            <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Code" data-content="user-input values+'backticks'=Command execution" style="background-color: #E12E6D"><i class="material-icons">code</i>
                           
                           </button>
-                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation  Con" style="background-color: #E12E6D"><i class="material-icons">security</i>
+                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation 
+                                                                                  Use a safe API 
+                                                                                  Contextually escape user data 
+
+ 
+ 
+
+ " style="background-color: #E12E6D"><i class="material-icons">security</i>
                           
                           </button>
                               
@@ -1112,11 +983,10 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                         
                         
                         
-                        <h3>&nbsp Vulnerable Code</h3>
+                        <h3>&nbsp  Education Information</h3>
                         <div class="card-body">
                            
                             <p style="color: #e83c3c"> No Details</p>
-                        <p><?php cmdExeExecute(); ?></p>
                         </div>
                     </div>
                 </div>
@@ -1126,139 +996,7 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                 </div>
                 
         
-                  <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="card text-left" data-bs-hover-animate="pulse">
-                      <div class="card-header card-header-icon  card-header-rose" >
-                          <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
-Reflection Injection </div>
-                  
-                               
-                          <div class="dropdown  float-right">
-                              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
-    <div class="dropdown-menu" role="menu">
-        <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
-        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
-        
-        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
-        <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
-                              
-</div>  
-                              
-                          
-                           <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Code" data-content="user-input values+'backticks'=Command execution" style="background-color: #E12E6D"><i class="material-icons">code</i>
-                          
-                          </button>
-                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation  Con" style="background-color: #E12E6D"><i class="material-icons">security</i>
-                          
-                          </button>
-                              
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="left" title="Risk Factors" data-content="When a web application does not properly sanitize user-supplied input before using it within application code, it may be possible to trick the application into executing Operating System commands. The executed commands will run with the same permissions of the component that executed the command (e.g. Database server, Web application server, Web server, etc.) 
 
-                              " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
-                          
-                          </button>
-                             
-                               
-                             
-                               
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="bottom" title="Occurrence" data-content="Command execution attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application.  
-s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
-                          
-                              </button>
-                             
-                          
-                     
-                          
-                
-                     
-                          
-    </div>
-                        
-                        
-                        
-                        
-                        <h3>&nbsp Vulnerable Code</h3>
-                        <div class="card-body">
-                           
-                            <p style="color: #e83c3c"> No Details</p>
-                        <p><?php reflex(); ?></p>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                    </div>
-                </div>
-                
-
-                  <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="card text-left" data-bs-hover-animate="pulse">
-                      <div class="card-header card-header-icon  card-header-rose" >
-                          <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
-Reflection Injection </div>
-                  
-                               
-                          <div class="dropdown  float-right">
-                              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
-    <div class="dropdown-menu" role="menu">
-        <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
-        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
-        
-        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
-        <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
-                              
-</div>  
-                              
-                          
-                           <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Code" data-content="user-input values+'backticks'=Command execution" style="background-color: #E12E6D"><i class="material-icons">code</i>
-                          
-                          </button>
-                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation  Con" style="background-color: #E12E6D"><i class="material-icons">security</i>
-                          
-                          </button>
-                              
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="left" title="Risk Factors" data-content="When a web application does not properly sanitize user-supplied input before using it within application code, it may be possible to trick the application into executing Operating System commands. The executed commands will run with the same permissions of the component that executed the command (e.g. Database server, Web application server, Web server, etc.) 
-
-                              " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
-                          
-                          </button>
-                             
-                               
-                             
-                               
-                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="bottom" title="Occurrence" data-content="Command execution attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application.  
-s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
-                          
-                              </button>
-                             
-                          
-                     
-                          
-                
-                     
-                          
-    </div>
-                        
-                        
-                        
-                        
-                        <h3>&nbsp Vulnerable Code</h3>
-                        <div class="card-body">
-                           
-                            <p style="color: #e83c3c"> No Details</p>
-                        <p><?php UserInput(); ?></p>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                    </div>
-                </div>
-                
             <div class="row">
                 <div class="col">
                     <div class="card text-left" data-bs-hover-animate="pulse">
@@ -1268,16 +1006,13 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
            
         </div>
       </div>
-                    </div>
-                </div>
-        </div>
     
       <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
             <ul>
               <li>
-                <a href="https://www..com">
+                <a href="https://www.primeuth.com">
                   Planus
                 </a>
               </li>

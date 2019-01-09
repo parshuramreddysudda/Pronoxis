@@ -10,8 +10,8 @@ $date = $date->format("y:m:d h:i:s");
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 
 //Json Class for appending result
@@ -473,7 +473,7 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
 }
 
           
-
+ 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
 $jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
 $jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
@@ -491,10 +491,10 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
             
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalProtocLines']=$GLOBALS['noLines'];
-$_SESSION['TotalProtocVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalProtocLines']=$GLOBALS['noLines']+$_SESSION['TotalProtocLines'];
+$_SESSION['TotalProtocVulnLines']=$GLOBALS['noVulLines']+$_SESSION['TotalProtocVulnLines'];
 
-
+$_SESSION['ProtDone']=0;
 
 ?>
  </div>

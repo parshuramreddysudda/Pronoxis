@@ -2,17 +2,13 @@
 
 
 include 'designConfig.php';
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
 
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
 
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 $httpTotalLines=0;  //to count no of lines
-$noLines=0;         //To count no of lines
-$noVulLines=0;       //TO count no of Vuln varaibles
+$noSessionLines=0;         //To count no of lines
+$noSessionVulLines=0;       //TO count no of Vuln varaibles
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -41,7 +37,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
      $json=$GLOBALS['json'];
-    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
+//    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
         $sendLine=htmlspecialchars($typeChkLine);
@@ -102,7 +98,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                     
                     
                 checkforSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                $GLOBALS['noLines']++; 
+                $GLOBALS['noSessionLines']++; 
                     
                      //Json File for appending output Code 
                     
@@ -223,7 +219,7 @@ function checkSecure($vulnChkLine,$json)
         echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
         $json->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions with Input values";
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noSessionVulLines']++;
     }
     
 }
@@ -381,8 +377,8 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
 
 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
+$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noSessionLines'];
+$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noSessionVulLines'];
 $myJSON = json_encode($jsonFinal);
 $LogFileName=$GLOBALS['LogFileName'];
 file_put_contents("SessionFixation.json", $myJSON,FILE_APPEND);
@@ -390,9 +386,9 @@ file_put_contents("SessionFixation.json","]",FILE_APPEND);
 
 
 
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
+echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noSessionLines']."</p>";
 
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noSessionVulLines']."</p>";
 
 
 
@@ -401,11 +397,12 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
 
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalSessionLines']=$GLOBALS['noLines'];
-$_SESSION['TotalSessionVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalSessionLines']=$GLOBALS['noSessionLines']+$_SESSION['TotalSessionLines'];
+$_SESSION['TotalSessionVulnLines']=$GLOBALS['noSessionVulLines']+$_SESSION['TotalSessionVulnLines'];
 
 
 
+$_SESSION['SessionDone']=0;
 
 
 

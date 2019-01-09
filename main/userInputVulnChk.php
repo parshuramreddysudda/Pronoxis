@@ -4,17 +4,10 @@
 include 'designConfig.php';
 
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('VulnerabilityuserInput.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
-fwrite($fh, $date);
-
 $serverInputValues;
 
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$typeChkLines = $_SESSION['checkTypeCheckLine'];
+$LogFileName=$_SESSION['LogFileName'];
 
 
 //Json Class for appending result
@@ -191,15 +184,7 @@ function checkUserInputForVuln($userInputVulnLine,$userInputVulnLineno,$json)
     
 }
 
-//Create a variable for end time
-$time_end = microtime(true);
-//Subtract the two times to get seconds
- 
-$time = $time_end - $time_start;
 
-echo 'Execution time : '.$time.' seconds';
-
-    
     
 
 $jsonFinal->ForCorrection='String Added to Validate the Json';  
@@ -219,9 +204,10 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['userInputVulnL
 
 //For calculating an reporting no of lines infected 
             
-$_SESSION['TotalUserLines']=$GLOBALS['noLines'];
-$_SESSION['TotalUserVulnLines']=$GLOBALS['noVulLines'];
+$_SESSION['TotalUserLines']=$GLOBALS['UserVulnVar']+$_SESSION['TotalUserLines'];
+$_SESSION['TotalUserVulnLines']=$GLOBALS['userInputVulnLines']+$_SESSION['TotalUserVulnLines'];
 
+$_SESSION['UserInpDone']=0;
 
 
 ?>
