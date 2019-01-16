@@ -1,134 +1,138 @@
 <?php
-
-
 session_start();
+include 'Sessionfile.php';
 
 
 if(isset( $_SESSION['projectName']))
 {
 $wr=$_SESSION['projectName'];
-if (!file_exists($wr)) 
-
-{
-    mkdir( $_SESSION['projectName'], 0777, true);
-}
-else
-{
-    
-    
-}
  
 
 chdir($_SESSION['search']);
     
-    $workDir=getcwd();
+$workDir=getcwd();
 
     
 $conFile = scandir($workDir);
 //print_r($conFile);
 
 $page=$_POST['page'];
-    
-  
+
 $val=array_search($page,$conFile);
-   
+    
     
     
     
 $typeChkLines = file($conFile[$val]); 
-
+         
 //    cmdExecution($typeChkLines,$_SESSION['projectName']);
     
+$_SERVER['checkFileName']=$typeChkLines;
     
-$_SESSION['typrCheck']=$typeChkLines;
+    if(mkdir($_SESSION['projectName']." Pronoxis Scanned Files"))
+    {
+        
+//       chdir($_SESSION['projectName']." Pronoxis Scanned Files");
+//        mkdir($page);
+//        chdir($page);
+        
+    }
+    else
+    {
+        echo "Not Created";
+    }
     
-    
+    chdir($_SESSION['projectName']." Pronoxis Scanned Files");
     
     function sqlInjection()
     {
-            
-        $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/sqlInjectionVulnChk.php';
+       $temp=array();
+        $temp=$GLOBALS['typeChkLines'];
+        echo "<object class='embed-responsive-item' data='lib/sqlVulChecker.php?temp=.$temp'  height='350' type='text/html'>
+    Nothing to Displayed :( May be Wrong with the Url. Try to Cook
+</object>";
+        
     }
     
      function xssExecute()
     {
             
-        $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/xssVulChecker.php';
+          $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='lib/xssVulChecker.php'></iframe>";
     }
     function xPath()
     {
-         $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/xpathVulnChk.php';
+           $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='xPathVulChk.php'></iframe>";
     }
       function codeExec()
     {
-         $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/codeExeVulnChk.php';
+           $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='codeExeVulnChk.php'></iframe>";
     }
     
     function HttpResponce()
     {
-         $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/HttpResVulChk.php';
+           $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='HttpResVulChk.php'></iframe>";
     }
     function LDAPInjec()
     {
-                 $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/LDAPVulnChk.php';
+                   $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='codeExeVulnChk.php'></iframe>";
     }
     function sessionFix()
     {
-           $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/sessionFixVulnChk.php';
+             $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='sessionFixVulnChk.php'></iframe>";
     }
      function objInjection()
     {
-           $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/objVulnChk.php';
+             $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='ProtocolInjVulnChk.php'></iframe>";
     }
      function fileIncl()
     {
-           $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/fileIncVulnChk.php';
+             $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='fileIncVulnChk.php'></iframe>";
     }
     
     function fileManip()
     {
-        $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/fileManpVulnChk.php';
+          $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='fileManpVulnChk.php'></iframe>";
         
     }
       function cmdExeExecute()
     {
-        $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/cmdExeVulnChecker.php';
+       $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='cmdExeVulnChecker.php'></iframe>";
     }
     
   
     function fileDisVuln()
     {
-         $typeChkLines=$GLOBALS['typeChkLines'];
-        include'bin/fileDisVulnChk.php';
+            $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='fileDisVUlnChk.php'></iframe>";
+    }  
+    
+    function reflex()
+    {
+            $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='ReflectionVulnChk.php'></iframe>";
+    } 
+    function UserInput()
+    {
+            $typeChkLines=$GLOBALS['typeChkLines'];
+        echo "<iframe class='embed-responsive-item' src='userInputVulnChk.php'></iframe>";
     }
     
-
-    
-    
-
-     
-     
-   
 
 }
 
 ?> 
 
 <?php
-//php file including strated
-
-
 
 include 'config.php';
 
@@ -358,11 +362,11 @@ The data is included in dynamic content that is sent to a web user without being
                         
                         
                         <h3>&nbsp Vulnerable Code</h3>
-                        <div class="card-body">
-                           
-                            <p style="color: #e83c3c"> No Details</p>
-                            <p><?php xssExecute();?></p>
-                        </div>
+                    
+                        <object class='embed-responsive-item' data="lib/xssVulChecker.php"  height="350" type="text/html">
+    Nothing to Displayed :( May be Wrong with the Url. Try to Cook
+</object>
+                        
                     </div>
                 </div>
             </div>
@@ -709,7 +713,7 @@ amount of expected data . " style="background-color: #E12E6D"><i class="material
                       <div class="card-header card-header-icon  card-header-rose" >
                           <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
             
-         PHP object injection </div>
+         Protocol Injection </div>
                   
                                
                           <div class="dropdown  float-right">
@@ -914,7 +918,6 @@ an application uses user input to fetch a remote file from a site on the Interne
                 
                     </div>
                 </div>
-<!--
          <div class="container">
             <div class="row">
                 <div class="col">
@@ -990,7 +993,6 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                 
                     </div>
                 </div>
--->
                 
              <div class="container">
             <div class="row">
@@ -1038,13 +1040,7 @@ File disclosure </div>
                                
                               <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="bottom" title="Occurence" data-content="A sensitive file exposure vulnerability is a situation which occurs when a file that is supposed to be private is accessible to the outside world via web server.  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                           
-                              </button>
-                             
-                          
-                     
-                          
-                
-                     
+                              </button>       
                           
     </div>
                         
@@ -1087,14 +1083,7 @@ Command execution </div>
                            <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Code" data-content="user-input values+'backticks'=Command execution" style="background-color: #E12E6D"><i class="material-icons">code</i>
                           
                           </button>
-                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation 
-                                                                                  Use a safe API 
-                                                                                  Contextually escape user data 
-
- 
- 
-
- " style="background-color: #E12E6D"><i class="material-icons">security</i>
+                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation  Con" style="background-color: #E12E6D"><i class="material-icons">security</i>
                           
                           </button>
                               
@@ -1137,7 +1126,139 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
                 </div>
                 
         
+                  <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card text-left" data-bs-hover-animate="pulse">
+                      <div class="card-header card-header-icon  card-header-rose" >
+                          <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
+Reflection Injection </div>
+                  
+                               
+                          <div class="dropdown  float-right">
+                              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
+    <div class="dropdown-menu" role="menu">
+        <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
+        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
+        
+        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
+        <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
+                              
+</div>  
+                              
+                          
+                           <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Code" data-content="user-input values+'backticks'=Command execution" style="background-color: #E12E6D"><i class="material-icons">code</i>
+                          
+                          </button>
+                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation  Con" style="background-color: #E12E6D"><i class="material-icons">security</i>
+                          
+                          </button>
+                              
+                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="left" title="Risk Factors" data-content="When a web application does not properly sanitize user-supplied input before using it within application code, it may be possible to trick the application into executing Operating System commands. The executed commands will run with the same permissions of the component that executed the command (e.g. Database server, Web application server, Web server, etc.) 
 
+                              " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
+                          
+                          </button>
+                             
+                               
+                             
+                               
+                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="bottom" title="Occurrence" data-content="Command execution attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application.  
+s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
+                          
+                              </button>
+                             
+                          
+                     
+                          
+                
+                     
+                          
+    </div>
+                        
+                        
+                        
+                        
+                        <h3>&nbsp Vulnerable Code</h3>
+                        <div class="card-body">
+                           
+                            <p style="color: #e83c3c"> No Details</p>
+                        <p><?php reflex(); ?></p>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                    </div>
+                </div>
+                
+
+                  <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card text-left" data-bs-hover-animate="pulse">
+                      <div class="card-header card-header-icon  card-header-rose" >
+                          <div class="card-icon" style="font-family: 'Product Sans', sans-serif;">
+Reflection Injection </div>
+                  
+                               
+                          <div class="dropdown  float-right">
+                              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button" style="background-color: #E53571">More</button>
+    <div class="dropdown-menu" role="menu">
+        <a class="dropdown-item" role="presentation" href="#">How PRONOXIS  found </a>
+        <a class="dropdown-item" role="presentation" href="#">More about this Attack </a>
+        
+        <a class="dropdown-item" role="presentation" href="#">How to hack this </a>
+        <a class="dropdown-item" role="presentation" href="#"> More...</a>                                        </div>
+                              
+</div>  
+                              
+                          
+                           <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="top" title="Code" data-content="user-input values+'backticks'=Command execution" style="background-color: #E12E6D"><i class="material-icons">code</i>
+                          
+                          </button>
+                          <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="right" title="Prevention" data-content="Perform proper input validation  Con" style="background-color: #E12E6D"><i class="material-icons">security</i>
+                          
+                          </button>
+                              
+                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="left" title="Risk Factors" data-content="When a web application does not properly sanitize user-supplied input before using it within application code, it may be possible to trick the application into executing Operating System commands. The executed commands will run with the same permissions of the component that executed the command (e.g. Database server, Web application server, Web server, etc.) 
+
+                              " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
+                          
+                          </button>
+                             
+                               
+                             
+                               
+                              <button class="btn btn-primary btn-fab btn-fab-mini btn-round float-right" type="button"  data-toggle="popover" data-placement="bottom" title="Occurrence" data-content="Command execution attacks are possible when an application passes unsafe user supplied data (forms, cookies, HTTP headers etc.) to a system shell. In this attack, the attacker-supplied operating system commands are usually executed with the privileges of the vulnerable application.  
+s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
+                          
+                              </button>
+                             
+                          
+                     
+                          
+                
+                     
+                          
+    </div>
+                        
+                        
+                        
+                        
+                        <h3>&nbsp Vulnerable Code</h3>
+                        <div class="card-body">
+                           
+                            <p style="color: #e83c3c"> No Details</p>
+                        <p><?php UserInput(); ?></p>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                    </div>
+                </div>
+                
             <div class="row">
                 <div class="col">
                     <div class="card text-left" data-bs-hover-animate="pulse">
@@ -1149,13 +1270,14 @@ s  " style="background-color: #E12E6D"><i class="material-icons">bug_report</i>
       </div>
                     </div>
                 </div>
+        </div>
     
       <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
             <ul>
               <li>
-                <a href="https://www.primeuth.com">
+                <a href="https://www..com">
                   Planus
                 </a>
               </li>

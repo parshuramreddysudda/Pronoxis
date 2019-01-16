@@ -1,22 +1,30 @@
 <?php
+include 'Sessionfile.php';
 
-ini_set('max_execution_time', 3000);
-chdir('C:\xampp\htdocs\dept2\dept');
-$workDir=getcwd();
-$conFile = scandir($workDir);
+    
+
+
+
+
+
+ini_set('max_execution_time', 30000);
+//chdir('C:\xampp\htdocs\dept');
+
+//$workDir=getcwd();
+//
+//$conFile = scandir($workDir);
 //print_r($conFile);
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
 
-$typeChkLines = file($conFile[57]); 
-
-
-$SERVER['checkFileName']=$typeChkLines;
+//$typeChkLines = file($conFile[55]); 
+//
+//
+//$SERVER['checkFileName']=$typeChkLines;
 
 //print_r($typeChkLines);
-$SERVER['LogFileName']="XSS";
  
 ?> 
 <html>
@@ -63,7 +71,14 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf);
 
     </style>
 </head>
+    <?php
     
- 
-
+if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
+$_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
+    {
+        $_SESSION['TotalLines']=$_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
+    }
+    
+    
+    ?>
 </html>

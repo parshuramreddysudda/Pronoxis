@@ -1,3 +1,7 @@
+
+<html>
+<body  style="background-color:#FFFFFF;">
+
 <?php
 
 
@@ -7,8 +11,9 @@ $fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
 //chdir('G:\xammp\htdocs\test');
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
@@ -33,10 +38,9 @@ $superArray=array(); //For Storing all lines
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">CodeExecution Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
 <?php
             
@@ -394,8 +398,9 @@ echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
 
 
-
-
+//For calculating an reporting no of lines infected 
+$_SESSION['TotalCodeLines']=$GLOBALS['noLines'];
+$_SESSION['TotalCodeVulnLines']=$GLOBALS['noVulLines'];
 
 ?>
             
@@ -404,6 +409,7 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
 </div>            
             
                        
-            
+    </body>
+</html>
             
             

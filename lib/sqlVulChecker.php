@@ -1,4 +1,7 @@
- <?php
+<html>
+<body  style="background-color:#FFFFFF;">
+
+    <?php
 
  include 'configuration.php';
 $time_start = microtime(true); //Create a variable for start time
@@ -16,11 +19,12 @@ $tempVarVulnCkh=0; //To check if Var line is vulnerable to sql injetcion
 $sqlLines=0; //For Storing no of Sql lines
 $sqlVulnLines=0; //For Storing no of Sql lines
 
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
 
 //Json Class for appending result
 $json;  
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+$LogFileName='temp';
 
 $myfile = fopen("SqlVulnerability.json", "w") or die("Unable to open file!");
 file_put_contents("SqlVulnerability.json","[",FILE_APPEND);
@@ -33,10 +37,10 @@ $arrayTemp=3;
 
  
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">SQL Injection Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
+           
             
 <?php
 
@@ -55,6 +59,7 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 //      echo htmlspecialchars($typeChkLine)
     
     $GLOBALS['arrayTemp']=1;
+    $GLOBALS['noLines']++;
 
 
 }
@@ -357,12 +362,13 @@ function checkSqlForVuln($sqlVulnLine,$sqlVulnLineNo,$typeChkLines,$variables,$j
     
  
      
-        
-         echo "<p class='card-text'>No of Var ".$GLOBALS['sessionVar']-1;
+        $tempSession=$GLOBALS['sessionVar'];
+        $tempSession=$tempSession-1;
+         echo "<p class='card-text'>No of Var ".$tempSession;
          echo "</p>";
         
         
-        $json->NoofVar="No of Var ".$GLOBALS['sessionVar']-1;
+        $json->NoofVar="No of Var ".$tempSession;
         
         
         echo "<p class='card-text'>No of Vulnerable Var ".$GLOBALS['sessionVulnVar']."</p>";
@@ -430,7 +436,7 @@ function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sess
 {
    
 //    print_r($chkVarSendline);
-   
+   $variableschk=0;
     $noofelelments=count($chkVarSendline);
    
     
@@ -469,10 +475,9 @@ function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sess
             if($GLOBALS['arrayTemp']==3||$GLOBALS['arrayTemp']==2)
             {
                 $GLOBALS['arrayTemp']--;
-              
-          
             }
-             }
+                 
+            }
              
             
            }
@@ -492,24 +497,26 @@ function  checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$sess
 function checkSecure($vulnChkLine,$json)
 {
     $vuln=0;
+    $VulnLineArray=explode(" ",$vulnChkLine);
     include'vulnWordlist.php';
         $listCount=count($xssSecureVuln);
-        $varCount=count($vulnChkLine);
+    
+        $varCount=count($VulnLineArray);
     
     for($i=0;$i<$varCount;$i++)
     {
         for($j=0;$j<$listCount;$j++)
         {
             
-            if(strlen($vulnChkLine[$i])>1)
+            if(strlen($VulnLineArray[$i])>1)
             {
                 
-            if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
+            if(strcmp($VulnLineArray[$i],$xssSecureVuln[$j])==0)
                {
             
-                echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$vulnChkLine[$i]."</p>";
+                echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$VulnLineArray[$i]."</p>";
                 
-                   $json->Secure="This Line is  Secure with  input values ".$vulnChkLine[$i]." ";
+                   $json->Secure="This Line is  Secure with  input values ".$VulnLineArray[$i]." ";
                 
                 
                  $vuln=1;
@@ -726,6 +733,12 @@ echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
 
 
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalSqlLines']=$GLOBALS['noLines'];
+$_SESSION['TotalSqlVulnLines']=$GLOBALS['noVulLines'];
+
+
 
 ?>
             
@@ -735,4 +748,5 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
         </div>
     </div>
 </div>            
-            
+    </body>
+</html>

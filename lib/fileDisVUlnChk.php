@@ -1,9 +1,13 @@
+<html>
+<body  style="background-color:#FFFFFF;">
+
+
+
 <?php
 
 
 include 'configuration.php';
 $time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
 
@@ -16,9 +20,9 @@ $sno=1;  //For counting vuln var
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -33,10 +37,9 @@ $json->AttackName='FileDisclosureVuln';
 // Loop through our array, show HTML source as HTML source; and line numbers too.
 ?>
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">FileDisclosure Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
             
 <?php
@@ -400,6 +403,11 @@ echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
 
 
+            
+//For calculating an reporting no of lines infected 
+$_SESSION['TotalFileDisLines']=$GLOBALS['noLines'];
+$_SESSION['TotalFileDisVulnLines']=$GLOBALS['noVulLines'];
+
 
 ?>
             
@@ -409,4 +417,5 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
 </div>            
             
             
-            
+    </body>
+</html>

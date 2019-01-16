@@ -1,3 +1,7 @@
+<html>
+<body  style="background-color:#FFFFFF;">
+
+
 <?php
 
 include 'configuration.php';
@@ -16,8 +20,10 @@ $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare af
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
 $noVulLines=0;//To calculate total Lines
-$typeChkLines = $SERVER['checkFileName'];
-$LogFileName=$SERVER['LogFileName'];
+
+chdir($_SESSION['partScanAdress']);
+$typeChkLines=$_SESSION['checkFileName'];
+$LogFileName='TEMP';
 
 $sno=1;  //For counting vuln var
 
@@ -32,10 +38,9 @@ $superArray=array(); //For Storing all lines
 
 ?>
 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">FileDisclosure Vulnerability Details</h4>
+<div class="container" style="background-color:#FFFFFF;">
+    <div class="">
+        <div class="">
             
             
 <?php
@@ -398,8 +403,10 @@ echo "<p class='card-text'>No fo Lines are ".$GLOBALS['cmdTotalLines']."</p>";
 
 echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
 
+//For calculating an reporting no of lines infected 
 
-
+$_SESSION['TotalCmdLines']=$GLOBALS['noLines'];
+$_SESSION['TotalCmdVulnLines']=$GLOBALS['noVulLines'];
 
 
 ?>
@@ -408,5 +415,6 @@ echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."
     </div>
 </div>            
             
-            
+    </body>
+</html>
             
