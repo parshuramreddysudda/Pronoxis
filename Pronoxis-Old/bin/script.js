@@ -134,6 +134,36 @@ system("rm escapeshellarg($file)");
 
 ?>
     
+    'call_user_func_array',			
+		'array_diff_uassoc'	,	
+		'array_diff_ukey',	
+		'array_filter',	
+	'strrpos',
+		'strpos',
+		'strftime',
+		'strtotime',
+		'md5',		'array_intersect_uassoc',	
+		'array_intersect_ukey',	
+		'ftp_chmod' 		,
+	'strpos',
+		'strftime',	'ftp_exec'			, 
+	'strpos',
+		'strftime',	'ftp_delete' 		,
+	'strpos',
+		'strftime',	'ftp_fget' 			,
+	'strpos',
+		'strftime',	'ftp_get'			, 
+	'strpos',
+		'strftime',	'ftp_nlist' 		, 
+	'strpos',
+		'strftime',	'ftp_nb_fget' 		, 
+		'ftp_n	
+		'array_uintersect',	
+		'strftime', 'array_uintersect_assoc',	
+		'array_uintersect_uassoc',	
+		'strftime','array_walk',	
+		'array_walk_recursive',	
+		
     
 /**
 * Get the filename from a GET input
