@@ -1,9 +1,8 @@
 <?php
 include 'FullScanConfig.php';
-
+header('Cache-Control: no-cache');
 ini_set('max_execution_time', 30000);
 
-chdir($_SESSION['address']);
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
@@ -54,4 +53,4 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf);
 
     </style>
 </head>
-    
+</html>

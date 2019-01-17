@@ -8,7 +8,6 @@
 
 include 'configuration.php';
 $time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
 $date = new DateTime();
 $date = $date->format("y:m:d h:i:s");
 

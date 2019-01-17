@@ -1,37 +1,31 @@
 <?php
 
-include 'designConfig.php';
+function startFileReflec($address,$typeChkLines)
+{
+chdir($address);
+    
+global $httpTotalLines;  //to count no of lines
+global $ReflecnoLines;         //To count no of lines
+global $noVulLines;       //TO count no of Vuln varaibles
+global $sno;
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
-//chdir('G:\xammp\htdocs\test');
 $httpTotalLines=0;  //to count no of lines
-$noLines=0;         //To count no of lines
+$ReflecnoLines=0;         //To count no of lines
 $noVulLines=0;       //TO count no of Vuln varaibles
-$typeChkLines = $_SESSION['checkTypeCheckLine'];
+
+
+
+
 $LogFileName=$_SESSION['LogFileName'];
 
 
 //Json Class for appending result
-$json;  
+$Reflecjson;  
 $myfile = fopen("ReflectionInjection.json", "w") or die("Unable to open file!");
 file_put_contents("ReflectionInjection.json","[",FILE_APPEND);
-$json->AttackName='ReflectionInjection';
+$Reflecjson->AttackName='ReflectionInjection';
 
 $sno=1;
-?> 
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Reflection Injection Vulnerability Details</h4>
-            
-<?php
-
-    
- 
-
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
@@ -41,25 +35,50 @@ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
      
- $json=$GLOBALS['json'];
-   
 //    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
         
         $sendLine=htmlspecialchars($typeChkLine);
-        $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
+        $trimSendline = Reflecmultiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-    checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine,$json,$typeChkLine);
+    RefleccheckSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine,$Reflecjson,$typeChkLine);
 
     
-    $GLOBALS['httpTotalLines']++;
     
+
+}
+    
+$ReflecjsonFinal->ForCorrection='String Added to Validate the Json';  
+$ReflecjsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['ReflecnoLines'];
+$ReflecjsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
+$myJSON = json_encode($ReflecjsonFinal);
+$LogFileName=$GLOBALS['LogFileName'];
+file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
+file_put_contents("ReflectionInjection.json","]",FILE_APPEND);
+
+
+//echo "<p class='card-text'>No fo Lines are ".$GLOBALS['ReflecnoLines']."</p>";
+
+
+//echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
+
+
+            
+            
+            
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalReflecLines']=$GLOBALS['ReflecnoLines']+$_SESSION['TotalReflecLines'];
+$_SESSION['TotalReflecVulnLines']=$GLOBALS['noVulLines']+$_SESSION['TotalReflecVulnLines'];
+
+$_SESSION['RefDone']=0;
+      
 
 }
 
 
 
 //This line is commenetd since these function is declared already in previous call
-function multiexplode($data)
+function Reflecmultiexplode($data)
 {
     $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
@@ -71,7 +90,7 @@ function multiexplode($data)
 }
 
 
-function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line)
+function RefleccheckSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$Reflecjson,$Line)
 {
     
     include'warmHole.php'; 
@@ -88,28 +107,28 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
                 if(strcmp($chkLine[$i],$reflectionWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks    
-                echo "<hr><br>";
+            
                     
-                echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$chkLineNo."</b> May be  Vulnerable</h3>";
+//                echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$chkLineNo."</b> May be  Vulnerable</h3>";
 
+    $GLOBALS['ReflecnoLines']++;
                     
-                $json->LineInfo="Line Number ".$chkLineNo." May be  Vulnerable";  
+                $Reflecjson->LineInfo="Line Number ".$chkLineNo." May be  Vulnerable";  
                     
-                echo "<p class='card-text'>Vulnerable Code <br> <code>".htmlspecialchars($Line)."</code></p>"; 
+//                echo "<p class='card-text'>Vulnerable Code <br> <code>".htmlspecialchars($Line)."</code></p>"; 
                     
-                $json->LineCode="Vulnerable Code ".htmlspecialchars($Line)." ";  
+                $Reflecjson->LineCode="Vulnerable Code ".htmlspecialchars($Line)." ";  
                     
-                echo "<p class='card-text'>Vulnerable Variables are <red> ".$GLOBALS['sno']." . ".$chkLine[$i]."</red> This may rise Vulnerability</p>";
+//                echo "<p class='card-text'>Vulnerable Variables are <red> ".$GLOBALS['sno']." . ".$chkLine[$i]."</red> This may rise Vulnerability</p>";
                     
-                $json->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
+                $Reflecjson->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
                     
-                  checkforReflecSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                    checkReflecVarSecure($chkLine,$json);
-                  $GLOBALS['noLines']++; 
+                  checkforReflecSinks($chkLine,$typeChkLines,$chkLineNo,$Reflecjson);
+                    checkReflecVarSecure($chkLine,$Reflecjson);
                     
          //Json File for appending output Code 
                     
-                $myJSON = json_encode($json);
+                $myJSON = json_encode($Reflecjson);
                 file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
                 file_put_contents("ReflectionInjection.json",",",FILE_APPEND);
                 
@@ -128,7 +147,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$json,$Line
 
 
 //This function checks for sinks in the source lines
-function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
+function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$Reflecjson)
 {
     include'checkWordlists.php';
         
@@ -156,16 +175,16 @@ function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
               {
                  
                   $vuln=1;                 //Too count 
-                   echo "<p class='card-text'>Input Values found they are  <red>".$userInputValues[$j]."</red>";
+//                   echo "<p class='card-text'>Input Values found they are  <red>".$userInputValues[$j]."</red>";
                   
-                  $json->InputValues="Input Values found they are ".$userInputValues[$j]." ";
+                  $Reflecjson->InputValues="Input Values found they are ".$userInputValues[$j]." ";
                       
                    
-                  echo "<p class='card-text'>Checking for Securing Functions<br></p>";
+//                  echo "<p class='card-text'>Checking for Securing Functions<br></p>";
                   
-                    $json->ChkSecure="Checking for Securing Functions";
+                    $Reflecjson->ChkSecure="Checking for Securing Functions";
                   
-                  checkReflecSecure($sinkChkLine,$json);
+                  checkReflecSecure($sinkChkLine,$Reflecjson);
                   break;
               }
             }
@@ -181,18 +200,18 @@ function checkforReflecSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
     }
     if($vuln==0)
     {
-         echo "<p class='card-text'>Input Values <green>Not found </green> Checking  Variables If </p> ";
+//         echo "<p class='card-text'>Input Values <green>Not found </green> Checking  Variables If </p> ";
         
-         $json->InputChk="Input Values <green>Not found </green> Checking";
+         $Reflecjson->InputChk="Input Values <green>Not found </green> Checking";
          
-        checkifReflecVariables($sinkChkLine,$typeChkLines,$chkLineNo,$json);
+        checkifReflecVariables($sinkChkLine,$typeChkLines,$chkLineNo,$Reflecjson);
     }
     
 }
 
 
 //This function checks whether sinks  i.e get and post are protected or not
-function checkReflecSecure($vulnChkLine,$json)
+function checkReflecSecure($vulnChkLine,$Reflecjson)
 {
     $vuln=0;
     $vuln1=0;
@@ -212,9 +231,9 @@ function checkReflecSecure($vulnChkLine,$json)
                 
             if(strcmp($vulnChkLine[$i],$xssSecureVuln[$j])==0)
                {
-                echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
+//                echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
-                   $json->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
+                   $Reflecjson->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
                 
           
                  $vuln=1;
@@ -226,13 +245,13 @@ function checkReflecSecure($vulnChkLine,$json)
     }
     if($vuln==0)
     {
-        echo "<p class='card-text'>No Securing functions or Variables Found</p>";
+//        echo "<p class='card-text'>No Securing functions or Variables Found</p>";
         
-          $json->Functions=" No Securing functions Found";
+          $Reflecjson->Functions=" No Securing functions Found";
         
-        echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
+//        echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
-         $json->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
+         $Reflecjson->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
         
         
         $GLOBALS['noVulLines']++;
@@ -253,9 +272,9 @@ function checkReflecSecure($vulnChkLine,$json)
             if(strcmp($vulnChkLine[$i],$fileInputValues[$j])==0)
                {
                
-                 echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
+//                 echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
-                   $json->fileSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
+                   $Reflecjson->fileSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
                 
                  $vuln1=1; 
                   break;
@@ -266,13 +285,13 @@ function checkReflecSecure($vulnChkLine,$json)
     }
     if($vuln1==0)
     {
-        echo "<p class='card-text'>No Securing functions or Variables Found</p>";
+//        echo "<p class='card-text'>No Securing functions or Variables Found</p>";
         
-          $json->fileFunctions=" No Securing functions Found";
+          $Reflecjson->fileFunctions=" No Securing functions Found";
         
-        echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
+//        echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
-         $json->fileSinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
+         $Reflecjson->fileSinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
         
         $GLOBALS['noVulLines']++;
     }
@@ -283,7 +302,7 @@ function checkReflecSecure($vulnChkLine,$json)
             
             //Checking Variables for Vulenrable 
 
-function checkReflecVarSecure($vulnChkLine,$json)
+function checkReflecVarSecure($vulnChkLine,$Reflecjson)
 {
     $vuln=0;
     $vuln1=0;
@@ -303,9 +322,9 @@ function checkReflecVarSecure($vulnChkLine,$json)
             if(strcmp($vulnChkLine[$i],$anySecureVuln[$j])==0)
                {
                
-                  echo "<p class='card-text'>This Line is <green>Secure</green> with  <code>  ".$vulnChkLine[$i]."</code></p>";
+//                  echo "<p class='card-text'>This Line is <green>Secure</green> with  <code>  ".$vulnChkLine[$i]."</code></p>";
                 
-                   $json->XpathSecure="This Line is  Secure with  ".$anySecureVuln[$i]." ";
+                   $Reflecjson->RelectionInjectionSecure="This Line is  Secure with  ".$anySecureVuln[$i]." ";
                 
                  $vuln=1;
                   break;
@@ -316,13 +335,13 @@ function checkReflecVarSecure($vulnChkLine,$json)
     }
     if($vuln==0)
     {
-        echo "<p class='card-text'>No Securing functions Found For Main Line</p>";
+//        echo "<p class='card-text'>No Securing functions Found For Main Line</p>";
         
-          $json->Functions=" No Securing functions Found";
+          $Reflecjson->Functions=" No Securing functions Found";
         
-        echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
+//        echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
-         $json->XpathInfo="This line is Vulnerable . It doesn't not have Securing Functions";
+         $Reflecjson->RelectionInjectionInfo="This line is Vulnerable . It doesn't not have Securing Functions";
         
          
         
@@ -332,7 +351,7 @@ function checkReflecVarSecure($vulnChkLine,$json)
 
 //This functiuons checks for the variables in the vuln lines !
 
-function checkifReflecVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
+function checkifReflecVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$Reflecjson)
 {
    
 //    print_r($chkVarSendline);
@@ -349,7 +368,7 @@ function checkifReflecVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num
 //            echo "<br>Trimmed Var ".$chkVarSendline[$i];
 //            $Token = new Tokenizer();
 //            $Token->
-                printXpathDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$json);
+                ReflecprintRelectionInjectionDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$Reflecjson);
         }
         
          else
@@ -361,7 +380,7 @@ function checkifReflecVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num
              {
                  echo $tempCutQuot1;
                
-            printXpathDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$json);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
+            ReflecprintRelectionInjectionDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$Reflecjson);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
              }
              
             
@@ -378,14 +397,14 @@ function checkifReflecVariables($chkVarSendline,$chkVarLines,$chkSendDecLine_num
 
 
 
-function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec==Declaration
+function ReflecprintRelectionInjectionDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$Reflecjson)   //Dec==Declaration
 {
     
    
     foreach ($prtDecLines as $chkprtDecLine_num => $chkprtDecLine)
     {   
         $sendprtDecLine=htmlspecialchars($chkprtDecLine);
-        $trimDecprtSendline = multiexplode($sendprtDecLine); 
+        $trimDecprtSendline = Reflecmultiexplode($sendprtDecLine); 
         $trimmed_DecprtSendline=array_map('trim',$trimDecprtSendline);
       
 //        echo $chkprtDecLine_num."<br>";
@@ -413,16 +432,16 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
             }
             else
             {
-                 echo "<p class='card-text'>Input Values are found in ".$chkprtDecLine."</p>";
+//                 echo "<p class='card-text'>Input Values are found in ".$chkprtDecLine."</p>";
                  
-                 $json->InputValChk=" Input Values are found in ".$chkprtDecLine." ";
+                 $Reflecjson->InputValChk=" Input Values are found in ".$chkprtDecLine." ";
                 
                 
             
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
-                 $chkprtDecLine = multiexplode($chkprtDecLine);
+                 $chkprtDecLine = Reflecmultiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
-                 checkReflecSecure($chkprtDecLine,$json); checkifReflecVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                 checkReflecSecure($chkprtDecLine,$Reflecjson); checkifReflecVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$Reflecjson);
             }
         }
         else if(count($trimmed_DecprtSendline)>1)     //To check the Variable declared after a space or in the a[1] from starting .
@@ -448,19 +467,19 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
                 }
                 else
                 {
-                   echo "<p class='card-text'>Input Values are found in ".$chkprtDecLine."</p>";
+//                   echo "<p class='card-text'>Input Values are found in ".$chkprtDecLine."</p>";
                  
-                 $json->InputValChk=" Input Values are found in ".$chkprtDecLine." ";
+                 $Reflecjson->InputValChk=" Input Values are found in ".$chkprtDecLine." ";
                 
                   
                     $chkprtDecLine=htmlspecialchars($chkprtDecLine);
-                    $chkprtDecLine = multiexplode($chkprtDecLine);
+                    $chkprtDecLine = Reflecmultiexplode($chkprtDecLine);
                     $chkprtDecLine=array_map('trim',$chkprtDecLine);
 //                    print_r($chkprtDecLine);
 //                  $Token = new Tokenizer();
 //            $Token->
-                checkReflecSecure($chkprtDecLine,$json); 
-                checkifReflecVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                checkReflecSecure($chkprtDecLine,$Reflecjson); 
+                checkifReflecVariables($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$Reflecjson);
                 }
             }
        
@@ -474,34 +493,5 @@ function printXpathDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   
 
           
 
-$jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
-$myJSON = json_encode($jsonFinal);
-$LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("ReflectionInjection.json", $myJSON,FILE_APPEND);
-file_put_contents("ReflectionInjection.json","]",FILE_APPEND);
-
-
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['httpTotalLines']."</p>";
-
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
-
-
-            
-            
-            
-//For calculating an reporting no of lines infected 
-            
-$_SESSION['TotalReflecLines']=$GLOBALS['noLines']+$_SESSION['TotalReflecLines'];
-$_SESSION['TotalReflecVulnLines']=$GLOBALS['noVulLines']+$_SESSION['TotalReflecVulnLines'];
-
-$_SESSION['RefDone']=0;
-      
 
 ?>            
-
- </div>
-    </div>
-</div>
