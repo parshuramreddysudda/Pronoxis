@@ -1,76 +1,110 @@
-
 <html>
 
 <head>
-    
-  <title>Pronoxis by DECRYPTER</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    
+
+    <title>Pronoxis by DECRYPTER</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/tim.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../assets/css/loading.css">
+
+
+
+
     <style>
-    
-        code{
+        code {
             background-color: #eff0f1;
             color: #cc0000;
-            padding: 6px 0px; 
+            padding: 6px 0px;
             margin-bottom: 6px;
-            
+
         }
-        .h3Head{
+
+        .h3Head {
             color: black;
             margin-bottom: 30px;
             font-family: product;
         }
-        red{
+
+        red {
             color: crimson;
         }
-        green{
+
+        green {
             color: #4CAF50;
         }
-        blue{
+
+        blue {
             color: #0074D9;
         }
-       @font-face {
-font-family: "Product";
-src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf);
- 
-}
- 
 
+        @font-face {
+            font-family: "Product";
+            src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf);
+
+        }
+
+        .counter {
+
+            @font-face {
+                font-family: "Product";
+                src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf) vertical-align: middle;
+            }
     </style>
 </head>
-     
 
-    
-   <div class="col">
+
+
+<div class="col">
     <div class="card">
         <div class="card-body">
             <h2 class="text-center card-title">Files info</h2>
             <h1>Currently Scanning</h1>
             <h3 id="temp">Currently Scanning</h3>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h4 class="text-monospace">File name</h4>
+                </div>  
+                <div class="col-md-4">
+                    <h4 class="text-monospace">Percentage</h4>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h4>Scan Type</h4>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <h4 class="text-monospace" id="file">File name</h4>
+                <div class="col-md-4">
+                    <h4 class="text-monospace" id="file">name</h4>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <h4 class="text-monospace counter" id="percent"></h4>
+            <div id="progress" style="width:100%;border:1px solid #ccc;"></div>
+<!-- Progress information -->
+<div id="information" style="width"></div>
+                </div>
+
+                <div class="col-md-4">
                     <h4 id="scan">Scan Type</h4>
                 </div>
             </div>
         </div>
     </div>
-</div><?php
+</div>
+    <div class="section-product-description section-white-gradient section-scaled">
+    <div class="container product">
+        
+        sdv
+        
+        
+        </div>
+    
+    
+    </div>
+<?php
 error_reporting(0);
 @ini_set('display_errors', 0);
 include 'designConfig.php';
@@ -95,14 +129,15 @@ header('Cache-Control: no-cache');
 //session_destroy();  
 ini_set('max_execution_time', 300000);
 $configDir=getcwd();
-chdir('C:\xampp\htdocs\dept2\dept');
+chdir('/applications/mamp/htdocs/dep');
 
 $workDir=getcwd(); 
 $scan=0;
 $conFile = scandir($workDir);
 $countOfAll=count($conFile);
   
-function random_string($length) {
+function random_string($length) 
+{
     $key = '';
     $keys = array_merge(range(0, 9), range('a', 'z'));
 
@@ -114,21 +149,38 @@ function random_string($length) {
 }
 
 $fileName=random_string(5);
- mkdir($fileName);
+mkdir($fileName);
 filea($fileName);
 //echo getcwd();
+   function scantype($type)
+   {
+       echo "
+            <script type=\"text/javascript\">
+            document.getElementById('scan').innerHTML='".$type."';
+            </script>
+        ";  
+       sleep(0.01);
+       flush();
+       
+   }  
 
-
- 
-?> 
-    <?php
-    
-    
-    for($fullScan=0;$fullScan<$countOfAll;$fullScan++)
+for($fullScan=0;$fullScan<=$countOfAll;$fullScan++)
 {
+
+    // Calculate the percentation
+    $percent = intval($fullScan/$countOfAll * 100)."%";
+
+    // Javascript for updating the progress bar and information
+    echo '<script language="javascript">
+    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background-color:#ddd;\">&nbsp;</div>";
+    document.getElementById("information").innerHTML="'.$fullScan.' files(s) processed.";
+    </script>';
+    // This is for the buffer achieve the minimum size in order to flush data
+    echo str_repeat(' ',1024*64);
+// Send output to browser immediately
+flush();
 $tmp = explode('.', $conFile[$fullScan]);
 $file_extension = end($tmp);
-     
 if($file_extension=='php')
 {  
  
@@ -185,16 +237,10 @@ scantype('Xpath Injection');
 chdir('..');
 chdir('..');
 }
+    sleep(0.8);
     
 }
-   function scantype($type)
-   {
-       echo "
-            <script type=\"text/javascript\">
-            document.getElementById('scan').innerHTML='".$type."';
-            </script>
-        ";
-   }
+
     function filea($fileName)
     {
          echo "
@@ -204,15 +250,11 @@ chdir('..');
         ";
 
     }
-
-
-
-
 ?>
 </html>
- 
-Total no of lines of code is 
-    <?php
+
+Total no of lines of code is
+<?php
     
     if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
 $_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
@@ -238,4 +280,3 @@ echo "</div>";
     
     
     ?>
-    
