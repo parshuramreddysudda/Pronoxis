@@ -52,7 +52,7 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
     <nav class="navbar navbar-light navbar-expand-md">
         <div class="container-fluid"><a class="navbar-brand" href="#" style="background-image:url(&quot;assets/img/logo.png&quot;);background-position:center;background-size:contain;background-repeat:no-repeat;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</a>
             <button
-                class="navbar-toggler" data-toggle="collapse" data-target="#navcol-2"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                class="navbar-toggler" data-toggle="collapse" data-target="#navcol-2"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span><span class="navbar-toggler-icon"></span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-2">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item" role="presentation"><a class="nav-link" href="#" style="color:rgb(0,0,0);"><i class="fa fa-github"></i>&nbsp; Source code</a></li>
@@ -64,7 +64,7 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
         <div class="card-group" style="padding-top:0px;margin-top:-31px;">
             <div class="card">
                 <div class="card-body" style="padding-right:20px;">
-                    <h4 class="card-title" style="font-size:12px;margin-top:5px;margin-bottom:6px;">&nbsp;  Total No of Lines</h4>
+                    <h3 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total No of Pages</h3>
                     <h1 style="font-size:30px;margin-top:4px;">
   <div class="counter" data-count="<?php if(isset($totalNoFiles)){ echo $totalNoFiles;}?>">0</div></h1>
                     <p style="margin-bottom:0px;">Paragraph</p>
@@ -72,37 +72,37 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
             </div>
             <div class="card">
                 <div class="card-body" style="padding-right:20px;">
-                    <h4 class="card-title" style="font-size:12px;margin-top:5px;margin-bottom:6px;">&nbsp;  Total HTML Pages</h4>
-                    <h1 style="font-size:30px;margin-top:4px;"><div class="counter" data-count="  <?php if(isset($html)){ echo $html;}?>">0</div></h1>
-                    <p style="margin-bottom:0px;">Paragraph</p>
+                    <h4 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total HTML Pages</h4>
+                    <h1 style="font-size:30px;margin-top:4px;"><div class="counter"  data-count="  <?php if(isset($html)){ echo $html;}?>">0</div></h1>
+                    
                 </div>
             </div>
             <div class="card">
                 <div class="card-body" style="padding-right:20px;">
-                    <h4 class="card-title" style="font-size:12px;margin-top:5px;margin-bottom:6px;">&nbsp;  Total JS Files</h4>
+                    <h4 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total JS Files</h4>
                     <h1 style="font-size:30px;margin-top:4px;"><div class="counter" data-count="<?php if(isset($js)){ echo $js;}?>">0</div></h1>
-                    <p style="margin-bottom:0px;">Paragraph</p>
+              
                 </div>
             </div>
             <div class="card">
                 <div class="card-body" style="padding-right:20px;">
-                    <h4 class="card-title" style="font-size:12px;margin-top:5px;margin-bottom:6px;">&nbsp;  Total CSS Files</h4>
+                    <h4 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total CSS Files</h4>
                     <h1 style="font-size:30px;margin-top:4px;"><div class="counter" data-count="<?php if(isset($css)){ echo $css;}?>">0</div></h1>
-                    <p style="margin-bottom:0px;">Paragraph</p>
+                    
                 </div>
             </div>
             <div class="card">
                 <div class="card-body" style="padding-right:20px;">
-                    <h4 class="card-title" style="font-size:12px;margin-top:5px;margin-bottom:6px;">&nbsp;  Total PHP Files</h4>
+                    <h4 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total PHP Files</h4>
                     <h1 style="font-size:30px;margin-top:4px;color:rgba(255,3,3,0.87);"><div class="counter" data-count=" <?php if(isset($totalNoFiles)){ echo $php;}?>">0</div></h1>
-                    <p style="margin-bottom:0px;">Paragraph</p>
+               
                 </div>
             </div>
             <div class="card">
                 <div class="card-body" style="padding-right:20px;">
-                    <h4 class="card-title" style="font-size:12px;margin-top:5px;margin-bottom:6px;">&nbsp;  Total No Img Files</h4>
+                    <h4 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total No Img Files</h4>
                     <h1 style="font-size:30px;margin-top:4px;"><div class="counter" data-count=" <?php if(isset($images)){ echo $images;}?>">0</div></h1>
-                    <p style="margin-bottom:0px;">Paragraph</p>
+                    
                 </div>
             </div>
         </div>

@@ -5,18 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pronoxis</title>
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/Features-Boxed.css">
     <link rel="stylesheet" href="assets/css/Header-Dark.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responce.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="assets/input/input.css">
 </head>
 
-<body style="background-image:url(&quot;assets/img/mountain_bg.jpg&quot;);">
-    <section></section>
+<body >
     <nav class="navbar navbar-light navbar-expand-md">
         <div class="container-fluid"><a class="navbar-brand text-monospace" href="#" style="background-image:url(&quot;assets/img/logo.png&quot;);background-position:center;background-size:contain;background-repeat:no-repeat;margin-left:17px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</a>
             <button
@@ -28,109 +33,123 @@
                 </div>
         </div>
     </nav>
-    <div>
-        <div class="header-dark" style="background-image:url(&quot;none&quot;);background-color:rgba(255,255,255,0);padding-bottom:0px;">
-            <div class="container hero">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <h1 class="text-center" style="margin-bottom:20px;">Pronoxis&nbsp;</h1>
-                        <h1 class="text-center" style="margin-top:10px;">A Static Source Code Analyser</h1>
-                        <div class="row">
-                            <div class="col"></div>
-                            <div class="col"><button class="btn btn-dark center" data-toggle="modal" data-target="#getParamModel"type="button" style="background-color:rgb(0,0,0);">Get Started</button></div>
-                            <div class="col"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card"></div>
-        </div>
-    </div>
-    <div class="modal fade" id="getParamModel" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title"style="text-align:center;">Lets Start the main window now</h4>
-        </div>
-        <div class="modal-body">
-         <div class="container">
-
-                <div class="row">
-                    <div class="col-md-12">
-     <form class="form-inline " action="lib/Display.php" method="post" id="search">
-<div class="row">
-        <div class="col-lg-6">
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Paste Address here</label>
-                                    <input required name="search" type="name" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group label-floating">
-                                    <label class="control-label">Enter Project name</label>
-                                    <input type="name" required name="projectName" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-
-                                <button class="btn btn-secondary" type="submit" value="submit" form="search">Submit</button>
-                            </div>  
-         </div>
+ 
+      <section id="banner">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="block">
+                            <h1 style="color:white;">Prono<anu style="color:red;font-weight:bold">x</anu>is</h1>
+							<h2 style="font-family: 'Cabin', sans-serif">A Complete Static source code Analyzer <br> Scans over 13 Different types of Attacks
+                            </h2>
+							<div class="buttons">
+								<a href="#lakshmi" class="btn btn-learn" style="background-color:Transparent;">Get started</a>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
          
-                            
-                        </form>
-
-
-                    </div>
-
-                    <div class="col-md-6">
-
-
-                    </div>
-
-
-
-                </div>
-
-
-            </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
+			<div class="scrolldown">
+	            <a id="#feau" href="#feau" class="scroll"></a>
+	        </div>
+           <div class="container">
+          
+          
+          
+          </div>
+		</section>
+     <div class="container"  id="lakshmi">
+ 
+         
+           <form class=" rowInput" action="lib/Display.php" method="post" id="search">
+             <div class="col-md-12" style="margin:">
+						<div class="title">
+							<h2 style="font-family: 'Cabin', sans-serif">Get Started With </h2>
+							<p style="font-family: 'Cabin', sans-serif">Please enter these details <br>Select type of scan in next Page </p>
+						</div>
+					</div>    	
+					
+				 
+  <span>
+    <input class="basic-slide " name="projectName" required  placeholder="Logs will be saved with this Name" /><label for="name" style="font-family: 'Cabin', sans-serif">Project Name</label>
+  </span>
+  <span>
+    <input class="basic-slide" name="search" type="name" required type="text" placeholder="Paste your Files Address" /><label for="" style="font-family: 'Cabin', sans-serif">Address</label>
+  </span>
+  <span>
+    <input class="basic-slide" id="email" type="text" placeholder="You can trust us" /><label for="email" style="font-family: 'Cabin', sans-serif">Email</label>
+  </span>
+        
+           
+              <div class="col-md-12" style="margin-top:50px;"> 
+                  <button class="btn btn-learn" type="submit" value="submit" form="search" style="background-color:rgba(0, 0, 0, 0.73);border-radius:5%;" >Submit</button>
+              </div>
+             
+             
+         </form>
+</div>
+  <div style="background-image:url('https://images.unsplash.com/photo-1510511459019-5dda7724fd87?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80'); background-repeat: no-repeat;
+  background-size: cover;" id="feau" >
+		<section id="features" style="background: rgba(0, 0, 0, 0.73);" >
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="title">
+							<h2 style="color:white;font-family: 'Cabin', sans-serif">Pronoxis Features</h2>
+							<p>A static analyzer coded with Pure PHP <br> </p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-xs-6 col-sm-6">
+						<div class="feature-block text-center">
+							<div class="icon-box">
+								<i class="ion-archive"></i>
+							</div>
+							<h4 class="wow fadeInUp" data-wow-delay=".3s"style="font-family: 'Cabin', sans-serif;color:white;">Saves Report</h4>
+							<p class="wow fadeInUp" data-wow-delay=".5s">Pronoxis Scans you file localy <br> Saves the report in JSON and PDF format <br>Separately for later use</p>
+						</div>
+					</div>
+					<div class="col-md-4 col-xs-6 col-sm-6">
+						<div class="feature-block text-center">
+							<div class="icon-box">
+								<i class="ion-paintbucket"></i>
+							</div>
+							<h4 class="wow fadeInUp" data-wow-delay=".3s"style="font-family: 'Cabin', sans-serif;color:white;">Faster and Accurate</h4>
+							<p class="wow fadeInUp" data-wow-delay=".5s">Scans file at Faster rate of 0.003 sec <br> for a single file and Maintains<br> Accurancy at high rate&nbsp;</p>
+						</div>
+					</div>
+					<div class="col-md-4 col-xs-6 col-sm-6">
+						<div class="feature-block text-center">
+							<div class="icon-box">
+								<i class="ion-paintbrush"></i>
+							</div>
+							<h4 class="wow fadeInUp" data-wow-delay=".3s"style="font-family: 'Cabin', sans-serif;color:white;">Need Not to be Compiled</h4>
+							<p class="wow fadeInUp" data-wow-delay=".5s">Pronoxis scan file with out Compilation <br>  of File which even cannot be compiled <br>  Due to syntactical Errors</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
     </div>
-  </div>
-    <div class="features-boxed card">
-        <div class="container">
-            <div class="intro">
-                <h2 class="text-center" style="margin-bottom:10px;">Features </h2>
-            </div>
-            <div class="row justify-content-center features">
-                <div class="col-sm-6 col-md-5 col-lg-4 item">
-                    <div class="box card"><i class="fa fa-map-marker icon"></i>
-                        <h3 class="name">Saves Report</h3>
-                        <p class="description">Pronoxis Scans you file localy and save the report in JSON and PDF format separately for later use</p><a href="#" class="learn-more">Learn more »</a></div>
-                </div>
-                <div class="col-sm-6 col-md-5 col-lg-4 item">
-                    <div class="box card"><i class="fa fa-clock-o icon"></i>
-                        <h3 class="name">Faster and Accurate</h3>
-                        <p class="description">Scans file at Faster rate of 0.003 sec for a single file and maintains Accurancy at high rate&nbsp;</p><a href="#" class="learn-more">Learn more »</a></div>
-                </div>
-                <div class="col-sm-6 col-md-5 col-lg-4 item">
-                    <div class="box card"><i class="fa fa-list-alt icon"></i>
-                        <h3 class="name">Need Not to be Compiled</h3>
-                        <p class="description">Pronoxis scan file with out even Compilation of File which even cannot be compiled due to Errors</p><a href="#" class="learn-more">Learn more »</a></div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+
+  <script>
+    $("a[href^='#']").click(function(e) {
+	e.preventDefault();
+	
+	var position = $($(this).attr("href")).offset().top;
+
+	$("body, html").animate({
+		scrollTop: position
+	}  ,800, 'linear' );
+});
+    </script>
 </body>
 
 </html>
