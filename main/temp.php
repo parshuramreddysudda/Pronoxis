@@ -1,75 +1,96 @@
 <?php
-$workDir=getcwd();
 
-$conFile = scandir($workDir);
-print_r($conFile);
-echo "<br>";
-
-$sqlLines=0; //For Storing no of Sql lines
-$sqlVulnLines=0; //For Storing no of Sql lines
-
-$typeChkLines = file($conFile[17]);
-
-// Loop through our array, show HTML source as HTML source; and line numbers too.
-foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
-{
-    
-    if($typeChkLine_num==11)
+  function main1( )
+    {
+     $address=$_SESSION['addresss'];
+echo "<div class='container'>
+  <h2>Responsive Embed</h2>
+  <p>Create a responsive video and scale it nicely to the parent element with an 16:9 aspect ratio</p>
+  <div class='embed-responsive embed-responsive-16by9'>
+    <iframe class='embed-responsive-item' src='https://www.youtube.com/embed/tgbNymZ7vqY'></iframe>
+  </div>
+</div>";
+      echo "My Address".$address;
+    }
+        function main2( )
     {
         
-      echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n"; 
-        $typeChkLine=htmlspecialchars($typeChkLine);
-        $typeChkLine = multiexplode($typeChkLine);  //Gets the line by removing Delimiters 
-        $typeChkLine=array_map('trim',$typeChkLine);
-        echo "<br>After edit ";
-        print_r($typeChkLine);
-        removequot($typeChkLine);
-        echo "<br><br>";
-        print_r($typeChkLine);
+    $address=$_SESSION['addresss'];
+echo "<div class='container'>
+  <h2>Responsive Embed</h2>
+  <p>Create a responsive video and scale it nicely to the parent element with an 16:9 aspect ratio</p>
+  <div class='embed-responsive embed-responsive-16by9'>
+    <iframe class='embed-responsive-item' src='https://www.youtube.com/embed/tgbNymZ7vqY'></iframe>
+  </div>
+</div>";
+     echo "My Address".$address;
     }
-    
-    
-}
-$string='<br>Heller# % & * % Therw " "how " ';
-
-
-echo $string;
-$replace=str_replace('"', "", $string);
-echo "<br>".$replace;
-
-
-$arr = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
-
-echo json_encode($arr);
-
-
-function removequot($typeChkLine)
-{
-    $quotLineLength=count($typeChkLine);
-    for($i=0;$i<$quotLineLength;$i++)
+        function main3( )
     {
-       if($typeChkLine[$i]==0)
-       {
-           
-       }
-    }
- 
-    
-}
         
-
-function multiexplode($data)
-{
-    $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","`",'"');
-    $quotedata=str_replace('"',"", $data);
-	$MakeReady = str_replace($delimiters, $delimiters[0], $quotedata);
-	$Return    = explode($delimiters[0], $MakeReady);
-	return  $Return;
-}
-
-
-echo "mysqli_query(conn,query_upload)";
-        $typeChkLine=htmlspecialchars($typeChkLine);
-        $typeChkLine = multiexplode($typeChkLine);
-print_r($typeChkLine);
+    $address=$_SESSION['addresss'];
+echo "<div class='container'>
+  <h2>Responsive Embed</h2>
+  <p>Create a responsive video and scale it nicely to the parent element with an 16:9 aspect ratio</p>
+  <div class='embed-responsive embed-responsive-16by9'>
+    <iframe class='embed-responsive-item' src='https://www.youtube.com/embed/tgbNymZ7vqY'></iframe>
+  </div>
+</div>";
+echo "My Address".$address;
+    }
+        function main4( )
+    {
+        $address=$_SESSION['addresss'];
+    
+echo "<div class='container'>
+  <h2>Responsive Embed</h2>
+  <p>Create a responsive video and scale it nicely to the parent element with an 16:9 aspect ratio</p>
+  <div class='embed-responsive embed-responsive-16by9'>
+    <iframe class='embed-responsive-item' src='https://www.youtube.com/embed/tgbNymZ7vqY'></iframe>
+  </div>
+</div>";
+echo "My Address".$address;
+    }
+        function main5( )
+    {
+        
+    $address=$_SESSION['addresss'];
+echo "<div class='container'>
+  <h2>Responsive Embed</h2>
+  <p>Create a responsive video and scale it nicely to the parent element with an 16:9 aspect ratio</p>
+  <div class='embed-responsive embed-responsive-16by9'>
+    <iframe class='embed-responsive-item' src='https://www.youtube.com/embed/tgbNymZ7vqY'></iframe>
+  </div>
+</div>";
+ echo "My Address".$address;
+    }
+    
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <?php 
+    
+for($i=0;$i<5;$i++)
+{
+    $_SESSION['addresss']=$i;
+    main1();   
+    main1();  
+    main1();   
+    main1();   
+    main1();   
+}
+
+      ?>
+
+</body>
+</html>

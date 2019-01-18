@@ -1,0 +1,211 @@
+.abs-centered,
+.request-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.back {
+  transition: 0.3s;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  margin: 0.5em;
+  cursor: pointer;
+}
+.back i {
+  transition: 0.3s;
+  font-size: 3em;
+  color: #ccc;
+}
+.back:hover i {
+  transition: 0.3s;
+  color: #000;
+}
+.back::after {
+  content: "Change request type";
+  font-size: 1.2em;
+  position: absolute;
+  width: max-content;
+  top: 50%;
+  -webkit-transform: translateY(-60%);
+  -moz-transform: translateY(-60%);
+  transform: translateY(-60%);
+}
+#app.container {
+  transition: 0.3s;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+#app.container .title {
+  transition: all 0.3s, height 0s 0s;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+}
+#app.container .title h2 {
+  margin: 0;
+  font-size: 2em;
+}
+#app.container .title p {
+  margin: 0;
+  font-size: 1.5em;
+}
+#app.container .title h2,
+#app.container .title p {
+  color: #fff;
+  width: 100%;
+}
+#app.container .vto-box,
+#app.container .ot-box {
+  transition: 0.3s;
+  flex-grow: 1;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+#app.container .vto-box {
+  background-color: #ffa058;
+  border: 5px solid #ffa058;
+}
+#app.container .ot-box {
+  background-color: #588aff;
+  border: 5px solid #588aff;
+}
+#app.container.vto {
+  transition: 0.3s;
+}
+#app.container.vto .back {
+  opacity: 0.5;
+  color: #588aff;
+}
+#app.container.vto .back i {
+  color: #588aff;
+}
+#app.container.vto .back:hover {
+  opacity: 1;
+}
+#app.container.vto .vto-box {
+  flex-grow: 1;
+  background-color: #fff;
+  border: 5px solid #ffa058;
+}
+#app.container.vto .vto-box .title {
+  transition: opacity 0.3s, height 0s 0.3s;
+  opacity: 0;
+  height: 0;
+}
+#app.container.vto .ot-box {
+  flex-grow: 0;
+  width: 0;
+  border-width: 0;
+}
+#app.container.vto .ot-box h2,
+#app.container.vto .ot-box p {
+  transition: 0.3s;
+  font-size: 1px;
+}
+#app.container.ot {
+  transition: 0.3s;
+}
+#app.container.ot .back {
+  opacity: 0.5;
+  color: #ffa058;
+}
+#app.container.ot .back i {
+  color: #ffa058;
+}
+#app.container.ot .back:hover {
+  opacity: 1;
+}
+#app.container.ot .ot-box {
+  flex-grow: 1;
+  background-color: #fff;
+  border: 5px solid #588aff;
+}
+#app.container.ot .ot-box .title {
+  transition: all 0.3s, height 0s 0.3s;
+  opacity: 0;
+  height: 0;
+}
+#app.container.ot .vto-box {
+  flex-grow: 0;
+  width: 0;
+  overflow: hidden;
+  border-width: 0;
+}
+#app.container.ot .vto-box h2,
+#app.container.ot .vto-box p {
+  transition: 0.3s;
+  font-size: 1px;
+}
+.request-box {
+  z-index: 50;
+}
+.request-box .date {
+  padding: 2em;
+  background-color: #ddd;
+}
+.request-box .date input[type="date"] {
+  border: none;
+  font-size: 1.5em;
+  border-bottom: 2px solid #588aff;
+}
+.request-box .agent {
+  padding: 2em;
+  position: relative;
+}
+.request-box .agent input[type="text"] {
+  border: none;
+  border-bottom: 2px solid #588aff;
+  position: relative;
+  outline: none;
+  background-color: transparent;
+  z-index: 2;
+  font-size: 1.5em;
+  text-indent: 0.25em;
+}
+.request-box .agent input[type="text"]::placeholder {
+  color: transparent;
+}
+.request-box .agent input[type="text"]:focus ~ span,
+.request-box .agent input[type="text"]:valid ~ span {
+  transition: 0.3s;
+  top: 0;
+  left: 2em;
+  font-size: 1em;
+}
+.request-box .agent span {
+  color: #588aff;
+  transition: 0.3s;
+  position: absolute;
+  font-size: 1.5em;
+  top: 1.25em;
+  left: 1.75em;
+  z-index: 1;
+}
+@media only screen and (max-width: 600px) {
+  #app.container {
+    flex-direction: column;
+    position: relative;
+  }
+  #app.container .title {
+    position: absolute;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}

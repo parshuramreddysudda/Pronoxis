@@ -219,25 +219,32 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
         $lengthofFilearray=count($filesArray);
         for($i=0;$i<$lengthofFilearray;$i++)
         {
-            echo    "<div class='card-group'>";
+            echo    "<div class='row'>";
+                  if(!isset( $filesArray[$i]))
+            {
+                break;
+            }
             
            echo "
            
+         <div class='col-md-4'>
         <div class='card'>
         
         <div class='card-body'>
       
+   <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
    
-        <h4 class='card-title'>".$filesArray[$i]."</h4>
+         <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>".$filesArray[$i]."</h3>
          
   
                       <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
                <input type='hidden'  name='page' value=".$filesArray[$i].">
           
-            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #DE2968;color:white;float:right;'>Submit</button>
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
             </form>
           
       
+      </div>
       </div>
         </div>
         
@@ -245,49 +252,52 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
           $i=$i+2;
                 if(!isset( $filesArray[$i]))
             {
-                continue;
+                break;
             }
          echo "
+         <div class='col-md-4'>
         <div class='card'>
         
         <div class='card-body'>
       
-   
+   <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
             
-        <h4 class='card-title'  >".$filesArray[$i]."</h4>
+         <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>".$filesArray[$i]."</h3>
      
    
                       <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
                <input type='hidden'  name='page' value=".$filesArray[$i].">
           
-            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #DE2968;color:white;float:right;'>Submit</button>
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
             </form>
       
       </div>
-        </div>
+        </div></div>
         
         ";
           $i=$i+2;
              if(!isset( $filesArray[$i]))
             {
-                continue;
+                break;
             }
                     echo "
+                    <div class='col-md-4'>
         <div class='card'>
         
         <div class='card-body'>
       
-    
+    <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
             
-        <h4 class='card-title'  >".$filesArray[$i]."</h4>
+          <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>".$filesArray[$i]."</h3>
+          
                       <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
                <input type='hidden'  name='page' value=".$filesArray[$i].">
           
-            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #DE2968;color:white;float:right;'>Submit</button>
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
             </form>
       
       </div>
-        </div>
+        </div>        </div>
         
         ";
           $i=++$i;
@@ -307,6 +317,7 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
 
     
     </div>
+ 
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/js/material-dashboard.js"></script>
