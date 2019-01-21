@@ -1,0 +1,35 @@
+
+.progress-barCustom{
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-barCustom .line{
+  height: 5px;
+  background: #e8e8e8;
+  border-radius: 7px;
+  position: relative;
+}
+
+.progress-barCustom .label{
+  font-size: 30px;
+}
+
+.progress-barCustom > .line > span{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: red;
+  border-radius: 10px;
+}
+
+
+@keyframes animationLoaded{
+  0%{
+    width: 0%;
+  }
+  100%{
+    width: 100%;
+  }
+}
