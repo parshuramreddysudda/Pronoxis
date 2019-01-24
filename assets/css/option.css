@@ -1,0 +1,27 @@
+
+
+.radio-group {
+  background: rgba(34,50,84,0.08);
+  border-radius: 30px;
+  padding: 3px;
+}
+.radio-group label {
+  color: #5a667f;
+  padding: 8px 12px;
+  display: inline-block;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.radio-group label:hover {
+  background: rgba(255,255,255,0.5);
+}
+.radio-group input {
+  display: none;
+}
+.radio-group input:checked + label {
+  color: #07f;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(34,50,84,0.25);
+  cursor: default;
+}

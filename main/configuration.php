@@ -47,12 +47,13 @@
 
         }
 
-        .counter {
+        .counter { 
 
             @font-face {
                 font-family: "Product";
                 src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf) vertical-align: middle;
             }
+        }
     </style>
 </head>
 
@@ -216,7 +217,7 @@ header('Cache-Control: no-cache');
 //session_destroy();  
 ini_set('max_execution_time', 300000);
 $configDir=getcwd();
-chdir('C:\xampp\htdocs\dept2\dept');
+chdir('/Applications/MAMP/htdocs/dep');
 
 $workDir=getcwd(); 
 $scan=0;

@@ -1,7 +1,7 @@
 <?php
 include 'FullScanConfig.php';
 header('Cache-Control: no-cache');
-ini_set('max_execution_time', 30000);
+ini_set('max_execution_time', 30000000000);
 
 $httpTotalLines=0;  //to count no of lines
 $noLines=0;         //To count no of lines

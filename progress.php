@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
     <title>Progress Bar</title>
+     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  
+      <link rel="stylesheet" href="assets/css/option.css">
 </head>
 <body>
 <!-- Progress bar holder -->
@@ -10,34 +15,48 @@
 <div id="information" style="width"></div>
 <?php
 // Total processes
-$total = 20;
-
-// Loop through process
-for($i=1; $i<=$total; $i++){
-    // Calculate the percentation
-    $percent = intval($i/$total * 100)."%";
-
-    // Javascript for updating the progress bar and information
-    echo '<script language="javascript">
-    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background-color:#ddd;\">&nbsp;</div>";
-    document.getElementById("information").innerHTML="'.$i.' row(s) processed.";
-    </script>';
-
-
-// This is for the buffer achieve the minimum size in order to flush data
-    echo str_repeat(' ',1024*64);
-
-
-// Send output to browser immediately
-    flush();
-
-
-// Sleep one second so we can see the delay
-    sleep(1);
-}
-
-// Tell user that the process is completed
-echo '<script language="javascript">document.getElementById("information").innerHTML="Process completed"</script>';
+//$total = 20;
+//
+//// Loop through process
+//for($i=1; $i<=$total; $i++){
+//    // Calculate the percentation
+//    $percent = intval($i/$total * 100)."%";
+//
+//    // Javascript for updating the progress bar and information
+//    echo '<script language="javascript">
+//    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background-color:#ddd;\">&nbsp;</div>";
+//    document.getElementById("information").innerHTML="'.$i.' row(s) processed.";
+//    </script>';
+//
+//
+//// This is for the buffer achieve the minimum size in order to flush data
+//    echo str_repeat(' ',1024*64);
+//
+//
+//// Send output to browser immediately
+//    flush();
+//
+//
+//// Sleep one second so we can see the delay
+//    sleep(1);
+//}
+//
+//// Tell user that the process is completed
+//echo '<script language="javascript">document.getElementById("information").innerHTML="Process completed"</script>';
+//    
 ?>
+    
+<div class="center">
+  <div class="radio-group">
+    <input type="radio" name="rdo" id="rdo1">
+    <label for="rdo1">Morning</label>
+    <input type="radio" name="rdo" id="rdo2" checked>
+    <label for="rdo2">Midday</label>
+  </div>
+</div>
+  
+  
+  
+    
 </body>
 </html>

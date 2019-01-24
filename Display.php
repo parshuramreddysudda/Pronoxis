@@ -43,6 +43,7 @@ font-family: "Product";
 src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
   vertical-align: middle;
 }
+    }
     </style>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

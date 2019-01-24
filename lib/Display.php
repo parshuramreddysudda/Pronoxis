@@ -184,63 +184,32 @@ src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
     </div>
     
 <div id="Scan1" class="container desc" style="display: none;">
-   <div class="card-group">
-  <div class="card">
-        <div class="card-body" >
-       <div class="row">
-            <div class="col">
-           <p>Project Name</p><hr>
-           <h2>Pronoxis</h2>
-           </div>
-            
-            </div>
-        </div>
-        </div>
-       <div class="card">
-        <div class="card-body" >
-       <div class="row">
-           <div class="col-md-4">
-           
-           
-           
-           </div>
-            <div class="col-md-4">
- 
-       
-           </div>
-            <div class="col-md-4">
-           
-           <div
-  class="ldBar label-center"
-  style="width:25%;height:25%;margin:auto"
-  data-value="35"
- data-preset="circle"
-></div>
-           
-           </div>
-            </div>
-        </div>
-        </div>
-       <div class="card">
-        <div class="card-body" >
+
     
- 
-       <div class="row">
-            <div class="col">
-                <div class="card-title">Running Scan of</div>
-                <div class="card-text">
-                <b>Page Name</b>  <label>Index.php</label><br>
-                <b>Vulnerability Name</b> <label>SQL Injection</label>
-                </div>
-           </div>
-            
-        </div>
+    <?php 
+    
+        echo "
+        <div class='card'>
         
-        </div>
-        </div>
-        
-        
-        </div>
+        <div class='card-body'>
+      
+   <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
+   
+         <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>Start Scan</h3>
+         
+  
+                      <form action='../main/mainConfig.php'class='form-inline ml-auto' method='post'style='float:right;'>
+                 
+  <input type='hidden' name='start' value='done'>
+  
+          
+            <button class='btn btn-secondary' type='submit' value='submit' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
+            </form>
+          
+      
+      </div>
+      </div>";
+    ?>
     </div>
   
     <div id="Scan2" class="container desc" style="display: none;" >
