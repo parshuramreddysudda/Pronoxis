@@ -210,7 +210,7 @@ $_SESSION['partScanAdress']=getcwd();
     height:100%;
     position:fixed;
     z-index:9999;
-    background:url("https://i.imgur.com/ytEbGbJ.gif") no-repeat center center rgba(0,0,0,0.25)
+    background:url("https://i.imgur.com/Gp6xPjs.gif") no-repeat center center rgba(1,0,0,0.73);
 } 
     </style>
 </head>
@@ -1269,7 +1269,7 @@ s  " style="background-color: #E12E6D"><i class="material-icons" style="margin-l
             <script>
               document.write(new Date().getFullYear())
             </script>, made with <i class="material-icons" style="margin-left:-1.3px">favorite</i> by
-            <a href="https://www.primeauth.com" target="_blank">Planus</a> 
+            <a href="https://www.pronoxis.com" target="_blank">Planus</a> 
           </div>
           <!-- your footer here -->
         </div>

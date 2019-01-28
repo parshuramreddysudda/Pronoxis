@@ -4,16 +4,15 @@
 
     <title>Pronoxis by DECRYPTER</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/tim.css">
+<!--    <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/tim.css">-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="../assets/css/loading.css">
-
-
-
+<link rel="stylesheet" href="../assets/css/loading-bar.css" >
+    
 
     <style>
         code {
@@ -22,7 +21,7 @@
             padding: 6px 0px;
             margin-bottom: 6px;
 
-        }
+        } 
 
         .h3Head {
             color: black;
@@ -48,12 +47,13 @@
 
         }
 
-        .counter {
+        .counter { 
 
             @font-face {
                 font-family: "Product";
                 src: url(../assets/fonts/product-sans/Product%20Sans%20Regular.ttf) vertical-align: middle;
             }
+        }
     </style>
 </head>
 
@@ -94,16 +94,104 @@
         </div>
     </div>
 </div>
-    <div class="section-product-description section-white-gradient section-scaled">
-    <div class="container product">
-        
-        sdv
-        
-        
+  <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Number of Lines </h4>
+                    <h6 class="text-muted card-subtitle mb-2">Sql Injection</h6>
+                  
+<div
+  class="ldBar"
+  data-stroke="data:ldbar/res,gradient(0,1,#f99,#ff9)"
+></div>
+                    
+
+    
+                     <hr />
+                      <h6 class="text-muted card-subtitle mb-2">XSS Cross Site Scripting</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                     <h6 class="text-muted card-subtitle mb-2">Command Injection</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                     <h6 class="text-muted card-subtitle mb-2">Code Execution</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                     <h6 class="text-muted card-subtitle mb-2">File Disclosure</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                     <h6 class="text-muted card-subtitle mb-2">File Inclusion</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                    <hr />
+                    <h6 class="text-muted card-subtitle mb-2">File Manipulation</h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                    <hr />
+                    <h6 class="text-muted card-subtitle mb-2">Http Responce Splitting </h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                    <h6 class="text-muted card-subtitle mb-2">Protocol Injection </h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                    <h6 class="text-muted card-subtitle mb-2">Reflection Injection </h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                    <h6 class="text-muted card-subtitle mb-2">Session Fixation</h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                     <hr />
+                    <h6 class="text-muted card-subtitle mb-2">X Path Injection</h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                    <hr />
+                </div>
+            </div>
         </div>
-    
-    
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Title</h4>
+                    <h6 class="text-muted card-subtitle mb-2">Subtitle</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                    <hr />
+                    <h6 class="text-muted card-subtitle mb-2">Subtitle</h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                    <hr />
+                    <h6 class="text-muted card-subtitle mb-2">Subtitle</h6>
+                    <div class="progress">
+                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 <?php
 error_reporting(0);
 @ini_set('display_errors', 0);
@@ -129,7 +217,7 @@ header('Cache-Control: no-cache');
 //session_destroy();  
 ini_set('max_execution_time', 300000);
 $configDir=getcwd();
-chdir('/applications/mamp/htdocs/dep');
+chdir('/Applications/MAMP/htdocs/dep');
 
 $workDir=getcwd(); 
 $scan=0;
@@ -251,7 +339,25 @@ chdir('..');
 
     }
 ?>
-</html>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   <link rel="stylesheet" href="../assets/js/progress.js">
+    <script type="text/x-javascript" src="../assets/js/loading-bar.js"></script>
+ 
+    
+    
+</html> 
 
 Total no of lines of code is
 <?php

@@ -1,0 +1,1 @@
+[{"AttackName":"FileManipulationVuln","LineInfo":"Line Number 22 May be  Vulnerable","LineCode":"Vulnerable Code file_put_contents(&quot;HttpResponce.json&quot;,&quot;[&quot;,FILE_APPEND);\n ","VulnVar":"Vulnerable Variables are 1 . file_put_contents This may rise Vulnerability","InputChk":"Input Values <green>Not found <\/green> Cheking  Variables If  "},

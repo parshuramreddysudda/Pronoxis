@@ -96,7 +96,7 @@ function Usercheckline($sendLine,$lineno,$userInputjson,$Line)
          if(strcmp($sendLine[$i],$serverInputValues[$j])==0) //Compare line array with protected sql array list
            {
              
-       
+          $GLOBALS['UserVulnVar']++;
 //                echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$lineno."</b> May be  Vulnerable</h3>";
 
                     
@@ -111,7 +111,7 @@ function Usercheckline($sendLine,$lineno,$userInputjson,$Line)
                 $userInputjson->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ' ".$serverInputValues[$j]."' .This may rise Vulnerability";   
              
          
-             $GLOBALS['UserVulnVar']++;
+          
             
              checkUserInputForVuln($sendLine,$lineno,$userInputjson);
                 //Json File for appending output Code 

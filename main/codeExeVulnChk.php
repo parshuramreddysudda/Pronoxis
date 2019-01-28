@@ -65,9 +65,8 @@ file_put_contents("CodeExecutionVuln.json","]",FILE_APPEND);
 
 
 //For calculating an reporting no of lines infected 
-$_SESSION['TotalCodeLines']=$GLOBALS['codehttpTotalLines']+$_SESSION['TotalCodeLines'];
+$_SESSION['TotalCodeLines']=$GLOBALS['nocodeLines']+$_SESSION['TotalCodeLines'];
 $_SESSION['TotalCodeVulnLines']=$GLOBALS['nocodeVulLines']+$_SESSION['TotalCodeVulnLines'];
-
 $_SESSION['codeDone']=0;    
     
     
@@ -102,7 +101,7 @@ function codecheckSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$codejs
                 if(strcmp($chkLine[$i],$CodeExecutionWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks 
-                 echo "<hr><br>";
+                 $GLOBALS['nocodeLines']++; 
 //                echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$chkLineNo."</b> May be  Vulnerable</h3>";
 
                     
@@ -118,7 +117,7 @@ function codecheckSources($chkLine,$chkLineNo,$typeChkLines,$typeChkLine,$codejs
                     
                     
                 codecheckforSinks($chkLine,$typeChkLines,$chkLineNo,$codejson);
-                  $GLOBALS['nocodeLines']++; 
+                 
                     
                    $codemyJSON = json_encode($codejson);
                 file_put_contents("CodeExecutionVuln.json", $codemyJSON,FILE_APPEND);
