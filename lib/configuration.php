@@ -1,11 +1,6 @@
 <?php
 include 'Sessionfile.php';
 
-    
-
-
-
-
 
 ini_set('max_execution_time', 30000);
 //chdir('C:\xampp\htdocs\dept');
@@ -34,10 +29,8 @@ $noVulLines=0;       //TO count no of Vuln varaibles
   <title>Pronoxis by DECRYPTER</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!--  <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">-->
+ 
     
     <style>
     
@@ -46,11 +39,13 @@ $noVulLines=0;       //TO count no of Vuln varaibles
             color: #cc0000;
             padding: 6px 0px; 
             margin-bottom: 6px;
+             margin-top: 6px;
             
         }
         .h3Head{
-            color: black;
+            color: black; 
             margin-bottom: 30px;
+            margin-top: 30px;
             font-family: product;
         }
         red{

@@ -290,6 +290,8 @@ scantype('CodeExecution');
 
 startCmd($Mainaddress,$typeChkLines);  
  scantype('CodeExecution');
+ 
+ 
 startFileDis($Mainaddress,$typeChkLines);  
 scantype('File Disclosure');
     
@@ -297,19 +299,21 @@ startfileInc($Mainaddress,$typeChkLines);
 scantype('File Inclusion');
     
 startFileMan($Mainaddress,$typeChkLines);  
-
  scantype('File Manipulation');   
+ 
 startHttpRes($Mainaddress,$typeChkLines);  
-
 scantype('Http Res Vuln');   
+
 startProtoc($Mainaddress,$typeChkLines);  
+scantype('Protocol Injection');
+
 
 startFileReflec($Mainaddress,$typeChkLines);  
 scantype('Reflection Injection');
     
 startSession($Mainaddress,$typeChkLines);  
-
  scantype('Session Hijacking');   
+ 
 StartSql($Mainaddress,$typeChkLines);  
 scantype('Sql Injection');
  

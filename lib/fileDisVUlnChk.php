@@ -1,67 +1,78 @@
-<html>
-<body  style="background-color:#FFFFFF;">
-
-
-
 <?php
 
 
-include 'configuration.php';
-$time_start = microtime(true); //Create a variable for start time
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
+function startFileDis($address,$typeChkLines)
+{
+chdir($address);
+ 
+//Json Class for storing result in json file
+$fileDisjson;  
+$myfile = fopen("FileDisclosureVuln.json", "w") or die("Unable to open file!");
+file_put_contents("FileDisclosureVuln.json","[",FILE_APPEND);
+$fileDisjson->AttackName='FileDisclosureVuln';
+
+global $sno;  //For counting vuln var
+global $fileDishttpTotalLines;  //to count no of lines
+global $noFileDisLines;         //To count no of lines
+global $noFileDisVulLines;       //TO count no of Vuln varaibles
+
+ 
+     
+$fileDishttpTotalLines=0;  //to count no of lines
+$noFileDisLines=0;         //To count no of lines
+$noFileDisVulLines=0;       //TO count no of Vuln varaibles
+
+$LogFileName=$_SESSION['LogFileName'];    
+ foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
+{ 
+    $superArray=$typeChkLines;
 
 
-$conFile = scandir($workDir);
-echo "<br>";
-
-$sno=1;  //For counting vuln var
-
-$httpTotalLines=0;  //to count no of lines
-$noLines=0;         //To count no of lines
-$noVulLines=0;       //TO count no of Vuln varaibles
-chdir($_SESSION['partScanAdress']);
-$typeChkLines=$_SESSION['checkFileName'];
-$LogFileName='TEMP';
 
 $superArray=array(); //For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible 
- 
-//Json Class for storing result in json file
-$json;  
-$myfile = fopen("FileDisclosureVuln.json", "w") or die("Unable to open file!");
-file_put_contents("FileDisclosureVuln.json","[",FILE_APPEND);
-$json->AttackName='FileDisclosureVuln';
-
-
-// Loop through our array, show HTML source as HTML source; and line numbers too.
-?>
-
-<div class="container" style="background-color:#FFFFFF;">
-    <div class="">
-        <div class="">
-            
-            
-<?php
-
-foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
-{ 
-    $superArray=$typeChkLines;
-    
-     $json=$GLOBALS['json'];
+     
     
 //    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
         $sendLine=htmlspecialchars($typeChkLine);
-        $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
+        $trimSendline = fileDismultiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        checkSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine,$json);
-    $GLOBALS['httpTotalLines']++;
+        fileDischeckSources($trimmed_Sendline,$typeChkLine_num,$typeChkLines,$typeChkLine,$fileDisjson);
+      
     
 }
+   
+    
+    
+    
+$fileDisjsonFinal->ForCorrection='String Added to Validate the Json';  
+$fileDisjsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noFileDisLines'];
+$fileDisjsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noFileDisVulLines'];
+$fileDismyJSON = json_encode($fileDisjsonFinal);
+$LogFileName=$GLOBALS['LogFileName']; 
+file_put_contents("FileDisclosureVuln.json", $fileDismyJSON,FILE_APPEND);
+file_put_contents("FileDisclosureVuln.json","]",FILE_APPEND);
 
 
-function multiexplode($data)
+//echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noFileDisLines']."</p>";
+
+//echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noFileDisVulLines']."</p>";
+
+
+            
+//For calculating an reporting no of lines infected 
+$_SESSION['TotalFileDisLines']=$GLOBALS['noFileDisLines'];
+$_SESSION['TotalFileDisVulnLines']=$GLOBALS['noFileDisVulLines'];
+
+$_SESSION['fileDisDone']=0;
+}
+
+// Loop through our array, show HTML source as HTML source; and line numbers too.
+
+
+
+function fileDismultiexplode($data)
 {
     $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
@@ -73,7 +84,7 @@ function multiexplode($data)
 }
 
 
-function checkSources($chkLine,$chkLineNo,$typeChkLines,$Line,$json)
+function fileDischeckSources($chkLine,$chkLineNo,$typeChkLines,$Line,$fileDisjson)
 {
     $GLOBALS['sno']=1; 
     include'warmHole.php'; 
@@ -90,32 +101,31 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$Line,$json)
                 if(strcmp($chkLine[$i],$fileDisclosureWarmhole[$j])==0)
                 {
 //                    This if conditions confirms for sinks    
-                echo "<hr><br>";
-                    
+                  $GLOBALS['noFileDisLines']++;
+                     echo "<hr><br>";
                 echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$chkLineNo."</b> May be  Vulnerable</h3>";
 
                     
-                $json->LineInfo="Line Number ".$chkLineNo." May be  Vulnerable";  
+                $fileDisjson->LineInfo="Line Number ".$chkLineNo." May be  Vulnerable";  
                     
                 echo "<p class='card-text'>Vulnerable Code <br> <code>".htmlspecialchars($Line)."</code></p>"; 
                     
-                $json->LineCode="Vulnerable Code ".htmlspecialchars($Line)." ";  
+                $fileDisjson->LineCode="Vulnerable Code ".htmlspecialchars($Line)." ";  
                     
                 echo "<p class='card-text'>Vulnerable Variables are <red> ".$GLOBALS['sno']." . ".$chkLine[$i]."</red> This may rise Vulnerability</p>";
                     
-                $json->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
+                $fileDisjson->VulnVar="Vulnerable Variables are ".$GLOBALS['sno']." . ".$chkLine[$i]." This may rise Vulnerability";   
                     
-               checkforSinks($chkLine,$typeChkLines,$chkLineNo,$json);
-                  $GLOBALS['noLines']++; 
+               fileDis($chkLine,$typeChkLines,$chkLineNo,$fileDisjson);
                     
             //Json File for appending output Code 
                     
-                $myJSON = json_encode($json);
-                file_put_contents("FileDisclosureVuln.json", $myJSON,FILE_APPEND);
+                $fileDismyJSON = json_encode($fileDisjson);
+                file_put_contents("FileDisclosureVuln.json", $fileDismyJSON,FILE_APPEND);
                 file_put_contents("FileDisclosureVuln.json",",",FILE_APPEND);
                 
                 
-                    
+                   echo "</div>";  
                 }
             }
             
@@ -130,7 +140,7 @@ function checkSources($chkLine,$chkLineNo,$typeChkLines,$Line,$json)
 
 
 //This function checks for sinks in the source lines
-function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
+function fileDis($sinkChkLine,$typeChkLines,$chkLineNo,$fileDisjson)
 {
     include'checkWordlists.php';
         
@@ -161,15 +171,15 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
                   
                   echo "<p class='card-text'>Input Values found they are  <red>".$userInputValues[$j]."</red>";
                   
-                  $json->InputValues="Input Values found they are ".$userInputValues[$j]." ";
+                  $fileDisjson->InputValues="Input Values found they are ".$userInputValues[$j]." ";
                       
                       
                       
                   echo "<p class='card-text'>Checking for Securing Functions<br></p>";
                   
-                    $json->ChkSecure="Checking for Securing Functions";
+                    $fileDisjson->ChkSecure="Checking for Securing Functions";
                   
-                  checkSecure($sinkChkLine,$json);
+                  fileDischeckSecure($sinkChkLine,$fileDisjson);
                 
                   break;
               }
@@ -188,16 +198,16 @@ function checkforSinks($sinkChkLine,$typeChkLines,$chkLineNo,$json)
     {
         echo "<p class='card-text'>Input Values <green>Not found </green> Checking  Variables If </p> ";
         
-         $json->InputChk="Input Values <green>Not found </green> Checking  Variables If  ";
+         $fileDisjson->InputChk="Input Values <green>Not found </green> Checking  Variables If  ";
         
-        checkifVaribles($sinkChkLine,$typeChkLines,$chkLineNo,$json);
+        fileDischeckifVaribles($sinkChkLine,$typeChkLines,$chkLineNo,$fileDisjson);
     }
     
 }
 
 
 //This function checks whether sinks  i.e get and post are protected or not
-function checkSecure($vulnChkLine,$json)
+function fileDischeckSecure($vulnChkLine,$fileDisjson)
 {
     $vuln=0;
     include'vulnWordlist.php';
@@ -217,8 +227,8 @@ function checkSecure($vulnChkLine,$json)
                
                  echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
-                   $json->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                   $fileDisjson->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }
@@ -230,13 +240,13 @@ function checkSecure($vulnChkLine,$json)
     {
         echo "<p class='card-text'>No Securing functions Found</p>";
         
-          $json->Functions=" No Securing functions Found";
+          $fileDisjson->Functions=" No Securing functions Found";
         
         echo "<p class='card-text'>This line is <red> Vulnerable </red>. It doesn't <red>no</red>t have <red>Securing</red> Functions</p>";
         
-         $json->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
+         $fileDisjson->SinksInfo="This line is Vulnerable . It doesn't not have Securing Functions";
         
-        $GLOBALS['noVulLines']++;
+        $GLOBALS['noFileDisVulLines']++;
     }
     
 }
@@ -246,7 +256,7 @@ function checkSecure($vulnChkLine,$json)
 
 //This functiuons checks for the variables in the vuln lines !
 
-function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
+function fileDischeckifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$fileDisjson)
 {
    
 //    print_r($chkVarSendline);
@@ -263,7 +273,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 //            echo "<br>Trimmed Var ".$chkVarSendline[$i];
 //            $Token = new Tokenizer();
 //            $Token->
-                printDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$json);
+                fileDisprintDeclaration($chkVarSendline[$i],$chkVarLines,$chkSendDecLine_num,$fileDisjson);
             
              $temp=1;
         }
@@ -277,7 +287,7 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
              {
                  echo $tempCutQuot1;
                 $temp=1;
-            printDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$json);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
+            fileDisprintDeclaration($tempCutQuot1,$chkVarLines,$chkSendDecLine_num,$fileDisjson);  //Send the value decleared in th sql string since it has uni characters like " ' . they are trimmed first and then sent
              }
              
             
@@ -297,14 +307,14 @@ function checkifVaribles($chkVarSendline,$chkVarLines,$chkSendDecLine_num,$json)
 
 
 
-function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec==Declaration
+function fileDisprintDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$fileDisjson)   //Dec==Declaration
 {
     
    
     foreach ($prtDecLines as $chkprtDecLine_num => $chkprtDecLine)
     {   
         $sendprtDecLine=htmlspecialchars($chkprtDecLine);
-        $trimDecprtSendline = multiexplode($sendprtDecLine); 
+        $trimDecprtSendline = fileDismultiexplode($sendprtDecLine); 
         $trimmed_DecprtSendline=array_map('trim',$trimDecprtSendline);
       
 //        echo $chkprtDecLine_num."<br>";
@@ -331,12 +341,12 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
             {
                  echo "<p class='card-text'>Input Values are found in ".$chkprtDecLine."</p>";
                  
-                 $json->InputValChk=" Input Values are found in ".$chkprtDecLine." ";
+                 $fileDisjson->InputValChk=" Input Values are found in ".$chkprtDecLine." ";
                 
                  $chkprtDecLine=htmlspecialchars($chkprtDecLine);
-                 $chkprtDecLine = multiexplode($chkprtDecLine);
+                 $chkprtDecLine = fileDismultiexplode($chkprtDecLine);
                  $chkprtDecLine=array_map('trim',$chkprtDecLine);
-                 checkSecure($chkprtDecLine,$json); checkifVaribles($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                 fileDischeckSecure($chkprtDecLine,$fileDisjson); fileDischeckifVaribles($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$fileDisjson);
             }
         }
         else if(count($trimmed_DecprtSendline)>1)     //To check the Variable declared after a space or in the a[1] from starting .
@@ -363,20 +373,20 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
                 {
                     echo "<p class='card-text'>Variables are found in Line Number ".$chkprtDecLine_num."</p>";
                     
-                 $json->InputValChk="Variables are found in Line Number ".$chkprtDecLine_num ;
+                 $fileDisjson->InputValChk="Variables are found in Line Number ".$chkprtDecLine_num ;
                     
                         echo "<p class='card-text'>Code for Line Number   ".$chkprtDecLine_num." is <br><code>".$chkprtDecLine."</code></p>";
                     
-                  $json->VulnLineCode="Code for Line Number   ".$chkprtDecLine_num." is ".$chkprtDecLine." ";
+                  $fileDisjson->VulnLineCode="Code for Line Number   ".$chkprtDecLine_num." is ".$chkprtDecLine." ";
                     
                     $chkprtDecLine=htmlspecialchars($chkprtDecLine);
-                    $chkprtDecLine = multiexplode($chkprtDecLine);
+                    $chkprtDecLine = fileDismultiexplode($chkprtDecLine);
                     $chkprtDecLine=array_map('trim',$chkprtDecLine);
 //                    print_r($chkprtDecLine);
 //                  $Token = new Tokenizer();
 //            $Token->
-                checkSecure($chkprtDecLine,$json); 
-                checkifVaribles($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$json);
+                fileDischeckSecure($chkprtDecLine,$fileDisjson); 
+                fileDischeckifVaribles($chkprtDecLine,$prtDecLines,$chkprtDecLine_num,$fileDisjson);
                 }
             }
        
@@ -389,33 +399,6 @@ function printDeclaration($prtDecVar,$prtDecLines,$prtDecLine_num,$json)   //Dec
 
             
 
-$jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$GLOBALS['noLines'];
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$GLOBALS['noVulLines'];
-$myJSON = json_encode($jsonFinal);
-$LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("FileDisclosureVuln.json", $myJSON,FILE_APPEND);
-file_put_contents("FileDisclosureVuln.json","]",FILE_APPEND);
-
-
-echo "<p class='card-text'>No fo Lines are ".$GLOBALS['noLines']."</p>";
-
-echo "<p class='card-text'>No of Vulnerable Lines are ".$GLOBALS['noVulLines']."</p>";
-
-
-            
-//For calculating an reporting no of lines infected 
-$_SESSION['TotalFileDisLines']=$GLOBALS['noLines'];
-$_SESSION['TotalFileDisVulnLines']=$GLOBALS['noVulLines'];
-
-
 ?>
             
-
-        </div>
-    </div>
-</div>            
-            
-            
-    </body>
-</html>
+        

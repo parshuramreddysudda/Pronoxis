@@ -1,33 +1,33 @@
-<html>
-<body  style="background-color:#FFFFFF;">
-
 <?php
 
-include 'configuration.php';
 //// For Only PHP Pages
+function startXSS($address,$typeChkLines)
+{
+chdir($address);
+global $TotalXSSLines;
+global $countTemp;  ///For Calculating Recurssion
+global $TotalXSSVulnlines;
+global $TotalVarInPage; 
+global $sno;
+global $VarNo;
 
-$time_start = microtime(true); //Create a variable for start time
-$fh = fopen('Vulnerability.log', 'w');
-$date = new DateTime();
-$date = $date->format("y:m:d h:i:s");
 
-echo "<br>";
-$TotalLines=0;
+
+$TotalXSSLines=0;
 $countTemp=0;  ///For Calculating Recurssion
-$TotalVulnlines=0;
+$TotalXSSVulnlines=0;
 $TotalVarInPage=0; 
-chdir($_SESSION['partScanAdress']);
-$typeChkLines=$_SESSION['checkFileName'];
-$LogFileName='TEMP';
-$superArray=array(); //For Storing all lines 
+$LogFileName=$_SESSION['LogFileName'];
+$superArray=array();
+//For Storing all lines 
 //$superSinkLines=array();    //For storing line number where xss is possible
 
 
 //Json File for appending output Code started
-$json;  
+$XSSjson;  
 $myfile = fopen("XSS.json", "w") or die("Unable to open file!");
 file_put_contents("XSS.json","[",FILE_APPEND);
-$json->AttackName='CrossSiteScripting';
+$XSSjson->AttackName='CrossSiteScripting';
 
 
 // Json Finished
@@ -35,38 +35,50 @@ $json->AttackName='CrossSiteScripting';
 $sno=1;
 
 $VarNo=1;
-?>
-<div class="container" style="background-color:#FFFFFF;">
-    <div class="">
-        <div class="">      
-            
-<?php
-
-    
-          
+       
             
 // Loop through our array, show HTML source as HTML source; and line numbers too.
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 {
-    
- $json=$GLOBALS['json'];
+
    
     $superArray=$typeChkLines;
 //    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
         $sendLine=htmlspecialchars($typeChkLine);
-        $trimSendline = multiexplode($sendLine);  //Gets the line by removing Delimiters 
+        $trimSendline = XSSmultiexplode($sendLine);  //Gets the line by removing Delimiters 
         $trimmed_Sendline=array_map('trim',$trimSendline);//To remove White Spaces from Array
-        Sources($typeChkLine,$trimSendline,$typeChkLines,$typeChkLine_num,$json);
-    $GLOBALS['TotalLines']++;
+        XSSSources($typeChkLine,$trimSendline,$typeChkLines,$typeChkLine_num,$XSSjson);
+  
     $GLOBALS['VarNo']=1;
 }
 
+           
+$XSSjsonFinal->ForCorrection='String Added to Validate the Json';  
+$XSSjsonFinal->Total_lines="Total Number of Lines are " .$TotalXSSLines;
+$XSSjsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$TotalXSSVulnlines;
+$myJSON = json_encode($XSSjsonFinal);
+$LogFileName=$GLOBALS['LogFileName'];
+file_put_contents("XSS.json", $myJSON,FILE_APPEND);
+file_put_contents("XSS.json","]",FILE_APPEND);
+
+            
+ 
+//echo " Total Number of Lines are " .$TotalXSSLines;
+//echo " Total Number of Vulnerable lines are " .$TotalXSSVulnlines;
+            
+            
+//For calculating an reporting no of lines infected 
+            
+$_SESSION['TotalXSSLines']=$TotalXSSLines;
+$_SESSION['TotalXSSVulnLines']=$TotalXSSVulnlines;
+$_SESSION['XSSDone']=0;
 
 
+}
 
-function multiexplode($data)
+function XSSmultiexplode($data)
 {
     $delimiters=array(",","-","()","(",")",",","{","}","|",">","'"," ","=","%","&gt;","&lt;","&#x27;"," &#x2F;",";",".","&quot");
     $data=str_replace('"', ',', $data);
@@ -78,7 +90,7 @@ function multiexplode($data)
 }
 
 //This functiond print echo and other sources
-function Sources($Line,$chkLineSource,$typeChkLines,$typeChkLine_num,$json)
+function XSSSources($Line,$chkLineSource,$typeChkLines,$typeChkLine_num,$XSSjson)
 {
     include'warmHole.php';
     
@@ -94,23 +106,23 @@ function Sources($Line,$chkLineSource,$typeChkLines,$typeChkLine_num,$json)
             if($chkLineSource[$i]==$XSSWarmhole[$j])
             {
 //                echo "Line Number".$typeChkLine_num; 
-                echo "<hr><br>";
+               echo "<hr><br>";
                 echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$typeChkLine_num."</b> May be  Vulnerable</h3>";
-               
+                 $GLOBALS['TotalXSSLines']++;
                  $LineJson="Vulnerable Line is ".htmlspecialchars($Line).""; 
                 
-                echo "<p class='card-text'>Vulnerable Line is <br><code>".htmlspecialchars($Line)."</code></p>";
-                $json->LineInfo=$LineJson;
-                 getPhpVar($chkLineSource,$typeChkLines,$json);
-                echo "<br>";
+                echo "<p class='card-text'>Vulnerable Line is  <code>".htmlspecialchars($Line)."</code></p>";
+                $XSSjson->LineInfo=$LineJson;
+                 getPhpVar($chkLineSource,$typeChkLines,$XSSjson);
+              
                 
         //Json File for appending output Code 
-                $myJSON = json_encode($json);
+                $myJSON = json_encode($XSSjson);
                 $LogFileName=$GLOBALS['LogFileName'];
                 file_put_contents("XSS.json", $myJSON,FILE_APPEND);
                 file_put_contents("XSS.json",",",FILE_APPEND);
                 
-                 
+                  echo "</div>";
                 
             }
             else
@@ -124,7 +136,7 @@ function Sources($Line,$chkLineSource,$typeChkLines,$typeChkLine_num,$json)
 
 
 //To print the lines having insecure XSS strings like Echo and etc
-function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
+function getPhpVar($chkVulnLineSource,$typeChkLines,$XSSjson)
 {
     include'checkWordlists.php';
     global $vulnVar;
@@ -163,23 +175,24 @@ function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
                      echo "<p class='card-text'>It is Vulnerable, Sinks are <b>".$preVar."</b></p>";    
                     
                          //Json object  appending to Class Code
-                         $json->SinksInfo="It is Vulnerable, Sinks are".$preVar."";
-                         if(checkSecure($chkVulnLineSource,$json)==true) //To check source line with sinks are secure
+                         $XSSjson->SinksInfo="It is Vulnerable, Sinks are".$preVar."";
+                         if(XSScheckSecure($chkVulnLineSource,$XSSjson)==true) //To check source line with sinks are secure
                            {
-//                              echo "<br>Echo Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
+                              echo " Echo Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
                               //Json object  appending to Class Code
-                             $json->SinSecure="Line with sinks and sources is  Secure";
+                             $XSSjson->SinSecure="Line with sinks and sources is  Secure";
                                echo "<p class='card-text'>Line with sinks and sources is <green>Secure </green></p>";  
+                             $_SESSION['Secured']++;
                             }
                        else
-                            {
-//                              echo "<br>Echo Line is Not secure Due to Sink ".$preVar." Doesnot have any Secure Functions";//InSecure function after checking for sources and sinks and not having secure functions
+//                            {
+//                              echo " Echo Line is Not secure Due to Sink ".$preVar." Doesnot have any Secure Functions";//InSecure function after checking for sources and sinks and not having secure functions
                            
                             echo "<p class='card-text'>Line is <red> Not Secure<red> Due to Sink ".$preVar." Doesnot have any <red>Secure Functions </red></p>"; 
                            
                             //Json object  appending to Class Code
-                           $json->SinSecure="Line is  Not Secure  Due to Sink ".$preVar." and it Doesn't have any Secure Functions";
-                            $GLOBALS['TotalVulnlines'];
+                           $XSSjson->SinSecure="Line is  Not Secure  Due to Sink ".$preVar." and it Doesn't have any Secure Functions";
+                            $GLOBALS['TotalXSSVulnlines'];
                             }
                          
                        $varPresnt=1;
@@ -189,13 +202,13 @@ function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
                     if($varPresnt==0)
                     {
                         
-                        if(checkSecure($chkVulnLineSource,$json)==true) //To check source line with are secure
+                        if(XSScheckSecure($chkVulnLineSource,$XSSjson)==true) //To check source line with are secure
                            {
-//                              echo "<br>Echo Line with sources is  Secure";  //Secure function after checking for sources and sinks and having secure functions
+//                              echo " Echo Line with sources is  Secure";  //Secure function after checking for sources and sinks and having secure functions
                             echo "<p class='card-text'>Line with sources is <green> Secure </green></p>"; 
                             
                              //Json object  appending to Class Code
-                              $json->SinSecure="Line with sources is  Secure";
+                              $XSSjson->SinSecure="Line with sources is  Secure";
                             }
                        else
                             {
@@ -205,14 +218,14 @@ function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
                            echo "<p class='card-text'>Vulnerable Variables  in the Line are  <b style='color:#A52A2A'>  ".$GLOBALS['VarNo']++." .".$chkVulnLineSource[$i]."</b></p>"; 
                            
                             //Json object  appending to Class Code
-                              $json->SinSecure="Vulnerable Variables  in the Line are  ".$GLOBALS['VarNo']++." .".$chkVulnLineSource[$i];
+                              $XSSjson->SinSecure="Vulnerable Variables  in the Line are  ".$GLOBALS['VarNo']++." .".$chkVulnLineSource[$i];
                            
                            
-                               checkVarLineVuln($chkVulnLineSource[$i],$typeChkLines,$json);  //Check this varible declaration line for Vuln . this prints the insecure XSS lines
+                               XSScheckVarLineVuln($chkVulnLineSource[$i],$typeChkLines,$XSSjson);  //Check this varible declaration line for Vuln . this prints the insecure XSS lines
                            
                             }
                         
-//                     echo "<br>Variables are ".$chkVulnLineSource[$i];
+//                     echo " Variables are ".$chkVulnLineSource[$i];
                        $vulnVar[]=$chkVulnLineSource[$i]; 
                        
                     }
@@ -221,13 +234,12 @@ function getPhpVar($chkVulnLineSource,$typeChkLines,$json)
          }
     }
 }
-}
 
 
 
 
 
-function checkVarLineVuln($vulnVar,$allLines,$json)
+function XSScheckVarLineVuln($vulnVar,$allLines,$XSSjson)
 {
  
     
@@ -235,7 +247,7 @@ function checkVarLineVuln($vulnVar,$allLines,$json)
     foreach ($allLines as $chkprtDecLine_num => $chkprtDecLine) //Compare every line first letter to find the vulnerable var declartion
     {   
         $sendprtDecLine=htmlspecialchars($chkprtDecLine);
-        $trimDecprtSendline = multiexplode($sendprtDecLine); 
+        $trimDecprtSendline = XSSmultiexplode($sendprtDecLine); 
         $trimmed_DecprtSendline=array_map('trim',$trimDecprtSendline);
         
         
@@ -256,69 +268,71 @@ function checkVarLineVuln($vulnVar,$allLines,$json)
            
               if(strcmp($firstEle,$vulnVar)==0)
               {
-//                  echo "<br>Source line is".$chkprtDecLine_num;
-//                  echo "<br> Source Line is ".$chkprtDecLine;
+//                  echo " Source line is".$chkprtDecLine_num;
+//                  echo "  Source Line is ".$chkprtDecLine;
                   
                     echo "<p class='card-text'>Line no ".$chkprtDecLine_num." is effecting this line  </p>";  
-                  echo " <p class='card-text'> Source of Line Number <b>".$chkprtDecLine_num."</b> is  <code> <br>".$chkprtDecLine."</code></p> ";
+                  echo " <p class='card-text'> Source of Line Number <b>".$chkprtDecLine_num."</b> is  <code>  ".$chkprtDecLine."</code></p> ";
                   
                   
                    //Json object  appending to Class Code
-                   $json->SourceLine="Line no ".$chkprtDecLine_num." is effecting this line  ";
+                   $XSSjson->SourceLine="Line no ".$chkprtDecLine_num." is effecting this line  ";
                   
-                    $json->SourceLineCode="Source of Line Number ".$chkprtDecLine_num." is ".$chkprtDecLine;
+                    $XSSjson->SourceLineCode="Source of Line Number ".$chkprtDecLine_num." is ".$chkprtDecLine;
                   
                   
                   
                   
                   
 //                  echo $firstEle;
-                  if(checkforsinks($trimmed_DecprtSendline,$json)==true)  //to check Sinks for 
+                  if(XSScheckforsinks($trimmed_DecprtSendline,$XSSjson)==true)  //to check Sinks for 
                   {
                       //Lines having sources and sinks are sent for checking securing strings
-                     if(checkSecure($trimmed_DecprtSendline,$json)==true) //To check secure
+                     if(XSScheckSecure($trimmed_DecprtSendline,$XSSjson)==true) //To check secure
                      {
-//                         echo "<br>Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
+//                         echo " Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
                               echo "<p class='card-text'>Source Line with sinks and sources is <b> Secure </b></p>";  
                          
                          
                           //Json object  appending to Class Code
-                              $json->SourceLineVuln="Source Line with sinks and sources is Secure";
+                              $XSSjson->SourceLineVuln="Source Line with sinks and sources is Secure";
+                         $_SESSION['Secured']++;
                          
                      }
                       else
                       { 
-//                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
-                           $GLOBALS['TotalVulnlines']++;
+//                          echo " Line no ".$chkprtDecLine_num." is Not secure since Line <b> ".$chkprtDecLine."</b>  does not have any securing functions and has Sinks";//InSecure function after checking for sources and sinks and not having secure functions
+                           $GLOBALS['TotalXSSVulnlines']++;
                           
                            echo "<p class='card-text'>Source Line no ".$chkprtDecLine_num." is <red>Not Secure </red> since Line <b> ".$chkprtDecLine."</b>  does not have any Securing functions and has Sinks</p>";  
                           
                            //Json object  appending to Class Code
-                           $json->SourceLineVuln="Source Line no ".$chkprtDecLine_num." is Not Secure since Line ".$chkprtDecLine."  does not have any Securing functions and has Sinks";
+                           $XSSjson->SourceLineVuln="Source Line no ".$chkprtDecLine_num." is Not Secure since Line ".$chkprtDecLine."  does not have any Securing functions and has Sinks";
                       }
                   }
                   else
                   { 
 //                     These Lines dont have sinks like GET or POST so line is sent for securing strings 
-                         if(checkSecure($trimmed_DecprtSendline,$json)==true) //to check secure
+                         if(XSScheckSecure($trimmed_DecprtSendline,$XSSjson)==true) //to check secure
                      {
-//                         echo "<br>Line no ".$chkprtDecLine_num." with sources is Secure";  //Secure function after checking for sources and having secure functions
+//                         echo " Line no ".$chkprtDecLine_num." with sources is Secure";  //Secure function after checking for sources and having secure functions
                              
                             echo "<p class='card-text'>Source Line no ".$chkprtDecLine_num." with sources is <green> Secure </green></p>";
                              
                               //Json object  appending to Class Code
-                             $json->SourceLineVuln="Source Line no ".$chkprtDecLine_num." with sources is Secure" ;
+                             $XSSjson->SourceLineVuln="Source Line no ".$chkprtDecLine_num." with sources is Secure" ;
+                             $_SESSION['Secured']++;
                              
                      }
                       else
                       {
-//                          echo "<br>Line no ".$chkprtDecLine_num." is Not secure Since it has sources and not have secure functions";//InSecure function after checking for sources and not having secure functions
-                           $GLOBALS['TotalVulnlines']++;
-                           echo "<p class='card-text' style=''>Source Line no ".$chkprtDecLine_num." is <red>Not Secure </red> Since it has sources and not have secure functions</p>";  
+//                          echo " Line no ".$chkprtDecLine_num." is Not secure Since it has sources and not have secure functions";//InSecure function after checking for sources and not having secure functions
+                           $GLOBALS['TotalXSSVulnlines']++;
+                          echo "<p class='card-text' style=''>Source Line no ".$chkprtDecLine_num." is <red>Not Secure </red> Since it has sources and not have secure functions</p>";  
                           
                           
                            //Json object  appending to Class Code
-                            $json->SourceLineVuln="Source Line no ".$chkprtDecLine_num." is Not Secure Since it has sources and not have secure functions";
+                            $XSSjson->SourceLineVuln="Source Line no ".$chkprtDecLine_num." is Not Secure Since it has sources and not have secure functions";
                           
                       }
                   }
@@ -333,7 +347,7 @@ function checkVarLineVuln($vulnVar,$allLines,$json)
 }
 
 //This function checks for sinks in the source lines
-function checkforsinks($sinkChkLine,$json)
+function XSScheckforsinks($sinkChkLine,$XSSjson)
 {
     include'checkWordlists.php';
         
@@ -379,7 +393,7 @@ function checkforsinks($sinkChkLine,$json)
     
 }
 
-function checkSecure($vulnChkLine,$json)
+function XSScheckSecure($vulnChkLine,$XSSjson)
 {
     include'vulnWordlist.php';
         $listCount=count($xssSecureVuln);
@@ -400,7 +414,7 @@ function checkSecure($vulnChkLine,$json)
                 
                  //Json object  appending to Class Code
                 
-                 $json->SourceLineSecFunc="Securing Functions are <b>".$vulnChkLine[$i];
+                 $XSSjson->SourceLineSecFunc="Securing Functions are <b>".$vulnChkLine[$i];
                  
                 
                   return true;
@@ -412,7 +426,7 @@ function checkSecure($vulnChkLine,$json)
     }  
 }
 
-function checkForVulnLines($vulnVar,$json)
+function XSScheckForVulnLines($vulnVar,$XSSjson)
 {
     $workDir=getcwd();
 $conFile = scandir($workDir);
@@ -422,16 +436,16 @@ $VulnLinesTempVar=count($superSinkLines);
     for($i=0;$i<$VulnLinesTempVar;$i++)
     {
         
-//        echo "Line No".$i." has ".htmlspecialchars($superSinkLines[$i])."<br>";
+//        echo "Line No".$i." has ".htmlspecialchars($superSinkLines[$i])." ";
         $varSendLine=htmlspecialchars($superSinkLines[$i]);
-        $vulntrimSendline = multiexplode($varSendLine);  //Gets the line by removing Delimiters 
+        $vulntrimSendline = XSSmultiexplode($varSendLine);  //Gets the line by removing Delimiters 
         $varTrimmed_Sendline=array_map('trim',$vulntrimSendline);//To remove White Spaces from Array
-        checkXSS($varTrimmed_Sendline,$varSendLine,$i,$vulnVar,$json); //this send each line for verification 
+        checkXSS($varTrimmed_Sendline,$varSendLine,$i,$vulnVar,$XSSjson); //this send each line for verification 
     }
 }
     
     
-function checkXSS($Line,$printLine,$LineNo,$vulnVar,$json)
+function checkXSS($Line,$printLine,$LineNo,$vulnVar,$XSSjson)
 {
     include'warmHole.php';
     
@@ -450,12 +464,12 @@ function checkXSS($Line,$printLine,$LineNo,$vulnVar,$json)
                 {
                     if(strcmp($Line[$i],$vulnVar==0))
                        {
-//                           echo "<br>Line Number ".$LineNo." is Vulnerable <br> Code is  ".$printLine."<br>"; 
+//                           echo " Line Number ".$LineNo." is Vulnerable   Code is  ".$printLine." "; 
                             
-                        echo "<p class='card-text'>Line Number ".$LineNo." is Vulnerable <br><code> Code is  ".$printLine."</code></p>";  
+                        echo "<p class='card-text'>Line Number ".$LineNo." is Vulnerable  <code> Code is  ".$printLine."</code></p>";  
                         
                          //Json object  appending to Class Code
-                          $json->LineVulnNo=$LineNo." is Vulnerable Code is  ".$printLine." ";
+                          $XSSjson->LineVulnNo=$LineNo." is Vulnerable Code is  ".$printLine." ";
                         
                         break;
                        }
@@ -471,29 +485,6 @@ function checkForSecureString()
     
 }
               
-            
-$jsonFinal->ForCorrection='String Added to Validate the Json';  
-$jsonFinal->Total_lines="Total Number of Lines are " .$TotalLines;
-$jsonFinal->Total_Vulnlines="Total Number of Vulnerable lines are " .$TotalVulnlines;
-$myJSON = json_encode($jsonFinal);
-$LogFileName=$GLOBALS['LogFileName'];
-file_put_contents("XSS.json", $myJSON,FILE_APPEND);
-file_put_contents("XSS.json","]",FILE_APPEND);
-
-            
-echo "<hr>";
-echo "<br>Total Number of Lines are " .$TotalLines;
-echo "<br>Total Number of Vulnerable lines are " .$TotalVulnlines;
-            
-            
-//For calculating an reporting no of lines infected 
-            
-$_SESSION['TotalXSSLines']=$TotalLines;
-$_SESSION['TotalXSSVulnLines']=$TotalVulnlines;
-
+ 
 ?>
-        </div>
-    </div>
-</div>
-    </body>
-</html>
+ 
