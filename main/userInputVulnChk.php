@@ -194,6 +194,7 @@ function checkUserInputForVuln($userInputVulnLine,$userInputVulnLineno,$userInpu
 //                echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$vulnChkLine[$i]."</p>";
                 
                    $userInputjson->Secure="This Line is  Secure with  input values ".$vulnChkLine[$i]." ";
+        $_SESSION['Secured']++;
     }
     
          

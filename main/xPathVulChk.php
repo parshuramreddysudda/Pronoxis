@@ -230,7 +230,7 @@ function checkxpathSecure($vulnChkLine,$xPathson)
                 
                    $xPathson->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
                 
-          
+          $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }
@@ -270,7 +270,7 @@ function checkxpathSecure($vulnChkLine,$xPathson)
 //                 echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
                    $xPathson->fileSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln1=1; 
                   break;
                }
@@ -320,7 +320,7 @@ function checkXpathVarSecure($vulnChkLine,$xPathson)
 //                  echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
                    $xPathson->XpathSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }

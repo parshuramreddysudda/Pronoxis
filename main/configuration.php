@@ -94,104 +94,7 @@
         </div>
     </div>
 </div>
-  <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Number of Lines </h4>
-                    <h6 class="text-muted card-subtitle mb-2">Sql Injection</h6>
-                  
-<div
-  class="ldBar"
-  data-stroke="data:ldbar/res,gradient(0,1,#f99,#ff9)"
-></div>
-                    
 
-    
-                     <hr />
-                      <h6 class="text-muted card-subtitle mb-2">XSS Cross Site Scripting</h6>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                     <h6 class="text-muted card-subtitle mb-2">Command Injection</h6>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                     <h6 class="text-muted card-subtitle mb-2">Code Execution</h6>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                     <h6 class="text-muted card-subtitle mb-2">File Disclosure</h6>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                     <h6 class="text-muted card-subtitle mb-2">File Inclusion</h6>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                    <hr />
-                    <h6 class="text-muted card-subtitle mb-2">File Manipulation</h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                    <hr />
-                    <h6 class="text-muted card-subtitle mb-2">Http Responce Splitting </h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                    <h6 class="text-muted card-subtitle mb-2">Protocol Injection </h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                    <h6 class="text-muted card-subtitle mb-2">Reflection Injection </h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                    <h6 class="text-muted card-subtitle mb-2">Session Fixation</h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                     <hr />
-                    <h6 class="text-muted card-subtitle mb-2">X Path Injection</h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                    <hr />
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Title</h4>
-                    <h6 class="text-muted card-subtitle mb-2">Subtitle</h6>
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                    <hr />
-                    <h6 class="text-muted card-subtitle mb-2">Subtitle</h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                    <hr />
-                    <h6 class="text-muted card-subtitle mb-2">Subtitle</h6>
-                    <div class="progress">
-                        <div class="progress-bar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
-                    </div>
-                    <hr />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <?php
 error_reporting(0);
 @ini_set('display_errors', 0);
@@ -211,14 +114,27 @@ include 'userInputVulnChk.php';
 include 'xssVulChecker.php';
 include 'xPathVulChk.php';
 
+    //Array for holding Values
+    
+    
+$name=array();
+$TotalLinesArray=array();
+$ScannedLines=array();
+$vulnerableLines=array();
+$securedLines=array();
+    
+    
+    
 $_SESSION['LogFileName']='Temp';
 $GLOBALS['LogFileName']='Temp';
 header('Cache-Control: no-cache');
 //session_destroy();  
 ini_set('max_execution_time', 300000);
 $configDir=getcwd();
-chdir('/Applications/MAMP/htdocs/dep');
+chdir('C:\xampp\htdocs\dept2\dept');
 
+$_SESSION['Secured']=0;
+    
 $workDir=getcwd(); 
 $scan=0;
 $conFile = scandir($workDir);
@@ -251,10 +167,18 @@ filea($fileName);
        flush();
        
    }  
-
+$cmdold1=0;
+$cmdOld2=0;
+$vuln1=0;
+$vuln2=0;
+$secuure1=0;
+$secure2=0;
+    
+   
 for($fullScan=0;$fullScan<=$countOfAll;$fullScan++)
 {
 
+    $_SESSION['TotalLinesofFile']=0;
     // Calculate the percentation
     $percent = intval($fullScan/$countOfAll * 100)."%";
 
@@ -325,9 +249,51 @@ scantype('XSS Crossite Scripting');
     
 startXpath($Mainaddress,$typeChkLines);  
 scantype('Xpath Injection');
+ 
+      
+    array_push($name,$conFile[$fullScan]);
+    
+     $totalLinesSum=13*$_SESSION['TotalLinesofFile'];
+    
+    array_push($TotalLinesArray,$totalLinesSum);
+    
+    
+  //Calculating lines Scanned
+   $cmdold1=$_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines']; 
+    
+    
+    $presentTotal=$cmdold1-$cmdOld2;
+     
+    array_push($ScannedLines,$presentTotal);
+        
+      $vuln1=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+ $_SESSION['TotalFileDisVulnLines']+$_SESSION['TotalFileIncVulnLines']+$_SESSION['TotalFileManVulnLines']+$_SESSION['TotalHttpResVulnLines']+$_SESSION['TotalProtocVulnLines']+$_SESSION['TotalReflecVulnLines']+$_SESSION['TotalSessionVulnLines']+$_SESSION['TotalSqlVulnLines']+$_SESSION['TotalUserVulnLines']+$_SESSION['TotalxPathVulnLines']+$_SESSION['TotalXSSVulnLines'];	
+          
+       $presetVuln=$vuln1-$vuln2;
+    
+    array_push($vulnerableLines,$presetVuln);  
+          
+    
+    
+$secuure1=$_SESSION['Secured'];
+    
+    $presentSecure=$secuure1-$secure2;
+     array_push($securedLines,$presentSecure);
+    
+$secure2=$secuure1;
+    
+          
+          
+  
+   
+    
+    
+
+$cmdOld2=$cmdold1;
+$vuln2=$vuln1; 
     
 chdir('..');
 chdir('..');
+    
 }
     sleep(0.8);
     
@@ -358,14 +324,11 @@ chdir('..');
     
    <link rel="stylesheet" href="../assets/js/progress.js">
     <script type="text/x-javascript" src="../assets/js/loading-bar.js"></script>
- 
-    
-    
-</html> 
 
 Total no of lines of code is
 <?php
-    
+
+    echo $_SESSION['Secured'];
     if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
 $_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
     {

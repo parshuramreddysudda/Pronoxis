@@ -232,7 +232,7 @@ function fileInccheckSecure($vulnChkLine,$FileIncjson)
                 
                    $FileIncjson->Secure="This Line is  Secure with  input values ".$vulnChkLine[$i]." ";
                 
-                
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }

@@ -224,6 +224,7 @@ function codecheckSecure($vulnChkLine,$codejson)
 //                  echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$vulnChkLine[$i]."</p>";
                 
                    $codejson->Secure="This Line is  Secure with  input values ".$vulnChkLine[$i]." ";
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }

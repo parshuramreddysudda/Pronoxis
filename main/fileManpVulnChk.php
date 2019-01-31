@@ -273,6 +273,7 @@ function fileMancheckSecure($vulnChkLine,$fileManjson)
 //                 echo "<p class='card-text'> Sinks found  they are ".$vulnChkLine[$i]."</p>";
                 $fileManjson->SinkStatus="Sinks found  they are ".$vulnChkLine[$i];
                  $vuln1=1; 
+                $_SESSION['Secured']++;
                   break;
                }
             }

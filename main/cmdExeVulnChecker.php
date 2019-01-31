@@ -27,7 +27,7 @@ $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare af
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
 $noCmdVulLines=0;//To calculate total Lines
-    
+   
   
 $typeChkLines = $_SESSION['checkTypeCheckLine'];
 $LogFileName=$_SESSION['LogFileName'];;
@@ -48,7 +48,7 @@ $superArray=array(); //For Storing all lines
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
-   
+    $_SESSION['TotalLinesofFile']++;
 //    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
@@ -117,12 +117,12 @@ function cmdcheckSources($chkLine,$chkLineNo,$typeChkLines,$cmdjson,$Line)
           {
                 $GLOBALS['cmdTotalLines']++;
                     
-                echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$chkLineNo."</b> May be  Vulnerable</h3>";
+//                echo "<div style='font-family:product;'> <h3 class='text-muted card-subtitle mb-2 h3Head'>Line Number <b>".$chkLineNo."</b> May be  Vulnerable</h3>";
 
                     
                 $cmdjson->LineInfo="Line Number ".$chkLineNo." May be  Vulnerable";  
                     
-                echo "<p class='card-text'>Vulnerable Code <br> <code>".htmlspecialchars($Line)."</code></p>"; 
+//                echo "<p class='card-text'>Vulnerable Code <br> <code>".htmlspecialchars($Line)."</code></p>"; 
                     
                 $cmdjson->LineCode="Vulnerable line Code is  ".htmlspecialchars($Line)." ";  
                     
@@ -133,7 +133,7 @@ function cmdcheckSources($chkLine,$chkLineNo,$typeChkLines,$cmdjson,$Line)
             if($GLOBALS['cmdVulnLineVar']==0)
               {
                 
-                  echo "<p class='card-text'>Line Number <red>".$chkLineNo." </red> is <red> Vulnerable </red> .All the <red> Variables may Not be secured</red></p>";
+//                  echo "<p class='card-text'>Line Number <red>".$chkLineNo." </red> is <red> Vulnerable </red> .All the <red> Variables may Not be secured</red></p>";
                 
                   $cmdjson->MainInfo="Line Number ".$chkLineNo." is Vulnerable  .All the variables may Not be secured"; 
                 
@@ -143,11 +143,11 @@ function cmdcheckSources($chkLine,$chkLineNo,$typeChkLines,$cmdjson,$Line)
               }
               else 
               {
-                   echo "<p class='card-text'>Line Number <green>".$chkLineNo."</green>  is <green>  Protected </green> .All the <green> Variables are secured</green> </p>";
+//                   echo "<p class='card-text'>Line Number <green>".$chkLineNo."</green>  is <green>  Protected </green> .All the <green> Variables are secured</green> </p>";
                 
                   $cmdjson->MainInfo="Line Number ".$chkLineNo." is Protected  .All the variables are secured"; 
                 
-                 
+                 $_SESSION['Secured']++;
               }
               
               

@@ -181,6 +181,7 @@ function getPhpVar($chkVulnLineSource,$typeChkLines,$XSSjson)
 //                              echo " Echo Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
                               //Json object  appending to Class Code
                              $XSSjson->SinSecure="Line with sinks and sources is  Secure";
+                             $_SESSION['Secured']++;
 //                               echo "<p class='card-text'>Line with sinks and sources is <green>Secure </green></p>";  
                             }
                        else
@@ -293,7 +294,7 @@ function XSScheckVarLineVuln($vulnVar,$allLines,$XSSjson)
 //                         echo " Line with sinks and sources is Secure ";  //Secure function after checking for sources and sinks and having secure functions
 //                              echo "<p class='card-text'>Source Line with sinks and sources is <b> Secure </b></p>";  
                          
-                         
+                         $_SESSION['Secured']++;
                           //Json object  appending to Class Code
                               $XSSjson->SourceLineVuln="Source Line with sinks and sources is Secure";
                          
@@ -320,6 +321,7 @@ function XSScheckVarLineVuln($vulnVar,$allLines,$XSSjson)
                              
                               //Json object  appending to Class Code
                              $XSSjson->SourceLineVuln="Source Line no ".$chkprtDecLine_num." with sources is Secure" ;
+                             $_SESSION['Secured']++;
                              
                      }
                       else

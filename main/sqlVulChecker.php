@@ -537,7 +537,7 @@ function SqlcheckSecure($vulnChkLine,$Sqljson)
                 
                    $Sqljson->Secure="This Line is  Secure with  input values ".$VulnLineArray[$i]." ";
                 
-                
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }

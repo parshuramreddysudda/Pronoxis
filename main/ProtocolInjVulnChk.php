@@ -225,7 +225,7 @@ function checkProtocSecure($vulnChkLine,$protocjson)
 //                echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
                    $protocjson->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
           
                  $vuln=1;
                   break;
@@ -266,7 +266,7 @@ function checkProtocSecure($vulnChkLine,$protocjson)
 //                 echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
                    $protocjson->fileSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln1=1; 
                   break;
                }
@@ -316,7 +316,7 @@ function checkProtocVarSecure($vulnChkLine,$protocjson)
 //                  echo "<p class='card-text'>This Line is <green>Secure</green> with  <code>  ".$vulnChkLine[$i]."</code></p>";
                 
                    $protocjson->ProtocolInjectionSecure="This Line is  Secure with  ".$anySecureVuln[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }
