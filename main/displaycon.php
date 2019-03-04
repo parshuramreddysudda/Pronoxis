@@ -1,12 +1,12 @@
 <?php
- function scantype($type)
+ function scantype($type,$FileName)
    {
        echo "
             <script type=\"text/javascript\">
-            document.getElementById('scanType').innerHTML='Currently Scanning against ".$type."';
+            document.getElementById('scanType').innerHTML='Currently Scanning <b>".$FileName."</b> against ".$type."';
             </script>
         ";  
-       sleep(0.5);
+       sleep(0.3);
        flush();
        
    }  
@@ -356,9 +356,9 @@ $_SESSION['LogFileName']='Temp';
 $GLOBALS['LogFileName']='Temp';
 header('Cache-Control: no-cache');
 //session_destroy();  
-ini_set('max_execution_time', 300000);
+ini_set('max_execution_time', 3000000);
 $configDir=getcwd();
-chdir('C:\xampp\htdocs\dept2\dept');
+chdir('/Applications/MAMP/htdocs/dep');
 
 $_SESSION['Secured']=0;
     
@@ -426,45 +426,45 @@ chdir($conFile[$fullScan]);
 $Mainaddress=getcwd(); 
 
 startCode($Mainaddress,$typeChkLines);  
-scantype('CodeExecution');
+scantype('CodeExecution',$conFile[$fullScan]);
 
 startCmd($Mainaddress,$typeChkLines);  
- scantype('CodeExecution');
+ scantype('CodeExecution',$conFile[$fullScan]);
  
  
 startFileDis($Mainaddress,$typeChkLines);  
-scantype('File Disclosure');
+scantype('File Disclosure',$conFile[$fullScan]);
     
 startfileInc($Mainaddress,$typeChkLines);  
-scantype('File Inclusion');
+scantype('File Inclusion',$conFile[$fullScan]);
     
 startFileMan($Mainaddress,$typeChkLines);  
- scantype('File Manipulation');   
+ scantype('File Manipulation',$conFile[$fullScan]);   
  
 startHttpRes($Mainaddress,$typeChkLines);  
-scantype('Http Res Vuln');   
+scantype('Http Res Vuln',$conFile[$fullScan]);   
 
 startProtoc($Mainaddress,$typeChkLines);  
-scantype('Protocol Injection');
+scantype('Protocol Injection',$conFile[$fullScan]);
 
 
 startFileReflec($Mainaddress,$typeChkLines);  
-scantype('Reflection Injection');
+scantype('Reflection Injection',$conFile[$fullScan]);
     
 startSession($Mainaddress,$typeChkLines);  
- scantype('Session Hijacking');   
+ scantype('Session Hijacking',$conFile[$fullScan]);   
  
 StartSql($Mainaddress,$typeChkLines);  
-scantype('Sql Injection');
+scantype('Sql Injection',$conFile[$fullScan]);
  
 startUserInput($Mainaddress,$typeChkLines);  
- scantype('User Input Checker');
+ scantype('User Input Checker',$conFile[$fullScan]);
     
 startXSS($Mainaddress,$typeChkLines); 
-scantype('XSS Crossite Scripting');
+scantype('XSS Crossite Scripting',$conFile[$fullScan]);
     
 startXpath($Mainaddress,$typeChkLines);  
-scantype('Xpath Injection');
+scantype('Xpath Injection',$conFile[$fullScan]);
  
       
     array_push($name,$conFile[$fullScan]);
@@ -511,7 +511,7 @@ chdir('..');
 chdir('..');
     
 }
-    sleep(0.8);
+    sleep(0.5);
     
 }
 
@@ -551,7 +551,8 @@ $_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSI
         echo $_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
     }
 echo "<div class='container card'>";
-echo "<div class='card-body'>";
+echo "<div class='card-body
+'>";
 echo "<br>";
     echo "Vuln Cmd lines are   ".$_SESSION['TotalCmdVulnLines'];echo "<br>";
     echo "Vuln Code lines are ".$_SESSION['TotalCodeVulnLines'];echo "<br>";
@@ -608,13 +609,13 @@ echo "</div>";
                                 $limit=count($name);
                                 
                                 
-                                
+                                $j=0;
                                 
                                 for($i=0;$i<$limit;$i++)
                                 {
-                            
+                            $j++;
                                echo "<tr>
-                                    <td><span class='blue-bg indx'>".$i."</span></td>
+                                    <td><span class='blue-bg indx'>".$j."</span></td>
                                     <td><span class='date'>".$name[$i]."</span></td>
                                     <td><h4 class='name'>".$TotalLinesArray[$i]."</h4></td>
                                     <td><span class='ph#'>".$ScannedLines[$i]."</span></td>
@@ -712,7 +713,7 @@ echo "</div>";
       
       
       
-       document.getElementById('loadingBar').style.visibility="none"; 
+      document.getElementById('loadingBar').style.visibility="none"; 
       document.getElementById('loadingBar').style.opacity= 0;
       document.getElementById('loadingBar').style.width= '0px';
       document.getElementById('loadingBar').style.height= '0px';

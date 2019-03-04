@@ -4,15 +4,15 @@
 
     <title>Pronoxis by DECRYPTER</title>
     <meta charset="utf-8">
-<!--    <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/tim.css">-->
+    <!--    <link rel="stylesheet" type="text/css" href="../assets/bootstrap/css/tim.css">-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../assets/css/material-dashboard.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    
+
     <link rel="stylesheet" type="text/css" href="../assets/css/loading.css">
-<link rel="stylesheet" href="../assets/css/loading-bar.css" >
-    
+    <link rel="stylesheet" href="../assets/css/loading-bar.css">
+
 
     <style>
         code {
@@ -68,7 +68,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <h4 class="text-monospace">File name</h4>
-                </div>  
+                </div>
                 <div class="col-md-4">
                     <h4 class="text-monospace">Percentage</h4>
                 </div>
@@ -82,9 +82,9 @@
                 </div>
                 <div class="col-md-4">
                     <h4 class="text-monospace counter" id="percent"></h4>
-            <div id="progress" style="width:100%;border:1px solid #ccc;"></div>
-<!-- Progress information -->
-<div id="information" style="width"></div>
+                    <div id="progress" style="width:100%;border:1px solid #ccc;"></div>
+                    <!-- Progress information -->
+                    <div id="information" style="width"></div>
                 </div>
 
                 <div class="col-md-4">
@@ -131,7 +131,7 @@ header('Cache-Control: no-cache');
 //session_destroy();  
 ini_set('max_execution_time', 300000);
 $configDir=getcwd();
-chdir('C:\xampp\htdocs\dept2\dept');
+chdir('/Applications/MAMP/htdocs/dep');
 
 $_SESSION['Secured']=0;
     
@@ -280,14 +280,6 @@ $secuure1=$_SESSION['Secured'];
      array_push($securedLines,$presentSecure);
     
 $secure2=$secuure1;
-    
-          
-          
-  
-   
-    
-    
-
 $cmdOld2=$cmdold1;
 $vuln2=$vuln1; 
     
@@ -308,24 +300,24 @@ chdir('..');
         ";
 
     }
+    
+    
+    print($securedLines[0]);
 ?>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   <link rel="stylesheet" href="../assets/js/progress.js">
-    <script type="text/x-javascript" src="../assets/js/loading-bar.js"></script>
 
-Total no of lines of code is
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="../assets/js/progress.js">
+<script type="text/x-javascript" src="../assets/js/loading-bar.js"></script>
+
+Total no of lines of code is Secured
 <?php
 
     echo $_SESSION['Secured'];

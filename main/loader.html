@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .rectangle {
+            background-color: #F3F7F9;
+            color: #fff;
+            background: repeating-linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #23A6D5, #E73C7E, #EE7752);
+            background-size: 1400% 1400%;
+            -webkit-animation: Gradient 45s ease infinite;
+            -moz-animation: Gradient 45s ease infinite;
+            animation: Gradient 45s ease infinite;
+            height: 400px;
+            width: 1366px;
+            margin: 0 auto;
+            margin-top: 3rem;
+            border-radius: 150px 0px 150px 0px;
+            box-shadow:
+                0 4px 4px 0 rgba(0, 0, 0, .05),
+                0 8px 8px 0 rgba(0, 0, 0, .05),
+                0 16px 16px 0 rgba(0, 0, 0, .05),
+                0 32px 32px 0 rgba(0, 0, 0, .1),
+                0 64px 64px 0 rgba(0, 0, 0, .25),
+                inset -40px 0 100px 0px rgba(0,0,0, 0.25);
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .circle {
+            position: absolute;
+            height: 400px;
+            width: 400px;
+            border-radius: 350px;
+            border: 30px solid rgba(255,255,255,1);
+            margin-left: 445px;
+            margin-top: -440px;
+            background: linear-gradient(-60deg, #642B73, #fffcdc);
+            background-size: 100% 100%;
+            box-shadow:
+                0 4px 4px 0 rgba(0, 0, 0, .05),
+                0 8px 8px 0 rgba(0, 0, 0, .05),
+                0 16px 16px 0 rgba(0, 0, 0, .05),
+                0 32px 32px 0 rgba(0, 0, 0, .1),
+                0 -10px 64px 0 rgba(0, 0, 0, .15),
+                inset -40px 0 100px 0px rgba(0,0,0,.04);
+        }
+
+        @-webkit-keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @-moz-keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rectangle">
+    </div>
+    <div class="circle">
+    </div>
+</body>
+
+</html>
