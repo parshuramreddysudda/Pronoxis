@@ -43,6 +43,7 @@ font-family: "Product";
 src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
   vertical-align: middle;
 }
+    }
     </style>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -67,7 +68,6 @@ src: url(assets/fonts/product-sans/Product%20Sans%20Regular.ttf)
                     <h3 class="card-title" style="font-size:15px;margin-top:5px;margin-bottom:6px;font-family: 'Cabin', sans-serif;">&nbsp;  Total No of Pages</h3>
                     <h1 style="font-size:30px;margin-top:4px;">
   <div class="counter" data-count="<?php if(isset($totalNoFiles)){ echo $totalNoFiles;}?>">0</div></h1>
-                    <p style="margin-bottom:0px;">Paragraph</p>
                 </div>
             </div>
             <div class="card">

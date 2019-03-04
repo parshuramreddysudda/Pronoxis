@@ -218,7 +218,7 @@ function httpRescheckSecure($vulnChkLine,$httpResjson)
 //                echo "<p class='card-text'>This Line is <green>Secured</green> with Input values ".$vulnChkLine[$i]."</p>";
                 
                    $httpResjson->Secure="This Line is  Secure with  input values ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
                 
                  $vuln=1;
                   break;
@@ -265,6 +265,7 @@ function httpRescheckSecurewithOutVar($vulnChkLine,$httpResjson)
 //                  echo "<p class='card-text'>This Line is <green>Secured</green> without Input values ".$vulnChkLine[$i]."</p>";
                 
                    $httpResjson->Secure="This Line is  Secure without  input values ".$vulnChkLine[$i]." ";
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }

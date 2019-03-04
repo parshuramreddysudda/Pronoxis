@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
-    
+     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/Features-Boxed.css">
@@ -98,7 +98,7 @@
 					<div class="col-md-12">
 						<div class="title">
 							<h2 style="color:white;font-family: 'Cabin', sans-serif">Pronoxis Features</h2>
-							<p>A static analyzer coded with Pure PHP <br> </p>
+							<p style="color:#b3b3b3">A static analyzer coded with Pure PHP <br> </p>
 						</div>
 					</div>
 				</div>
@@ -109,7 +109,7 @@
 								<i class="ion-archive"></i>
 							</div>
 							<h4 class="wow fadeInUp" data-wow-delay=".3s"style="font-family: 'Cabin', sans-serif;color:white;">Saves Report</h4>
-							<p class="wow fadeInUp" data-wow-delay=".5s">Pronoxis Scans you file localy <br> Saves the report in JSON and PDF format <br>Separately for later use</p>
+							<p class="wow fadeInUp" data-wow-delay=".5s" style="color:#b3b3b3">Pronoxis Scans you file localy <br> Saves the report in JSON and PDF format <br>Separately for later use</p>
 						</div>
 					</div>
 					<div class="col-md-4 col-xs-6 col-sm-6">
@@ -118,7 +118,7 @@
 								<i class="ion-paintbucket"></i>
 							</div>
 							<h4 class="wow fadeInUp" data-wow-delay=".3s"style="font-family: 'Cabin', sans-serif;color:white;">Faster and Accurate</h4>
-							<p class="wow fadeInUp" data-wow-delay=".5s">Scans file at Faster rate of 0.003 sec <br> for a single file and Maintains<br> Accurancy at high rate&nbsp;</p>
+							<p class="wow fadeInUp" data-wow-delay=".5s" style="color:#b3b3b3">Scans file at Faster rate of 0.003 sec <br> for a single file and Maintains<br> Accurancy at high rate&nbsp;</p>
 						</div>
 					</div>
 					<div class="col-md-4 col-xs-6 col-sm-6">
@@ -127,7 +127,7 @@
 								<i class="ion-paintbrush"></i>
 							</div>
 							<h4 class="wow fadeInUp" data-wow-delay=".3s"style="font-family: 'Cabin', sans-serif;color:white;">Need Not to be Compiled</h4>
-							<p class="wow fadeInUp" data-wow-delay=".5s">Pronoxis scan file with out Compilation <br>  of File which even cannot be compiled <br>  Due to syntactical Errors</p>
+							<p class="wow fadeInUp" data-wow-delay=".5s" style="color:#b3b3b3">Pronoxis scan file with out Compilation <br>  of File which even cannot be compiled <br>  Due to syntactical Errors</p>
 						</div>
 					</div>
 				</div>

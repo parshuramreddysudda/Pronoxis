@@ -228,7 +228,7 @@ function fileDischeckSecure($vulnChkLine,$fileDisjson)
 //                 echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
                    $fileDisjson->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }

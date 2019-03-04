@@ -27,7 +27,7 @@ $cmdVulnLineVar=0;  //To store no of vulnerable var in a Vuln line to compare af
 $inputValues=array(); //To store input values Responsible for vuln
 $userInpVal=0;  //To test for user input Values;
 $noCmdVulLines=0;//To calculate total Lines
-    
+   
   
 $typeChkLines = $_SESSION['checkTypeCheckLine'];
 $LogFileName=$_SESSION['LogFileName'];;
@@ -48,7 +48,7 @@ $superArray=array(); //For Storing all lines
 foreach ($typeChkLines as $typeChkLine_num => $typeChkLine)
 { 
     $superArray=$typeChkLines;
-   
+    $_SESSION['TotalLinesofFile']++;
 //    echo "Line #<b>{$typeChkLine_num}</b> : " . htmlspecialchars($typeChkLine) . "<br />\n";
 
 
@@ -147,7 +147,7 @@ function cmdcheckSources($chkLine,$chkLineNo,$typeChkLines,$cmdjson,$Line)
                 
                   $cmdjson->MainInfo="Line Number ".$chkLineNo." is Protected  .All the variables are secured"; 
                 
-                 
+                 $_SESSION['Secured']++;
               }
               
               

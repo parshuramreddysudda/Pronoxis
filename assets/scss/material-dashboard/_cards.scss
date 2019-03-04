@@ -208,7 +208,7 @@
     &.bg-rose,
     &.card-rotate.bg-rose .front,
     &.card-rotate.bg-rose .back{
-      background: linear-gradient(60deg, $pink-400, $pink-600);
+      background: linear-gradient(60deg, #3d3d3d, #3d3d3d);
     }
 
     .card-header-primary .card-icon,
@@ -228,7 +228,7 @@
     .card-header-rose .card-icon,
     .card-header-rose:not(.card-header-icon):not(.card-header-text),
     .card-header-rose .card-text{
-        @include shadow-big-color($brand-rose);
+           box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(61,61,61, 0.4);
     }
 
     .card-header-warning .card-icon,
@@ -656,6 +656,6 @@
   margin-bottom: 15px;
 
   .card .card-header a[aria-expanded="true"]{
-    color: #e91e63;
+    color: #d3d3d3;
   }
 }

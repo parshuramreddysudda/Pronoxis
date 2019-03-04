@@ -1,0 +1,3 @@
+<?
+startCode($Mainaddress,$typeChkLines);
+?>

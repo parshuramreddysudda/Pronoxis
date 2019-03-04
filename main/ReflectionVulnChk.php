@@ -235,7 +235,7 @@ function checkReflecSecure($vulnChkLine,$Reflecjson)
                 
                    $Reflecjson->Secure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
                 
-          
+          $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }
@@ -275,7 +275,7 @@ function checkReflecSecure($vulnChkLine,$Reflecjson)
 //                 echo "<p class='card-text'>This Line is <green>Secure</green> with  ".$vulnChkLine[$i]."</p>";
                 
                    $Reflecjson->fileSecure="This Line is  Secure with  ".$vulnChkLine[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln1=1; 
                   break;
                }
@@ -325,7 +325,7 @@ function checkReflecVarSecure($vulnChkLine,$Reflecjson)
 //                  echo "<p class='card-text'>This Line is <green>Secure</green> with  <code>  ".$vulnChkLine[$i]."</code></p>";
                 
                    $Reflecjson->RelectionInjectionSecure="This Line is  Secure with  ".$anySecureVuln[$i]." ";
-                
+                $_SESSION['Secured']++;
                  $vuln=1;
                   break;
                }
