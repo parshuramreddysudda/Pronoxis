@@ -1,9 +1,11 @@
 <?php
+$_SESSION['TotalScanned']=0;
+
  function scantype($type,$FileName)
    {
        echo "
             <script type=\"text/javascript\">
-            document.getElementById('scanType').innerHTML='Currently Scanning <b>".$FileName."</b> against ".$type."';
+            document.getElementById('scanType').innerHTML='Currently Scanning against <b>".$type."</b>';
             </script>
         ";  
        sleep(0.3);
@@ -16,7 +18,7 @@
 <html>
 <head>
     <!-- Meta-Information -->
-    <title>Pronoxis Partial Scan</title>
+    <title>Pronoxis Full  Scan</title>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -170,7 +172,8 @@
 <div class="pg-tp">
     <i class="ion-cube"></i>
     <div class="pr-tp-inr">
-        <h4>Currently Scanning  <strong><?php  echo $page?></strong><span></span> </h4>
+        <h4>Currently Scanning Page <br> <strong id="pageName">
+		  <?php  echo $page; ?></strong><span></span> </h4>
         <span>Security at its basic Form</span>
     </div>
 </div><!-- Page Top -->
@@ -208,80 +211,7 @@
     
     
     
-    <div class="filter-items">
-        <div class="row grid-wrap mrg20">
-            <div class="col m4 grid-item col s6 col l3">
-                <div class="stat-box widget" style="background-color:#ffffff;">
-                 
-                    <div class="wdgt-ldr">
-                        <div class="ball-scale-multiple">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <i class="fa fa-code" style="color:#13aaf9 "></i>
-                    <div class="stat-box-innr">
-                        <span><i class="counter" id='totalScan' style="color:black">0</i></span>
-                        <h5 style="color:black">Total No lines in this Page</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col m4 grid-item col s6 col l3">
-                <div class="stat-box widget" style="background-color:#ffffff;" >
-                   
-                    <div class="wdgt-ldr">
-                        <div class="ball-scale-multiple">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <i class="ion-code" style="color:#e56262;"></i>
-                    <div class="stat-box-innr">
-                        <span><i class="counter" id="vulnLines" style="color:black">0 </i></span>
-                        <h5 style="color:black">Total No of Lines in this Page</h5>
-                    </div>
-                </div>
-            </div>
-         <div class="col m4 grid-item col s6 col l3">
-                <div class="stat-box widget" style="color:#ffffff">
-                    <div class="wdgt-ldr">
-                        <div class="ball-scale-multiple">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <i class="ion-code-working" style="color:#6dba7f"></i>
-                    <div class="stat-box-innr">
-                        <span><i class="counter" id="secureLines" style="color:black"> 0</i></span>
-                        <h5 style="color:black">Total No of Lines Secured</h5>
-                    </div>
-                  
-                </div>
-            </div>
-            <div class="col m4 grid-item col s6 col l3">
-                <div class="stat-box widget" style="background-color:#ffffff">
-                    <div class="wdgt-ldr">
-                        <div class="ball-scale-multiple">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <i class="ion-code-download" style="color:#d3d3d3"></i>
-                    <div class="stat-box-innr">
-                        <span><i class="counter" id="totalScanedlines" style="color:black">0 </i></span>
-                        <h5 style="color:black">No of Lines Scanned in File</h5>
-                    </div>
-                    
-                </div>
-            </div>
-        </div><!-- Filter Items -->
-    
-    </div>
-
+  
 
 <div class="col">
     <div class="card">
@@ -416,6 +346,7 @@ $typeChkLines = file($conFile[$fullScan]);
 echo "
             <script type=\"text/javascript\">
             document.getElementById('file').innerHTML='".$conFile[$fullScan]."';
+		document.getElementById('pageName').innerHTML='".$conFile[$fullScan]."';
             </script>
         ";
 $_SESSION['checkTypeCheckLine']=$typeChkLines;
@@ -470,7 +401,7 @@ scantype('Xpath Injection',$conFile[$fullScan]);
     array_push($name,$conFile[$fullScan]);
     
      $totalLinesSum=13*$_SESSION['TotalLinesofFile'];
-    
+    $_SESSION['TotalScanned']=$_SESSION['TotalScanned']+$totalLinesSum;
     array_push($TotalLinesArray,$totalLinesSum);
     
     
@@ -495,14 +426,7 @@ $secuure1=$_SESSION['Secured'];
     $presentSecure=$secuure1-$secure2;
      array_push($securedLines,$presentSecure);
     
-$secure2=$secuure1;
-    
-          
-          
-  
-   
-    
-    
+$secure2=$secuure1;   
 
 $cmdOld2=$cmdold1;
 $vuln2=$vuln1; 
@@ -522,7 +446,6 @@ chdir('..');
             document.getElementById('temp').innerHTML='File Created ".$fileName."';
             </script>
         ";
-
     }
 ?>
     
@@ -550,28 +473,128 @@ $_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSI
     {
         echo $_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
     }
-echo "<div class='container card'>";
-echo "<div class='card-body
-'>";
-echo "<br>";
-    echo "Vuln Cmd lines are   ".$_SESSION['TotalCmdVulnLines'];echo "<br>";
-    echo "Vuln Code lines are ".$_SESSION['TotalCodeVulnLines'];echo "<br>";
-    echo "Vuln File DIs lines are ".$_SESSION['TotalFileDisVulnLines'];echo "<br>"; 
-    echo "Vuln File Inc lines are ".$_SESSION['TotalFileIncVulnLines']; echo "<br>";
-    echo "Vuln File Man lines are ".$_SESSION['TotalFileManVulnLines']; echo "<br>";
-    echo "Vuln  HTTP Res lines are ".$_SESSION['TotalHttpResVulnLines'];  echo "<br>";
-    echo "Vuln  Protocol lines are ".$_SESSION['TotalProtocVulnLines'];echo "<br>";
-    echo "Vuln  Reflection lines are ".$_SESSION['TotalReflecVulnLines'];echo "<br>";
-    echo "Vuln  Session lines are ".$_SESSION['TotalSessionVulnLines'];echo "<br>";
-    echo "Vuln  Sql Vuln lines are ".$_SESSION['TotalSqlVulnLines'];echo "<br>";  echo "Vuln  User  Vuln lines are ".$_SESSION['TotalUserVulnLines']; echo "<br>";echo "Vuln  XSS  Vuln lines are ".$_SESSION['TotalXSSVulnLines'];echo "<br>";
-    echo "Vuln  Xpath  Vuln lines are ".$_SESSION['TotalxPathVulnLines'];echo "<br>";
-echo "</div>";
-echo "</div>";
-    
+	
+	
+	     if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
+$_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
+    {
+        $totalScanedlines=$_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
+    }
+
+$unsecured=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+$_SESSION['TotalFileDisVulnLines']+$_SESSION['TotalFileIncVulnLines']+$_SESSION['TotalFileManVulnLines']+$_SESSION['TotalHttpResVulnLines']+$_SESSION['TotalProtocVulnLines']+$_SESSION['TotalReflecVulnLines']+$_SESSION['TotalSessionVulnLines']+$_SESSION['TotalSqlVulnLines']+$_SESSION['TotalXSSVulnLines']+$_SESSION['TotalxPathVulnLines'];
+ 
+
+//echo "
+//            <script type=\"text/javascript\">
+//             
+//            document.getElementById('totalScanedlines').innerText=".$totalScanedlines."; 
+//          document.getElementById('vulnLines').innerText=".$unsecured."; 
+//            document.getElementById('secureLines').innerText=".$_SESSION['Secured']."; 
+//            document.getElementById('totalScan').innerText=".$_SESSION['totalFileLines'].";
+//            
+//            
+//            </script>
+//            ";
+//echo "<div class='container card'>";
+//echo "<div class='card-body
+//'>";
+//echo "<br>";
+//    echo "Vuln Cmd lines are   ".$_SESSION['TotalCmdVulnLines'];echo "<br>";
+//    echo "Vuln Code lines are ".$_SESSION['TotalCodeVulnLines'];echo "<br>";
+//    echo "Vuln File DIs lines are ".$_SESSION['TotalFileDisVulnLines'];echo "<br>"; 
+//    echo "Vuln File Inc lines are ".$_SESSION['TotalFileIncVulnLines']; echo "<br>";
+//    echo "Vuln File Man lines are ".$_SESSION['TotalFileManVulnLines']; echo "<br>";
+//    echo "Vuln  HTTP Res lines are ".$_SESSION['TotalHttpResVulnLines'];  echo "<br>";
+//    echo "Vuln  Protocol lines are ".$_SESSION['TotalProtocVulnLines'];echo "<br>";
+//    echo "Vuln  Reflection lines are ".$_SESSION['TotalReflecVulnLines'];echo "<br>";
+//    echo "Vuln  Session lines are ".$_SESSION['TotalSessionVulnLines'];echo "<br>";
+//    echo "Vuln  Sql Vuln lines are ".$_SESSION['TotalSqlVulnLines'];echo "<br>";  echo "Vuln  User  Vuln lines are ".$_SESSION['TotalUserVulnLines']; echo "<br>";echo "Vuln  XSS  Vuln lines are ".$_SESSION['TotalXSSVulnLines'];echo "<br>";
+//    echo "Vuln  Xpath  Vuln lines are ".$_SESSION['TotalxPathVulnLines'];echo "<br>";
+//echo "</div>";
+//echo "</div>";
+//    
     
     ?>
     
+      
+    <div class="filter-items">
+        <div class="row grid-wrap mrg20">
+            <div class="col m4 grid-item col s6 col l3">
+                <div class="stat-box widget" style="background-color:#ffffff;">
+                 
+                    <div class="wdgt-ldr">
+                        <div class="ball-scale-multiple">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <i class="fa fa-code" style="color:#13aaf9 "></i>
+                    <div class="stat-box-innr">
+                        <span><i class="counter" id=' ' style="color:black">
+					<?php echo $_SESSION['TotalScanned']; ?></i></span>
+                        <h5 style="color:black">Total No Of Scanned Lines </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col m4 grid-item col s6 col l3">
+                <div class="stat-box widget" style="background-color:#ffffff;" >
+                   
+                    <div class="wdgt-ldr">
+                        <div class="ball-scale-multiple">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <i class="ion-code" style="color:#e56262;"></i>
+                    <div class="stat-box-innr">
+                        <span><i class="counter" id=" " style="color:black">
+					<?php echo $unsecured; ?></i></span>
+                        <h5 style="color:black">Total No of Unsecured</h5>
+                    </div>
+                </div>
+            </div>
+         <div class="col m4 grid-item col s6 col l3">
+                <div class="stat-box widget" style="color:#ffffff">
+                    <div class="wdgt-ldr">
+                        <div class="ball-scale-multiple">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <i class="ion-code-working" style="color:#6dba7f"></i>
+                    <div class="stat-box-innr">
+                        <span><i class="counter" id=" " style="color:black"> 
+					<?php echo $_SESSION['Secured']; ?></i></span>
+                        <h5 style="color:black">Total No of Lines Secured</h5>
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="col m4 grid-item col s6 col l3">
+                <div class="stat-box widget" style="background-color:#ffffff">
+                    <div class="wdgt-ldr">
+                        <div class="ball-scale-multiple">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <i class="ion-code-download" style="color:#d3d3d3"></i>
+                    <div class="stat-box-innr">
+				  <span><i class="counter" id=" " style="color:black">
+					  <?php echo $_SESSION['totalFileLines']; ?> </i></span>
+                        <h5 style="color:black">No of Lines Scanned in File</h5>
+                    </div>
+                    
+                </div>
+            </div>
+        </div><!-- Filter Items -->
     
+    </div>
+
             <div class="col m12 grid-item col s12 col l12">
                 <div class="widget proj-order pad50-40">
                     <div class="wdgt-ldr">
@@ -627,6 +650,101 @@ echo "</div>";
                                 }
                                 ?>
                                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+	<div class="col m12 grid-item col s12 col l12">
+                <div class="widget proj-order pad50-40">
+                    <div class="wdgt-ldr">
+                        <div class="ball-scale-multiple">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <h4 class="widget-title">Vulnerable Report</h4>
+                    <a class="add-proj brd-rd5" href="#" data-toggle="tooltip" title="Add Project" data-tooltip="Add Project">+</a>
+                    <div class="slct-bx">
+                        <i class="ion-android-funnel"> Sort By:</i>
+                        <span>
+                            <select>
+                                <option>Attack Name</option>
+                                <option>No Of Vulnerable Lines</option> 
+                            </select>
+                        </span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="table table-bordered style2">
+                            <thead><tr><th>#</th><th>Attack Name</th><th>Total Vulnerable Lines</th> </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="blue-bg indx">1</span></td>
+                                    <td><span class="date">Command Injection</span></td>
+                                    <td><h4 class="name"><?php  echo $_SESSION['TotalCmdVulnLines']; ?></h4></td> 
+                                </tr>   
+					     <tr>
+                                    <td><span class="blue-bg indx">2</span></td>
+                                    <td><span class="date">Code Injection </span></td>
+                                     <td><h4 class="name"><?php  echo  $_SESSION['TotalCodeVulnLines']  ; ?></h4></td> 
+                                </tr>   
+					     <tr>
+                                    <td><span class="blue-bg indx">3</span></td>
+                                    <td><span class="date">File Disclosure</span></td>
+                                     <td><h4 class="name"><?php  echo  $_SESSION['TotalFileDisVulnLines']  ; ?></h4></td> 
+                                </tr>   
+					     <tr>
+                                    <td><span class="blue-bg indx">4</span></td>
+                                    <td><span class="date">File Inclusion</span></td>
+                                           <td><h4 class="name"><?php  echo   $_SESSION['TotalFileIncVulnLines'] ; ?></h4></td> 
+                                </tr>   
+					     <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">File Manipulation</span></td>
+        					<td><h4 class="name"><?php  echo    $_SESSION['TotalFileManVulnLines']; ?></h4></td> 
+                                </tr> 
+					    <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">Http Response Splitting</span></td>
+                                      <td><h4 class="name"><?php  echo   $_SESSION['TotalHttpResVulnLines']; ?></h4></td> 
+                                </tr> 
+					    <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">Protocol Injection</span></td>
+                                     <td><h4 class="name"><?php  echo   $_SESSION['TotalProtocVulnLines'] ; ?></h4></td> 
+                                </tr> 
+					     <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">Reflection Injection </span></td>
+                                     <td><h4 class="name"><?php  echo  $_SESSION['TotalReflecVulnLines']  ; ?></h4></td> 
+                                </tr> 
+					     <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">Session Hijacking</span></td>
+                                      <td><h4 class="name"><?php  echo  $_SESSION['TotalSessionVulnLines']  ; ?></h4></td> 
+                                </tr> 
+					     <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">Sql Injection</span></td>
+                                    <td><h4 class="name"><?php  echo   $_SESSION['TotalSqlVulnLines'] ; ?></h4></td> 
+                                     
+                                </tr> 
+					     <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">User Input </span></td>
+                               <td><h4 class="name"><?php  echo    $_SESSION['TotalUserVulnLines']; ?></h4></td> 
+                                </tr> 
+					     <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">XSS Scripting</span></td>
+                                  <td><h4 class="name"><?php  echo  $_SESSION['TotalXSSVulnLines']  ; ?></h4></td> 
+                                </tr> 
+					    <tr>
+                                    <td><span class="blue-bg indx">5</span></td>
+                                    <td><span class="date">XPath Injection</span></td>
+                                 <td><h4 class="name"><?php  echo   $_SESSION['TotalxPathVulnLines'] ; ?></h4></td> 
+                                </tr> 
                             </tbody>
                         </table>
                     </div>
@@ -710,10 +828,8 @@ echo "</div>";
       document.getElementById('scanType').style.height= '0px';
       document.getElementById('scanType').style.marginBottom= '-60px';
       document.getElementById('scanType').style.transition = "all 1s";
-      
-      
-      
-      document.getElementById('loadingBar').style.visibility="none"; 
+	  
+     document.getElementById('loadingBar').style.visibility="none"; 
       document.getElementById('loadingBar').style.opacity= 0;
       document.getElementById('loadingBar').style.width= '0px';
       document.getElementById('loadingBar').style.height= '0px';
@@ -728,27 +844,7 @@ echo "</div>";
 </html>
 
 <?php
-       if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
-$_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
-    {
-        $totalScanedlines=$_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
-    }
-
-$unsecured=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+$_SESSION['TotalFileDisVulnLines']+$_SESSION['TotalFileIncVulnLines']+$_SESSION['TotalFileManVulnLines']+$_SESSION['TotalHttpResVulnLines']+$_SESSION['TotalProtocVulnLines']+$_SESSION['TotalReflecVulnLines']+$_SESSION['TotalSessionVulnLines']+$_SESSION['TotalSqlVulnLines']+$_SESSION['TotalXSSVulnLines']+$_SESSION['TotalxPathVulnLines'];
-
-$totalScanedlines=13*$_SESSION['totalFileLines'];
-
-echo "
-            <script type=\"text/javascript\">
-            
-            document.getElementById('totalScanedlines').innerHTML=".$totalScanedlines."; 
-            document.getElementById('vulnLines').innerHTML=".$unsecured."; 
-            document.getElementById('secureLines').innerHTML=".$_SESSION['Secured']."; 
-            document.getElementById('totalScan').innerHTML=".$_SESSION['totalFileLines'].";
-            
-            
-            </script>
-            ";
+  
 
 echo "
             <script type=\"text/javascript\">
