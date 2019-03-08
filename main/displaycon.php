@@ -1,5 +1,19 @@
 <?php
-$_SESSION['TotalScanned']=0;
+$_SESSION['projectName']=$_POST['ProjectName'];
+$_SESSION['search']=$_POST['Search'];
+
+echo $_SESSION['projectName'];
+echo $_SESSION['search'];
+
+
+if(isset($_SESSION['search']))
+{
+}
+else
+{
+	echo "No Address";
+	exit();
+}
 
  function scantype($type,$FileName)
    {
@@ -69,6 +83,7 @@ $_SESSION['TotalScanned']=0;
             margin-bottom: 6px;
 
         } 
+	    
 
         .h3Head {
             color: black;
@@ -207,13 +222,62 @@ $_SESSION['TotalScanned']=0;
 </div>
 <div class="text" id="scanType" style="color:#000000;margin-bottom:140px;" >loading</div>
     
-    
-    
-    
-    
-  
+	
+	
+	
+	
+<div class="card">
+    <div class="card-body">
+ 
+        <h6 class="text-muted card-subtitle mb-2">Progress</h6>
+        <p class="card-text"></p>
+       <div class="progress">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+		 
+</div>
+        <h4>File Information  </h4><!-- Progress information -->
+	    <div id="information" style="width"></div>
 
-<div class="col">
+    </div>
+</div>   
+	<div class="widget pad50-40">
+    <div class="timeline-wrp">
+      <div class="timeline-innr">
+        <div class="timeline-label"><span class="brd-rd5 blue-bg">Output</span></div>
+		<div class="timeline-block">
+          <span class="pst-tm"><i class="ion-clock"></i> Progress </span>
+          <i class="sts online"></i>
+          <div class="brd-rd5 act-pst">
+            <img class="brd-rd50" src="images/resource/acti-thmb2.jpg" alt="">
+            <div class="act-pst-inf">
+              <div class="act-pst-inr"><h5><a href="#" title="">File  </a></h5> Created as <a href="#" title=""><code id="temp" ></code></a></div>
+              <div class="act-pst-dta">
+                <p>File created with Your Project name </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-block">
+          <span class="pst-tm"><i class="ion-clock"></i> Detailed Report</span>
+          <i class="sts away"></i>
+          <div class="brd-rd5 act-pst">
+            <img class="brd-rd50" src="images/resource/acti-thmb1.jpg" alt="">
+            <div class="act-pst-inf">
+              <div class="act-pst-inr"><h5><a href="#" title="">JSON  Files</a></h5> saved in <a href="#" title="">  <?php echo getcwd();?></a></div>
+              <div class="act-pst-dta">
+			  <p>This is the Directory which has all the Scan reports In JSON File</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div class="timeline-label"><a class="brd-rd5 blue-bg" href="#" title="">The End</a></div>
+      </div>
+    </div>
+  </div>
+     
+<div class="col" hidden>
     <div class="card">
         <div class="card-body">
             <h2 class="text-center card-title">Files info</h2>
@@ -236,9 +300,8 @@ $_SESSION['TotalScanned']=0;
                 </div>
                 <div class="col-md-4">
                     <h4 class="text-monospace counter" id="percent"></h4>
-            <div id="progress" style="width:100%;border:1px solid #ccc;"></div>
-<!-- Progress information -->
-<div id="information" style="width"></div>
+   
+
                 </div>
 
                 <div class="col-md-4">
@@ -272,7 +335,9 @@ include 'xssVulChecker.php';
 include 'xPathVulChk.php';
 
     //Array for holding Values
-    
+$_SESSION['TotalScanned']=0;
+$_SESSION['scannedLines']=0;
+
     
 $name=array();
 $TotalLinesArray=array();
@@ -288,28 +353,30 @@ header('Cache-Control: no-cache');
 //session_destroy();  
 ini_set('max_execution_time', 3000000);
 $configDir=getcwd();
-chdir('/Applications/MAMP/htdocs/dep');
-
+chdir($_SESSION['search']);
+	
 $_SESSION['Secured']=0;
+  
     
 $workDir=getcwd(); 
 $scan=0;
 $conFile = scandir($workDir);
 $countOfAll=count($conFile);
   
-function random_string($length) 
-{
-    $key = '';
-    $keys = array_merge(range(0, 9), range('a', 'z'));
+// File Created for Temp File Storage
+// function random_string($length) 
+// {
+//    $key = '';
+//    $keys = array_merge(range(0, 9), range('a', 'z'));
+//
+//    for ($i = 0; $i < $length; $i++) {
+//        $key .= $keys[array_rand($keys)];
+//    }
+//
+//    return $key;
+// }
 
-    for ($i = 0; $i < $length; $i++) {
-        $key .= $keys[array_rand($keys)];
-    }
-
-    return $key;
-}
-
-$fileName=random_string(5);
+$fileName= $_SESSION['projectName'];
 mkdir($fileName);
 filea($fileName);
 //echo getcwd(); 
@@ -330,7 +397,7 @@ for($fullScan=0;$fullScan<=$countOfAll;$fullScan++)
 
     // Javascript for updating the progress bar and information
     echo '<script language="javascript">
-    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background-color:#ddd;\">&nbsp;</div>";
+    document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.';background:linear-gradient(to right, #990033 0%, #000000 100%);;\">&nbsp;</div>";
     document.getElementById("information").innerHTML="'.$fullScan.' files(s) processed.";
     </script>';
     // This is for the buffer achieve the minimum size in order to flush data
@@ -410,7 +477,7 @@ scantype('Xpath Injection',$conFile[$fullScan]);
     
     
     $presentTotal=$cmdold1-$cmdOld2;
-     
+     $_SESSION['scannedLines']= $_SESSION['scannedLines']+$presentTotal;
     array_push($ScannedLines,$presentTotal);
         
       $vuln1=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+ $_SESSION['TotalFileDisVulnLines']+$_SESSION['TotalFileIncVulnLines']+$_SESSION['TotalFileManVulnLines']+$_SESSION['TotalHttpResVulnLines']+$_SESSION['TotalProtocVulnLines']+$_SESSION['TotalReflecVulnLines']+$_SESSION['TotalSessionVulnLines']+$_SESSION['TotalSqlVulnLines']+$_SESSION['TotalUserVulnLines']+$_SESSION['TotalxPathVulnLines']+$_SESSION['TotalXSSVulnLines'];	
@@ -424,6 +491,8 @@ scantype('Xpath Injection',$conFile[$fullScan]);
 $secuure1=$_SESSION['Secured'];
     
     $presentSecure=$secuure1-$secure2;
+	
+	
      array_push($securedLines,$presentSecure);
     
 $secure2=$secuure1;   
@@ -443,7 +512,7 @@ chdir('..');
     {
          echo "
             <script type=\"text/javascript\">
-            document.getElementById('temp').innerHTML='File Created ".$fileName."';
+            document.getElementById('temp').innerHTML='".$fileName."';
             </script>
         ";
     }
@@ -463,15 +532,14 @@ chdir('..');
     
    <link rel="stylesheet" href="../assets/js/progress.js">
     <script type="text/x-javascript" src="../assets/js/loading-bar.js"></script>
-
-Total no of lines of code is
+	
+	 
 <?php
-
-    echo $_SESSION['Secured'];
     if(isset($_SESSION['TotalCmdLines'])&&isset($_SESSION['TotalCodeLines'])&&isset($_SESSION['TotalFileDisLines'])&&isset($_SESSION['TotalFileIncLines'])&&isset($_SESSION['TotalFileManLines'])&&isset($_SESSION['TotalHttpResLines'])&&isset($_SESSION['TotalProtocLines'])&&isset($_SESSION['TotalReflecLines'])&&isset($_SESSION['TotalSessionLines'])&&isset($_SESSION['TotalSqlLines'])&&isset(
 $_SESSION['TotalUserLines'])&&isset($_SESSION['TotalxPathLines'])&&isset($_SESSION['TotalXSSLines']))
     {
-        echo $_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
+        $temp=$_SESSION['TotalCmdLines']+$_SESSION['TotalCodeLines']+$_SESSION['TotalFileDisLines']+$_SESSION['TotalFileIncLines']+$_SESSION['TotalFileManLines']+$_SESSION['TotalHttpResLines']+$_SESSION['TotalProtocLines']+$_SESSION['TotalReflecLines']+$_SESSION['TotalSessionLines']+$_SESSION['TotalSqlLines']+$_SESSION['TotalUserLines']+$_SESSION['TotalxPathLines']+$_SESSION['TotalXSSLines'];
+	    echo "<p style='color:rgb(238, 238, 238);'>".$temp."</p>";
     }
 	
 	
@@ -533,7 +601,7 @@ $unsecured=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+$_SESS
                     <div class="stat-box-innr">
                         <span><i class="counter" id=' ' style="color:black">
 					<?php echo $_SESSION['TotalScanned']; ?></i></span>
-                        <h5 style="color:black">Total No Of Scanned Lines </h5>
+                        <h5 style="color:black">Total No Of Lines </h5>
                     </div>
                 </div>
             </div>
@@ -585,7 +653,7 @@ $unsecured=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+$_SESS
                     <i class="ion-code-download" style="color:#d3d3d3"></i>
                     <div class="stat-box-innr">
 				  <span><i class="counter" id=" " style="color:black">
-					  <?php echo $_SESSION['totalFileLines']; ?> </i></span>
+					  <?php echo  $_SESSION['scannedLines']; ?> </i></span>
                         <h5 style="color:black">No of Lines Scanned in File</h5>
                     </div>
                     
@@ -664,7 +732,7 @@ $unsecured=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+$_SESS
                             <div></div>
                         </div>
                     </div>
-                    <h4 class="widget-title">Vulnerable Report</h4>
+                    <h4 class="widget-title">Vulnerable Attacks Report </h4>
                     <a class="add-proj brd-rd5" href="#" data-toggle="tooltip" title="Add Project" data-tooltip="Add Project">+</a>
                     <div class="slct-bx">
                         <i class="ion-android-funnel"> Sort By:</i>
