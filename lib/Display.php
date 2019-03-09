@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+@ini_set('display_errors', 0);
 include'checkExtension.php';
 include 'configuration.php';
 include 'getFilesContent.php'; 
@@ -17,7 +19,7 @@ $_SESSION['search']=$_POST['search'];
 	
 }
 
-
+ 
 ?>   
 <html>
 <head>
@@ -48,6 +50,9 @@ $_SESSION['search']=$_POST['search'];
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../assets/scanLoader/style.css">
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
      <style >
 /*
 #load
@@ -259,76 +264,216 @@ $_SESSION['search']=$_POST['search'];
  <div class="widget pad50-40">
     <div class="timeline-wrp">
       <div class="timeline-innr">
-        <div class="timeline-label"><span class="brd-rd5 blue-bg">Select Scan</span></div>
+        <div class="timeline-label"><span class="brd-rd5 blue-bg">  Salient Details </span></div>
+		
+      
         <div class="timeline-block">
-          <span class="pst-tm"><i class="ion-clock"></i>Project Details</span>
-          <i class="sts away"></i>
+          <span class="pst-tm"><i class="ion-clock"></i> Project Details</span>
+          <i class="sts online"></i>
           <div class="brd-rd5 act-pst">
-            <img class="brd-rd50" src="images/resource/acti-thmb1.jpg" alt="">
+            <img class="brd-rd50" src="" alt="">
             <div class="act-pst-inf">
-              <div class="act-pst-inr"><h5><a href="#" title="">Project Address</a></h5> posted in <a href="#" title="">Material</a></div>
+              <div class="act-pst-inr"><h5><a href="#" title="">Project Name</a></h5> Defined as  <a href="#" title=""><?php echo $_SESSION['projectName'];?></a></div>
               <div class="act-pst-dta">
-                <p>Dnim eiusm ni eiusmod high life accusamus terry richardson ad squid. 3 wolfmoon.</p>
+                <p>This name is Used by pronoxis for Reports and files Storing process</p>
               </div>
             </div>
           </div>
         </div>
-        <div class="timeline-block">
-          <span class="pst-tm"><i class="ion-clock"></i> Today 2:10 pm</span>
-          <i class="sts online"></i>
+	<div class="timeline-block">
+          <span class="pst-tm"><i class="ion-clock"></i>Report Details</span>
+          <i class="sts away"></i>
           <div class="brd-rd5 act-pst">
-            <img class="brd-rd50" src="images/resource/acti-thmb2.jpg" alt="">
+            <img class="brd-rd50" src=" " alt="">
             <div class="act-pst-inf">
-              <div class="act-pst-inr"><h5><a href="#" title="">Overtunk</a></h5> posted in <a href="#" title="">New Blog</a></div>
-              <div class="act-pst-dta">
-                <p>Cum sociis natoque penatibus et mag</p>
+              <div class="act-pst-inr"><h5><a href="#" title="">Project Address</a></h5> &nbsp;is as <a href="#" title=""></a></div>
+              <div class="act-pst-dta" style="margin-top:7px;">
+			  <code class="code"  ><?php echo $_SESSION['search'];  ?></code>
+                <p style="margin-top:7px;">Pronoxis Scans the file from the Above address and Generates Reports with  name of <?php echo $_SESSION['projectName'];?></p>
               </div>
             </div>
           </div>
         </div>
         <div class="timeline-label"><span class="brd-rd5 dont-dstrb">Select Scan Type</span></div>
+		
         <div class="timeline-block">
-          <span class="pst-tm"><i class="ion-clock"></i> Today 2:10 pm</span>
+          <span class="pst-tm"><i class="ion-clock"></i> Scan by Page</span>
           <i class="sts dont-dstrb"></i>
           <div class="brd-rd5 act-pst">
-            <img class="brd-rd50" src="images/resource/acti-thmb1.jpg" alt="">
+            <img class="brd-rd50" src="" alt="">
             <div class="act-pst-inf">
-              <div class="act-pst-inr"><h5><a href="#" title="">Sadi Orlaf</a></h5> posted in <a href="#" title="">Material</a></div>
+              <div class="act-pst-inr"><h5><a href="#" title="">Partial Scan</a></h5>  <a href="#" title="">Page By Page</a></div>
               <div class="act-pst-dta">
-                <p>Cum sociis natoque penatibus et mag</p>
+			    <p>Scan Page by page and Get Detailed Report</p>
+			   <button class="btn btn-primary" name="typeScan" checked="checked" value="2" >Partial Scan</button>  
+              
               </div>
             </div>
           </div>
         </div>
         <div class="timeline-block">
-          <span class="pst-tm"><i class="ion-clock"></i> Today 2:10 pm</span>
+          <span class="pst-tm"><i class="ion-clock"></i>Complete Scan</span>
           <i class="sts dont-dstrb"></i>
           <div class="brd-rd5 act-pst">
-            <img class="brd-rd50" src="images/resource/acti-thmb2.jpg" alt="">
+            <img class="brd-rd50" src="" alt="">
             <div class="act-pst-inf">
-              <div class="act-pst-inr"><h5><a href="#" title="">Chris Johnatan</a></h5> started following <h6><a href="#" title="">Monica Smith</a></h6> site.</div>
+              <div class="act-pst-inr"><h5><a href="#" title="">Full Scan </a></h5> output formatted to <h6><a href="#" title="">JSON</a></h6> Files.</div>
               <div class="act-pst-dta">
-                <p>Accusamus terry richardson ad squid. 3 wolfmoon officia aute, cupidatat od high life...</p>
+			   <p>Scan full Website and get Details report  and Autosaves in  JSON Format</p>
+			   <button class="btn btn-primary" name="typeScan" checked="checked" value="1" >Full Scan</button>  
+               
               </div>
             </div>
           </div>
         </div>
-        <div class="timeline-label"><a class="brd-rd5 blue-bg" href="#" title="">More Time</a></div>
+        <div class="timeline-label"><a class="brd-rd5 blue-bg" href="#" title="">No Denouement </a></div>
       </div>
     </div>
-  </div>
+  </div> 
+	
  
- <div class="container">
 	
-	
-	
-	
-	</div>
+<div class="widget pad50-40">
+    	
+   
+<div id="Scan1" class="container desc" style="display: none;">
+
+    
+    <?php 
+    
+        echo "
+        <div class='card'>
+        
+        <div class='card-body'>
+      
+   <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
+   
+         <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>Start Scan</h3>
+         
+  
+                      <form action='../main/configuration.php'class='form-inline ml-auto' method='post' style='float:right;'>
+                 
+  <input type='hidden' name='ProjectName' value='".$_POST['projectName']."'>
+    <input type='hidden' name='Search' value='".$_POST['search']."'>
+          
+            <button class='btn btn-secondary' type='submit' value='submit' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
+            </form>
+          
+      
+      </div>
+      </div>";
+    ?>
+    </div>
+  
+    <div id="Scan2" class="container desc" style="display: none;" >
+                  <?php
+        
+        $lengthofFilearray=count($filesArray);
+        for($i=0;$i<$lengthofFilearray;$i++)
+        {
+            echo    "<div class='row'>";
+                  if(!isset( $filesArray[$i]))
+            {
+                break;
+            }
+            
+           echo "
            
+         <div class='col-md-4'>
+        <div class='card'>
+        
+        <div class='card-body'>
+      
+   <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
+   
+         <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>".$filesArray[$i]."</h3>
+         
+  
+                      <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
+               <input type='hidden'  name='page' value=".$filesArray[$i].">
+          
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
+            </form>
+          
+      
+      </div>
+      </div>
+        </div>
+        
+        ";
+          $i=$i+2;
+                if(!isset( $filesArray[$i]))
+            {
+                break;
+            }
+         echo "
+         <div class='col-md-4'>
+        <div class='card'>
+        
+        <div class='card-body'>
+      
+   <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
+            
+         <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>".$filesArray[$i]."</h3>
+     
+   
+                      <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
+               <input type='hidden'  name='page' value=".$filesArray[$i].">
+          
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
+            </form>
+      
+      </div>
+        </div></div>
+        
+        ";
+          $i=$i+2;
+             if(!isset( $filesArray[$i]))
+            {
+                break;
+            }
+                    echo "
+                    <div class='col-md-4'>
+        <div class='card'>
+        
+        <div class='card-body'>
+      
+    <img src='https://i.imgur.com/OvUJsP1.png' class='img-fluid center' style='margin-left:auto;margin-right:auto;width:25%;display:block;' />
+            
+          <h3 class='text-monospace text-truncate text-center' style='font-weight:bold;margin-top:40px;'>".$filesArray[$i]."</h3>
+          
+                      <form class='form-inline ml-auto ' action='displayConfig.php' method='post' id='page".$i."' target='_blank' style='float:right;'>
+               <input type='hidden'  name='page' value=".$filesArray[$i].">
+          
+            <button class='btn btn-secondary' type='submit' value='submit' form='page".$i."' style='background-color: #2B2B2B;color:white;float:right;'>Submit</button>
+            </form>
+      
+      </div>
+        </div>        </div>
+        
+        ";
+          $i=++$i;
+           
+           echo "</div> ";
+            
+        }
+        
+//       for($i=0;$i<$lengthofFilearray;$i++)
+//       {
+//           echo $filesArray[$i];
+//           
+//       }
+        
+        
+        ?>
+
+    </div>
+		
+  </div>   
 
 
 </div><!-- Panel Content -->
-	    <script>
+<script>
 $(document).ready(function() {
     $("button[name$='typeScan']").click(function() {
         var test = $(this).val();
@@ -344,7 +489,9 @@ $(document).ready(function() {
   <span>Security at Tips</span>
 </footer>
 <!-- Vendor: Javascripts -->
+	
 <script src="../assets/customAssets/js/jquery.min.js" type="text/javascript"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <!-- Vendor: Followed by our custom Javascripts -->
 <script src="../assets/customAssets/js/materialize.min.js" type="text/javascript"></script>
 <script src="../assets/customAssets/js/select2.min.js" type="text/javascript"></script>
@@ -372,16 +519,7 @@ $(document).ready(function() {
 <script src="../assets/customAssets/js/styleswitcher.js" type="text/javascript"></script>
 <script src="../assets/customAssets/js/main.js" type="text/javascript"></script>  
 <!-- Resources -->
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-<script src="../assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
-<script type="text/javascript" src="https://unpkg.com/popper.js@1.14.6/dist/umd/popper.min.js"></script>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="../assets/scanLoader/index.js"></script>
+ 
  
 </body>
 </html>
