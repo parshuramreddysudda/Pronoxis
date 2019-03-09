@@ -10,7 +10,7 @@ if(isset($_POST['projectName']))
 $projectName=$_POST['projectName'];
 $_SESSION['projectName']=$projectName;
   
-    
+   echo $projectName;
     
 include'lib/getFilesContent.php';
 }
