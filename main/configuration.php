@@ -823,7 +823,7 @@ $unsecured=$_SESSION['TotalCmdVulnLines']+$_SESSION['TotalCodeVulnLines']+$_SESS
 </div><!-- Panel Content -->
 <footer>
   <p>Copyright <a href="#" title="">Aiplus Company</a> &amp; 2017 - 2018</p>
-  <span>10GB of 250GB Free.</span>
+  <span><a href="https://fb.com/192/168.0.a">Contact at FB</a></span>
 </footer>
 <!-- Vendor: Javascripts -->
 <script src="../assets/customAssets/js/jquery.min.js" type="text/javascript"></script>
