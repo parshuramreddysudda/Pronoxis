@@ -358,8 +358,8 @@ $countOfAll=count($conFile);
 
     return $key;
  }
-$fileName=random_string(1);
-$fileName= $fileName."".$_SESSION['projectName']." - Pronoxis  Report";
+
+$fileName=$_SESSION['projectName']." - Pronoxis  Report";
 mkdir($fileName);
 filea($fileName);
 //echo getcwd(); 
